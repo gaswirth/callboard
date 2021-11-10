@@ -1,0 +1,37 @@
+{
+	"name": "gaswirth/callboard-wp",
+	"type": "wordpress-plugin",
+	"description": "Callboard core.",
+	"keywords": [
+		"WordPress",
+		"Plugins"
+	],
+	"homepage": "https://github.com/gaswirth/callboard-wp",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "Nick Gaswirth",
+			"homepage": "https://roundhouse-designs.com"
+		}
+	],
+	"require": {
+		"php": ">=7.4",
+		"lipemat/wp-phpcs": "*",
+		"automattic/vipwpcs": "^2.3",
+		"tgmpa/tgm-plugin-activation": "*"
+	},
+	"require-dev": {
+		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
+		"php-parallel-lint/php-parallel-lint": "^1.2.0",
+		"wp-cli/i18n-command": "^2.2.5"
+	},
+	"scripts": {
+		"lint:wpcs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+		"lint:php": "@php ./vendor/bin/parallel-lint --exclude .git --exclude vendor .",
+		"make-pot": "wp i18n make-pot . languages/_s.pot"
+	},
+	"support": {
+		"issues": "https://github.com/gaswirth/callboard-wp/issues",
+		"source": "https://github.com/gaswirth/callboard-wp"
+	}
+}

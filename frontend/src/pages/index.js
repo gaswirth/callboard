@@ -6,9 +6,9 @@ import Layout from 'components/Layout';
 
 import { getApolloClient } from 'lib/apollo-client';
 
-export default function Home({ page, performances }) {
+export default function Home({ page, shows }) {
   const { title, description } = page;
-  console.log(performances);
+  console.log(shows);
   return (
     <div className="box-border mx-auto w-2/3 py-12 px-6">
       <Head>
@@ -20,12 +20,12 @@ export default function Home({ page, performances }) {
       <Layout title={title} description={description}>
         <div className="flex content-center">
           <ul>
-            {performances &&
-              performances.length > 0 &&
-              performances.map((performance) => {
+            {shows &&
+              shows.length > 0 &&
+              shows.map((show) => {
                 return (
-                  <li key={performance.id}>
-                    <p>{`${performance.id}: ${performance.title}`}</p>
+                  <li key={show.id}>
+                    <p>{`${show.id}: ${show.title}`}</p>
                   </li>
                 );
               })}
@@ -42,7 +42,7 @@ export async function getStaticProps() {
   const data = await apolloClient.query({
     query: gql`
     {
-      performances {
+      shows {
         nodes {
           id
           title
@@ -56,10 +56,10 @@ export async function getStaticProps() {
     }`,
   });
 
-  const performances = data?.data.performances.nodes.map((performance) => {
+  const shows = data?.data.shows.nodes.map((show) => {
     return {
-      ...performance,
-      path: `/performances/${performance.slug}`,
+      ...show,
+      path: `/shows/${show.slug}`,
     };
   });
 
@@ -70,7 +70,7 @@ export async function getStaticProps() {
   return {
     props: {
       page,
-      performances,
+      shows,
     },
   };
 }

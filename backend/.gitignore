@@ -68,5 +68,4 @@ Thumbs.db
 !composer.json
 
 # Plugins and Themes
-!wp-content/plugins/rhdwp-social-icons
-!wp-content/themes/rhd-maestra
+!wp-content/themes/wds-headless-theme

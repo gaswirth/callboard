@@ -74,6 +74,16 @@ function callboard_register_required_plugins() {
 			'force_deactivation' => false,
 			'required'           => true,
 		),
+
+		array(
+			'name'               => 'WP GraphQL (ACF)',
+			'slug'               => 'wp-graphql-acf',
+			'version'            => '0.5.3',
+			'source'             => 'https://github.com/wp-graphql/wp-graphql-acf/archive/refs/tags/v0.5.3.zip',
+			'force_activation'   => true,
+			'force_deactivation' => false,
+			'required'           => true,
+		),
 	);
 
 	/*

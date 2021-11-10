@@ -8,5 +8,3 @@
  */
 
 // Theme functionality here.
-
-error_log(get_rest_url());

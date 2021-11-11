@@ -4,20 +4,20 @@ import Layout from 'components/Layout';
 import { gql } from '@apollo/client';
 import { getApolloClient } from 'lib/apollo-client';
 
-export default function Show({ site, show, users }) {
-  const { title, description } = site;
+export default function Show({ site, show }) {
+  const { title } = site;
 
   return (
-    <Layout title={title} description={description}>
+    <Layout title={title}>
       <h2>{show.title}</h2>
 
-      <ul>
+      {/* <ul>
         {users &&
           users.length > 0 &&
           users.map((user) => {
             return <li>{user.name}</li>;
           })}
-      </ul>
+      </ul> */}
 
       <Link href="/">
         <a>&lt; Back to home</a>
@@ -34,13 +34,6 @@ export async function getStaticProps({ params = {} } = {}) {
   const data = await apolloClient.query({
     query: gql`
       query ShowBySlug($slug: String!) {
-        users(where: { role: CAST_MEMBER }) {
-          nodes {
-            email
-            name
-            userId
-          }
-        }
         showBy(slug: $slug) {
           showId
           title
@@ -51,7 +44,6 @@ export async function getStaticProps({ params = {} } = {}) {
         }
         generalSettings {
           title
-          description
         }
       }
     `,
@@ -62,7 +54,7 @@ export async function getStaticProps({ params = {} } = {}) {
 
   const show = data?.data.showBy;
 
-  const users = data?.data.users;
+  // const users = data?.data.users;
 
   const site = {
     ...data?.data.generalSettings,
@@ -72,6 +64,7 @@ export async function getStaticProps({ params = {} } = {}) {
     props: {
       show,
       site,
+      // users,
     },
   };
 }

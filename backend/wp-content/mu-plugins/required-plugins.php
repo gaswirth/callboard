@@ -52,11 +52,12 @@ function callboard_register_required_plugins() {
 	 */
 	$plugins = array(
 		array(
-			'name'               => 'Advanced Custom Fields',
-			'slug'               => 'advanced-custom-fields',
+			'name'               => 'Advanced Custom Fields PRO',
+			'slug'               => 'advanced-custom-fields-pro',
 			'force_activation'   => true,
 			'force_deactivation' => false,
 			'required'           => true,
+			'source'             => WP_CONTENT_DIR . '/callboard-lib/plugins/advanced-custom-fields-pro.zip',
 		),
 
 		array(

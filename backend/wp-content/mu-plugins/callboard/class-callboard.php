@@ -4,7 +4,7 @@
  */
 class Callboard {
 	public function __construct() {
-		add_action( 'init', array( $this, 'rename_user_roles' ) );
+		// add_action( 'init', array( $this, 'rename_user_roles' ) );
 	}
 
 	/**

@@ -6,10 +6,10 @@ import { getApolloClient } from 'lib/apollo-client';
 import Layout from 'components/Layout';
 
 export default function Home({ page, shows }) {
-  const { title, description } = page;
+  const { title } = page;
 
   return (
-    <Layout title={title} description={description}>
+    <Layout title={title}>
       <div className="flex content-center">
         <ul>
           {shows &&
@@ -44,7 +44,6 @@ export async function getStaticProps() {
         }
         generalSettings {
           title
-          description
         }
       }
     `,

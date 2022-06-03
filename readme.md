@@ -2,4 +2,10 @@
 
 ## I play the bongos.
 
-*### (sooooo yeah)*
+### TODO
+
+- Things
+
+### Dreams
+
+- Import Show schedule

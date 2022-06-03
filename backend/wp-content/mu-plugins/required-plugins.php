@@ -52,11 +52,12 @@ function callboard_register_required_plugins() {
 	 */
 	$plugins = array(
 		array(
-			'name'               => 'Advanced Custom Fields',
-			'slug'               => 'advanced-custom-fields',
+			'name'               => 'Advanced Custom Fields PRO',
+			'slug'               => 'advanced-custom-fields-pro',
 			'force_activation'   => true,
 			'force_deactivation' => false,
 			'required'           => true,
+			'source'             => WP_CONTENT_DIR . '/callboard-lib/plugins/advanced-custom-fields-pro.zip',
 		),
 
 		array(
@@ -70,6 +71,16 @@ function callboard_register_required_plugins() {
 		array(
 			'name'               => 'WP GraphQL',
 			'slug'               => 'wp-graphql',
+			'force_activation'   => true,
+			'force_deactivation' => false,
+			'required'           => true,
+		),
+
+		array(
+			'name'               => 'WP GraphQL (ACF)',
+			'slug'               => 'wp-graphql-acf',
+			'version'            => '0.5.3',
+			'source'             => 'https://github.com/wp-graphql/wp-graphql-acf/archive/refs/tags/v0.5.3.zip',
 			'force_activation'   => true,
 			'force_deactivation' => false,
 			'required'           => true,

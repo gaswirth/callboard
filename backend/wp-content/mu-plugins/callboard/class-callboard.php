@@ -3,21 +3,23 @@
  * Callboard base class.
  */
 class Callboard {
-	// private static $instance = null;
+	public function __construct() {
+		// add_action( 'init', array( $this, 'rename_user_roles' ) );
+	}
 
-	// /**
-	//  * Bootstrap the class.
-	//  *
-	//  * @return Callboard
-	//  */
-	// public static function init() {
-	// 	if ( ! self::$instance ) {
-	// 		self::$instance = new Callboard();
-	// 	}
+	/**
+	 * Rename user roles.
+	 */
+	public function rename_user_roles() {
+		global $wp_roles;
+		if ( ! isset( $wp_roles ) ) {
+			$wp_roles = new WP_Roles();
+		}
 
-	// 	return self::$instance;
-	// }
+		$subscriber_name = 'Cast Member';
+		$wp_roles->roles['subscriber']['name'] = $subscriber_name;
+		$wp_roles->role_names['subscriber'] = $subscriber_name;
+	}
 }
 
-// $callboard = Callboard::init();
 $callboard = new Callboard();

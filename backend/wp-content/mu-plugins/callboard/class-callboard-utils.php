@@ -16,8 +16,6 @@ class Callboard_Utils extends Callboard {
 	 * @return string|false The sanitized datetime.
 	 */
 	public function sanitize_datetime( $datetime ) {
-		error_log( 'sanitize_datetime RUN' );
-
 		// General sanitization, to get rid of malicious scripts or characters
 		$datetime = sanitize_text_field( $datetime );
 		$datetime = filter_var( $datetime, FILTER_SANITIZE_STRING );
@@ -69,6 +67,7 @@ class Callboard_Utils extends Callboard {
 		if ( ! $post_id ) {
 			return $valid;
 		}
+
 		$post_type  = get_post_type( $post_id );
 		$field_name = $field['name'];
 		$args       = array(

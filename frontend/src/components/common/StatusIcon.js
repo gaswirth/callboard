@@ -13,25 +13,34 @@ import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
  * @returns {React.Component}
  */
 const icon = (status) => {
-	switch (status) {
-		case true:
-			return <CheckIcon color="success" />;
+	var icon;
 
-		case false:
-			return <CloseIcon color="error" />;
+	switch (status) {
+		case 'in':
+			icon = <CheckIcon color="success" />;
+			break;
+
+		case 'out':
+			icon = <CloseIcon color="error" />;
+			break;
 
 		case 'pd':
-			return <HorizontalRuleIcon color="info" />;
+			icon = <HorizontalRuleIcon color="info" />;
+			break;
 
 		case 'vac':
-			return <FlightIcon color="info" />;
+			icon = <FlightIcon color="info" />;
+			break;
 
 		case 'q':
-			return <QuestionMarkIcon color="info" />;
+			icon = <QuestionMarkIcon color="info" />;
+			break;
 
 		default:
-			return;
+			icon = null;
 	}
+
+	return icon;
 };
 
 export default function StatusIcon({ status }) {

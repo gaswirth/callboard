@@ -1,27 +1,69 @@
 import React, { useContext } from 'react';
-import ShowContext from '../context/ShowContext';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Typography from '@mui/material/Typography';
+import Paper from '@mui/material/Paper';
+import StatusIcon from '../components/common/StatusIcon';
+
+import ProductionContext from '../context/ProductionContext';
+import { Box, Container } from '@mui/system';
 
 export default function Now() {
-	const { show, showDispatch } = useContext(ShowContext);
+	const { production } = useContext(ProductionContext);
+	const { currentShow } = production;
+
+	const rows = Object.keys(production.roster).map((performerId) => {
+		return {
+			name: production.roster[performerId].name,
+			attendance: production.shows[currentShow].attendance[performerId],
+		};
+	});
 
 	return (
-		<div>
-			<p>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi
-				repudiandae consequuntur voluptatum laborum numquam blanditiis harum quisquam eius sed odit fugiat iusto fuga
-				praesentium optio, eaque rerum! Provident similique accusantium nemo autem. Veritatis obcaecati tenetur iure
-				eius earum ut molestias architecto voluptate aliquam nihil, eveniet aliquid culpa officia aut! Impedit sit sunt
-				quaerat, odit, tenetur error, harum nesciunt ipsum debitis quas aliquid. Reprehenderit, quia. Quo neque error
-				repudiandae fuga? Ipsa laudantium molestias eos sapiente officiis modi at sunt excepturi expedita sint? Sed
-				quibusdam recusandae alias error harum maxime adipisci amet laborum. Perspiciatis minima nesciunt dolorem!
-				Officiis iure rerum voluptates a cumque velit quibusdam sed amet tempora. Sit laborum ab, eius fugit doloribus
-				tenetur fugiat, temporibus enim commodi iusto libero magni deleniti quod quam consequuntur! Commodi minima
-				excepturi repudiandae velit hic maxime doloremque. Quaerat provident commodi consectetur veniam similique ad
-				earum omnis ipsum saepe, voluptas, hic voluptates pariatur est explicabo fugiat, dolorum eligendi quam
-				cupiditate excepturi mollitia maiores labore suscipit quas? Nulla, placeat. Voluptatem quaerat non architecto ab
-				laudantium modi minima sunt esse temporibus sint culpa, recusandae aliquam numquam totam ratione voluptas quod
-				exercitationem fuga. Possimus quis earum veniam quasi aliquam eligendi, placeat qui corporis!
-			</p>
-		</div>
+		<Container>
+			<TableContainer component={Paper} sx={{ mt: 4, mx: 'auto' }}>
+				<Table size="small" aria-label="a weekly attendance table">
+					<TableHead>
+						<TableRow>
+							<TableCell sx={{ py: 2 }} align="right">
+								Performer
+							</TableCell>
+							<TableCell sx={{ py: 2 }} align="center">
+								This Show
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{rows.map((row) => (
+							<TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+								<TableCell sx={{ py: 2 }} align="right" scope="row">
+									{row.name}
+								</TableCell>
+								<TableCell sx={{ py: 2 }} align="center" scope="row">
+									{row.attendance ? (
+										<StatusIcon status={row.attendance} />
+									) : (
+										<Box
+											sx={{
+												height: '40px',
+												width: '40px',
+												mx: 'auto',
+												backgroundColor: 'secondary.main',
+												opacity: 0.5,
+												borderRadius: 1,
+											}}
+										></Box>
+									)}
+								</TableCell>
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+		</Container>
 	);
 }

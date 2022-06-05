@@ -22,6 +22,8 @@ export const Show = class {
 	constructor(id = 0, datetime = new Date(), attendance = {}) {
 		this.id = id;
 		this.datetime = datetime;
+
+		// TODO validate attendance format: { [userId]: <status> }
 		this.attendance = attendance;
 	}
 };

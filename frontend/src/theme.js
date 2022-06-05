@@ -6,6 +6,7 @@ const theme = createTheme({
 		primary: {
 			main: '#344cd4',
 			light: '#fff',
+			gray: 'rgb(235, 235, 235)',
 		},
 		secondary: {
 			main: '#ff9100',
@@ -16,7 +17,18 @@ const theme = createTheme({
 	},
 	spacing: 8,
 	shape: {
-		borderRadius: 4,
+		borderRadius: 6,
+	},
+	components: {
+		MuiTableCell: {
+			styleOverrides: {
+				root: {
+					textAlign: 'center',
+					paddingTop: '1em',
+					paddingBottom: '1em',
+				},
+			},
+		},
 	},
 });
 

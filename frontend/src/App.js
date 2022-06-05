@@ -11,29 +11,29 @@ import { data } from './lib/dummy';
 import Home from './pages/index';
 import Now from './pages/now';
 
-import ShowContext, { showReducer, initialShow } from './context/ShowContext';
+import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
 
 export default function App() {
-	const [show, showDispatch] = useReducer(showReducer, initialShow);
+	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
 
 	useEffect(() => {
-		if (show.currentShow.id === 0) {
-			showDispatch({
+		if (production.currentShow === 0) {
+			productionDispatch({
 				type: 'INIT',
 				...data,
 			});
 		}
-	}, [show]);
+	}, [production]);
 
 	return (
 		<Router>
-			<ShowContext.Provider value={{ show, showDispatch }}>
+			<ProductionContext.Provider value={{ production, productionDispatch }}>
 				<Header />
 				<Routes>
 					<Route exact path="/" element={<Home />} />
 					<Route path="/now" element={<Now />} />
 				</Routes>
-			</ShowContext.Provider>
+			</ProductionContext.Provider>
 		</Router>
 	);
 }

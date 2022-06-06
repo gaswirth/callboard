@@ -1,20 +1,32 @@
-import React, { useContext } from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import React, { useContext, useEffect, useState } from 'react';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Typography,
+	Paper,
+	Card,
+} from '@mui/material';
+import { Box, Container } from '@mui/system';
 import StatusIcon from '../components/common/StatusIcon';
+import PendingBox from '../components/common/PendingBox';
 
 import ProductionContext from '../context/ProductionContext';
-import { Box, Container } from '@mui/system';
+import { isEmpty } from 'lodash';
 
 export default function Now() {
 	const { production } = useContext(ProductionContext);
-	const { currentShow } = production;
+	const { currentShow, shows } = production;
+	const [show, setShow] = useState({});
+
+	useEffect(() => {
+		if (isEmpty(shows)) return;
+
+		setShow(shows[currentShow]);
+	}, [currentShow, shows]);
 
 	const rows = Object.keys(production.roster).map((performerId) => {
 		return {
@@ -44,26 +56,23 @@ export default function Now() {
 									{row.name}
 								</TableCell>
 								<TableCell sx={{ py: 2 }} align="center" scope="row">
-									{row.attendance ? (
-										<StatusIcon status={row.attendance} />
-									) : (
-										<Box
-											sx={{
-												height: '40px',
-												width: '40px',
-												mx: 'auto',
-												backgroundColor: 'secondary.main',
-												opacity: 0.5,
-												borderRadius: 1,
-											}}
-										></Box>
-									)}
+									{row.attendance ? <StatusIcon status={row.attendance} /> : <PendingBox />}
 								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
 				</Table>
 			</TableContainer>
+			{show.notes ? (
+				<Box sx={{ width: '100%', textAlign: 'center', p: 3, mt: 4 }} component={Card}>
+					<Typography variant="body1" sx={{ fontWeight: '600' }}>
+						Notes:
+					</Typography>
+					<Typography variant="body1" sx={{ mt: 1 }}>
+						{show.notes}
+					</Typography>
+				</Box>
+			) : null}
 		</Container>
 	);
 }

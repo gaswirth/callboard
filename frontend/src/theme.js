@@ -6,7 +6,8 @@ const theme = createTheme({
 		primary: {
 			main: '#344cd4',
 			light: '#fff',
-			gray: 'rgb(235, 235, 235)',
+			lightgray: 'rgb(235, 235, 235)',
+			gray: '#aaa',
 		},
 		secondary: {
 			main: '#ff9100',

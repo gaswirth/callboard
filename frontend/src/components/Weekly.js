@@ -1,24 +1,88 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useMemo, useReducer } from 'react';
+import { isEmpty } from 'lodash';
+import { format } from 'date-fns';
 import { Box } from '@mui/system';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Paper,
+	Typography,
+} from '@mui/material';
 
 import StatusIcon from './common/StatusIcon';
 import PendingBox from './common/PendingBox';
 
 import ProductionContext from '../context/ProductionContext';
+import { Popover } from '@mui/material';
+
+function anchorElReducer(state, action) {
+	switch (action.type) {
+		case 'INIT': {
+			var anchorEls = {};
+			Object.keys(action.payload).forEach((id) => {
+				anchorEls[id] = null;
+			});
+
+			return anchorEls;
+		}
+
+		case 'MOUSEENTER': {
+			return {
+				...state,
+				[action.id]: action.payload,
+			};
+		}
+
+		case 'MOUSEOUT': {
+			return {
+				...state,
+				[action.id]: null,
+			};
+		}
+
+		default:
+			return state;
+	}
+}
 
 export default function Weekly() {
 	const {
 		production: { roster, shows, currentShow },
 	} = useContext(ProductionContext);
-	const showCount = 8;
+
+	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
+
+	// Inialize anchorEls
+	const anchorEls = useMemo(() => {
+		if (isEmpty(shows)) return {};
+
+		return { type: 'INIT', payload: shows };
+	}, [shows]);
+
+	useEffect(() => {
+		anchorElDispatch(anchorEls);
+	}, [anchorEls]);
+
+	const handlePopoverOpen = (event) => {
+		// setAnchorEl(event.currentTarget);
+		anchorElDispatch({
+			type: 'MOUSEENTER',
+			id: event.target.getAttribute('id'),
+			payload: event.currentTarget,
+		});
+	};
+
+	const handlePopoverClose = (event) => {
+		// setAnchorEl(null);
+		anchorElDispatch({
+			type: 'MOUSEOUT',
+			id: event.target.getAttribute('id'),
+		});
+	};
 
 	const rows = Object.keys(roster).map((performerId) => {
 		return {
@@ -29,11 +93,7 @@ export default function Weekly() {
 		};
 	});
 
-	const showStyles = (showIndex) => {
-		return currentShow === showIndex ? { bgcolor: 'secondary.main', p: 1, borderRadius: 1 } : {};
-	};
-
-	return (
+	return !isEmpty(shows) ? (
 		<TableContainer component={Paper}>
 			<Table sx={{ minWidth: 650 }} size="small" aria-label="a weekly attendance table">
 				<TableHead>
@@ -51,13 +111,42 @@ export default function Weekly() {
 						>
 							<Typography variant="button">Performer</Typography>
 						</TableCell>
-						{Array.from({ length: showCount }).map((el, i) => {
-							const showIndex = i + 1;
+						{Object.keys(shows).map((id, i) => {
 							return (
-								<TableCell key={i + 1}>
-									<Typography variant="button" sx={{ ...showStyles(showIndex) }}>
-										Show {i + 1}
+								<TableCell key={id}>
+									<Typography
+										variant="button"
+										id={id}
+										sx={{
+											cursor: 'default',
+											p: 1,
+											borderRadius: 1,
+											backgroundColor: currentShow === Number(id) ? 'secondary.main' : 'inherit',
+										}}
+										aria-haspopup="true"
+										onMouseEnter={handlePopoverOpen}
+										onMouseLeave={handlePopoverClose}
+									>
+										{format(shows[id].datetime, 'M/d')}
 									</Typography>
+									<Popover
+										id={id}
+										sx={{ pointerEvents: 'none' }}
+										open={!!anchorEl[id]}
+										anchorEl={anchorEl[id]}
+										anchorOrigin={{
+											vertical: 'bottom',
+											horizontal: 'left',
+										}}
+										onClose={handlePopoverClose}
+										disableRestoreFocus
+									>
+										{shows[id].notes ? (
+											<Typography sx={{ p: 2 }}>{shows[id].notes}</Typography>
+										) : (
+											<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
+										)}
+									</Popover>
 								</TableCell>
 							);
 						})}
@@ -79,7 +168,7 @@ export default function Weekly() {
 							>
 								{row.name}
 							</TableCell>
-							{Array.from({ length: showCount }).map((el, i) => (
+							{Object.keys(shows).map((id, i) => (
 								<TableCell key={i} scope="row">
 									{row.attendance[i] ? (
 										<Box sx={{ p: 1, lineHeight: 1 }}>
@@ -95,5 +184,5 @@ export default function Weekly() {
 				</TableBody>
 			</Table>
 		</TableContainer>
-	);
+	) : null;
 }

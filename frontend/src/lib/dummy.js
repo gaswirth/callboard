@@ -11,22 +11,32 @@ export const data = {
 	name: 'Sweet Potato: The Musical',
 	currentShow: 8,
 	shows: {
-		1: new Show(1, subDays(today, 7), {
-			1: 'in',
-			2: 'out',
-			3: 'vac',
-			4: 'out',
-			5: 'in',
-			6: 'in',
-		}),
-		2: new Show(2, subDays(today, 6), {
-			1: 'in',
-			2: 'in',
-			3: 'in',
-			4: 'in',
-			5: 'pd',
-			6: 'in',
-		}),
+		1: new Show(
+			1,
+			subDays(today, 7),
+			{
+				1: 'in',
+				2: 'out',
+				3: 'vac',
+				4: 'out',
+				5: 'in',
+				6: 'in',
+			},
+			'Bob on for Jimmifred'
+		),
+		2: new Show(
+			2,
+			subDays(today, 6),
+			{
+				1: 'in',
+				2: 'in',
+				3: 'in',
+				4: 'in',
+				5: 'pd',
+				6: 'in',
+			},
+			'Full company'
+		),
 		3: new Show(3, subDays(today, 5), {
 			1: 'in',
 			2: 'in',
@@ -51,14 +61,19 @@ export const data = {
 			5: 'vac',
 			6: 'in',
 		}),
-		6: new Show(6, subDays(today, 2), {
-			1: 'in',
-			2: 'in',
-			3: 'in',
-			4: 'in',
-			5: 'vac',
-			6: 'in',
-		}),
+		6: new Show(
+			6,
+			subDays(today, 2),
+			{
+				1: 'in',
+				2: 'in',
+				3: 'in',
+				4: 'in',
+				5: 'vac',
+				6: 'in',
+			},
+			'Wilhelm split track: Sally/Ribbonslaps'
+		),
 		7: new Show(7, subDays(today, 1), {
 			1: 'in',
 			2: 'out',
@@ -67,12 +82,17 @@ export const data = {
 			5: 'vac',
 			6: 'in',
 		}),
-		8: new Show(8, today, {
-			1: 'in',
-			3: 'pd',
-			5: 'vac',
-			6: 'in',
-		}),
+		8: new Show(
+			8,
+			today,
+			{
+				1: 'in',
+				3: 'pd',
+				5: 'vac',
+				6: 'in',
+			},
+			'Last show of the weeeeeeek'
+		),
 	},
 	roster: {
 		1: new Performer(1, 'F***ing Bob', []),

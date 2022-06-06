@@ -2,19 +2,9 @@ import React, { useContext, useEffect, useMemo, useReducer } from 'react';
 import { isEmpty } from 'lodash';
 import { format } from 'date-fns';
 import { Box } from '@mui/system';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Paper,
-	Typography,
-} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
 import StatusIcon from './common/StatusIcon';
-import PendingBox from './common/PendingBox';
 
 import ProductionContext from '../context/ProductionContext';
 import { Popover } from '@mui/material';
@@ -130,7 +120,7 @@ export default function Weekly() {
 										{format(shows[id].datetime, 'M/d')}
 									</Typography>
 									<Popover
-										id={id}
+										// id={id}
 										sx={{ pointerEvents: 'none' }}
 										open={!!anchorEl[id]}
 										anchorEl={anchorEl[id]}
@@ -170,13 +160,9 @@ export default function Weekly() {
 							</TableCell>
 							{Object.keys(shows).map((id, i) => (
 								<TableCell key={i} scope="row">
-									{row.attendance[i] ? (
-										<Box sx={{ p: 1, lineHeight: 1 }}>
-											<StatusIcon status={row.attendance[i]} />
-										</Box>
-									) : (
-										<PendingBox />
-									)}
+									<Box sx={{ p: 1, lineHeight: 1 }}>
+										<StatusIcon status={row.attendance[i] ? row.attendance[i] : null} />
+									</Box>
 								</TableCell>
 							))}
 						</TableRow>

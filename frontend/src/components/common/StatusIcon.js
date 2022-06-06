@@ -5,6 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import FlightIcon from '@mui/icons-material/Flight';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import PendingBox from './PendingBox';
 
 /**
  * Chooses the appropriate icon for attendance status.
@@ -37,7 +38,7 @@ const icon = (status) => {
 			break;
 
 		default:
-			icon = null;
+			icon = <PendingBox />;
 	}
 
 	return icon;

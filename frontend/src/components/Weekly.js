@@ -8,5 +8,6 @@ export default function Weekly() {
 		production: { shows },
 	} = useContext(ProductionContext);
 
+	// TODO This currently sends all shows.
 	return <ShowTable showIds={Object.keys(shows)} />;
 }

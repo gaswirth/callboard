@@ -7,10 +7,12 @@ import { Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
 import ProductionContext from '../context/ProductionContext';
+import { format } from 'date-fns';
+import { isEmpty } from 'lodash';
 
 export default function Header() {
 	const {
-		production: { name },
+		production: { name, currentShow, shows },
 	} = useContext(ProductionContext);
 
 	const linkStyle = {
@@ -22,11 +24,13 @@ export default function Header() {
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static">
 				<Toolbar>
-					<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-						<Link component={RouterLink} to="/now" sx={linkStyle}>
-							This Show
-						</Link>
-					</Typography>
+					{isEmpty(shows) ? null : (
+						<Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+							<Link component={RouterLink} to="/now" sx={linkStyle}>
+								{`Now: ${format(shows[currentShow].datetime, 'M/d') /* The show's datetime label */}`}
+							</Link>
+						</Typography>
+					)}
 					<Typography variant="h6" component="div" sx={{ flexGrow: 1, textTransform: 'uppercase' }}>
 						{name}
 					</Typography>

@@ -83,6 +83,7 @@ export default function StatusSelect({ showId, performerId, initStatus, children
 				<ToggleButtonGroup
 					value={status}
 					size="small"
+					sx={{ p: 0.75 }}
 					onChange={handleIconClick}
 					aria-label="Attendance status choices"
 					exclusive

@@ -22,11 +22,13 @@ export const Show = class {
 export const Performer = class {
 	id = '';
 	name = '';
+	role = '';
 	outs = [];
 
-	constructor(id, name, outs) {
+	constructor(id, name, role, outs) {
 		this.id = id;
 		this.name = name;
+		this.role = role;
 		this.outs = outs;
 	}
 };

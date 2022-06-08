@@ -11,7 +11,7 @@ import { data } from './lib/dummy';
 import Home from './pages/index';
 import Now from './pages/now';
 
-import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
+import ProductionContext, { productionReducer, initialProduction } from './/ProductionContext';
 
 export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);

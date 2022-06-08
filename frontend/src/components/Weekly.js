@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import ProductionContext from '../context/ProductionContext';
+import ProductionContext from '..//ProductionContext';
 import ShowTable from './common/ShowTable';
 
 export default function Weekly() {

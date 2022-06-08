@@ -95,11 +95,11 @@ export const data = {
 		),
 	},
 	roster: {
-		1: new Performer(1, 'F***ing Bob', []),
-		2: new Performer(2, 'Good Sally', []),
-		3: new Performer(3, 'Old Jimmifred', []),
-		4: new Performer(4, 'Robertina Berrypants', []),
-		5: new Performer(5, 'Wilhelm of the Forest', []),
-		6: new Performer(6, 'Rachel Ribbonslaps', []),
+		1: new Performer(1, 'F***ing Bob', "Master Peeler", []),
+		2: new Performer(2, 'Good Sally', "Chef Marguerite", []),
+		3: new Performer(3, 'Old Jimmifred', "Doorman", []),
+		4: new Performer(4, 'Robertina Berrypants', 'Swing', []),
+		5: new Performer(5, 'Wilhelm of the Forest', 'A Tree; u/s Peeler', []),
+		6: new Performer(6, 'Rachel Ribbonslaps', 'Herself', []),
 	},
 };

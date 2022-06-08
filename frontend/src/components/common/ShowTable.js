@@ -5,7 +5,7 @@ import { format } from 'date-fns';
 import { Box } from '@mui/system';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
-import ProductionContext from '../../context/ProductionContext';
+import ProductionContext from '../..//ProductionContext';
 
 import StatusIcon from './StatusIcon';
 
@@ -77,6 +77,7 @@ export default function ShowTable({ showIds }) {
 	const rows = Object.keys(roster).map((performerId) => {
 		return {
 			name: roster[performerId].name,
+			role: roster[performerId].role,
 			id: performerId,
 			attendance: showIds.map((showId) => {
 				return shows[showId].attendance[performerId];
@@ -156,7 +157,8 @@ export default function ShowTable({ showIds }) {
 								}}
 								scope="row"
 							>
-								{row.name}
+								<Typography variant="body1">{row.name}</Typography>
+								<Typography variant="body2">{row.role}</Typography>
 							</TableCell>
 							{showIds.map((id, i) => (
 								<TableCell key={id} scope="row">

@@ -5,7 +5,7 @@ import Close from '@mui/icons-material/Close';
 import HorizontalRule from '@mui/icons-material/HorizontalRule';
 import Flight from '@mui/icons-material/Flight';
 
-import ProductionContext from '../../context/ProductionContext';
+import ProductionContext from '../..//ProductionContext';
 
 export default function StatusSelect({ showId, performerId, initStatus, children }) {
 	const [anchorEl, setAnchorEl] = useState(null);

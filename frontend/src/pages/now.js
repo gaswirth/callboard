@@ -1,18 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Typography,
-	Paper,
-	Card,
-} from '@mui/material';
+import { Typography, Paper, Card } from '@mui/material';
 import { Box, Container } from '@mui/system';
-import StatusIcon from '../components/common/StatusIcon';
-import PendingBox from '../components/common/PendingBox';
 
 import ProductionContext from '../context/ProductionContext';
 import { isEmpty } from 'lodash';
@@ -28,41 +16,22 @@ export default function Now() {
 		setShow(shows[currentShow]);
 	}, [currentShow, shows]);
 
-	const rows = Object.keys(production.roster).map((performerId) => {
-		return {
-			name: production.roster[performerId].name,
-			attendance: production.shows[currentShow].attendance[performerId],
-		};
-	});
+	// const rows = Object.keys(production.roster).map((performerId) => {
+	// 	return {
+	// 		name: production.roster[performerId].name,
+	// 		attendance: production.shows[currentShow].attendance[performerId],
+	// 	};
+	// });
 
 	return (
+		// TODO Fix according to data structure changes in 'Weekly' (or redo this all together)
 		<Container>
-			<TableContainer component={Paper} sx={{ mt: 4, mx: 'auto' }}>
-				<Table size="small" aria-label="a weekly attendance table">
-					<TableHead>
-						<TableRow>
-							<TableCell sx={{ py: 2 }} align="right">
-								Performer
-							</TableCell>
-							<TableCell sx={{ py: 2 }} align="center">
-								This Show
-							</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows.map((row) => (
-							<TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-								<TableCell sx={{ py: 2 }} align="right" scope="row">
-									{row.name}
-								</TableCell>
-								<TableCell sx={{ py: 2 }} align="center" scope="row">
-									{row.attendance ? <StatusIcon status={row.attendance} /> : <PendingBox />}
-								</TableCell>
-							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
+			<Box
+				sx={{ mt: 2, p: 4, textAlign: 'center', backgroundColor: 'warning.main', color: 'primary.lightgray' }}
+				component={Paper}
+			>
+				(One-show table here)
+			</Box>
 			{show.notes ? (
 				<Box sx={{ width: '100%', textAlign: 'center', p: 3, mt: 4 }} component={Card}>
 					<Typography variant="body1" sx={{ fontWeight: '600' }}>

@@ -77,6 +77,7 @@ export default function Weekly() {
 	const rows = Object.keys(roster).map((performerId) => {
 		return {
 			name: roster[performerId].name,
+			id: performerId,
 			attendance: Object.keys(shows).map((showId) => {
 				return shows[showId].attendance[performerId];
 			}),
@@ -159,9 +160,14 @@ export default function Weekly() {
 								{row.name}
 							</TableCell>
 							{Object.keys(shows).map((id, i) => (
-								<TableCell key={i} scope="row">
+								<TableCell key={id} scope="row">
 									<Box sx={{ p: 1, lineHeight: 1 }}>
-										<StatusIcon status={row.attendance[i] ? row.attendance[i] : null} />
+										<StatusIcon
+											status={row.attendance[i] ? row.attendance[i] : null}
+											performerId={row.id}
+											showId={id}
+											buttonEnabled={true}
+										/>
 									</Box>
 								</TableCell>
 							))}

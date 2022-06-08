@@ -24,7 +24,7 @@ export function productionReducer(state, action) {
 			};
 		}
 
-		case 'SET_ATTENDANCE': {
+		case 'SET_ATTENDANCE_STATUS': {
 			const { showId, performerId, status } = action;
 
 			return {

@@ -5,7 +5,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import FlightIcon from '@mui/icons-material/Flight';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import PendingBox from './PendingBox';
+import StatusSelect from './StatusSelect';
 
 /**
  * Chooses the appropriate icon for attendance status.
@@ -38,12 +38,18 @@ const icon = (status) => {
 			break;
 
 		default:
-			icon = <PendingBox />;
+			icon = null;
 	}
 
 	return icon;
 };
 
-export default function StatusIcon({ status }) {
-	return icon(status);
+export default function StatusIcon({ status, performerId, showId, buttonEnabled }) {
+	return buttonEnabled ? (
+		<StatusSelect performerId={performerId} showId={showId} initStatus={status}>
+			{icon(status)}
+		</StatusSelect>
+	) : (
+		icon(status)
+	);
 }

@@ -25,13 +25,11 @@ export const Show = class {
  * @param {String} id Unique.
  * @param {String} name Performer's name.
  * @param {String} role Performer's role.
- * @param {Array} personalDays A collection of Date objects.
  */
 export const Performer = class {
-	constructor(id, name, role, personalDays) {
+	constructor(id, name, role) {
 		this.id = id;
 		this.name = name;
 		this.role = role;
-		this.personalDays = personalDays;
 	}
 };

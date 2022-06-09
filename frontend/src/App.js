@@ -10,6 +10,7 @@ import { data } from './lib/dummy';
  */
 import Home from './pages/index';
 import Now from './pages/now';
+// import Now from './pages/admin';
 
 import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
 
@@ -32,6 +33,7 @@ export default function App() {
 				<Routes>
 					<Route exact path="/" element={<Home />} />
 					<Route exact path="/now" element={<Now />} />
+					{/* <Route exact path="/now" element={<Admin />} /> */}
 				</Routes>
 			</ProductionContext.Provider>
 		</Router>

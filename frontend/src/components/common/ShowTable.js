@@ -1,11 +1,11 @@
 import React, { useContext, useReducer, useMemo, useEffect } from 'react';
-import { isEmpty } from 'lodash';
+import { isEmpty, isEqual } from 'lodash';
 import { Popover } from '@mui/material';
-import { format } from 'date-fns';
+import { format, isAfter, isBefore } from 'date-fns';
 import { Box } from '@mui/system';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
-import ProductionContext from '../..//ProductionContext';
+import ProductionContext from '../../ProductionContext';
 
 import StatusIcon from './StatusIcon';
 
@@ -74,6 +74,22 @@ export default function ShowTable({ showIds }) {
 		});
 	};
 
+	// Disable the icon button if this show is in the future.
+	const checkButtonEnabled = (showId) => {
+		var enabled = false;
+
+		if (showId === currentShow) {
+			enabled = true;
+		} else if (
+			isBefore(shows[showId].datetime, shows[currentShow].datetime) ||
+			isEqual(shows[showId].datetime, shows[currentShow].datetime)
+		) {
+			enabled = true;
+		}
+
+		return enabled;
+	};
+
 	const rows = Object.keys(roster).map((performerId) => {
 		return {
 			name: roster[performerId].name,
@@ -84,6 +100,10 @@ export default function ShowTable({ showIds }) {
 			}),
 		};
 	});
+
+	const showHeadingLabel = (id) => {
+		return format(shows[id].datetime, 'M/d (ha)');
+	};
 
 	return isEmpty(shows) || isEmpty(showIds) ? null : (
 		<TableContainer component={Paper} sx={{ width: '100%' }}>
@@ -101,7 +121,9 @@ export default function ShowTable({ showIds }) {
 								textTransform: 'uppercase',
 							}}
 						>
-							<Typography variant="button">Performer</Typography>
+							<Typography variant="button" sx={{ fontSize: '1.1em' }}>
+								Performer
+							</Typography>
 						</TableCell>
 						{showIds.map((id) => {
 							return (
@@ -113,13 +135,15 @@ export default function ShowTable({ showIds }) {
 											cursor: 'default',
 											p: 1,
 											borderRadius: 1,
-											backgroundColor: currentShow === Number(id) && showIds.length > 1 ? 'secondary.main' : 'inherit',
+											backgroundColor: String(currentShow) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
+											fontSize: '1.1em',
+											opacity: isAfter(shows[id].datetime, shows[currentShow].datetime) ? 0.4 : 1,
 										}}
 										aria-haspopup="true"
 										onMouseEnter={handlePopoverOpen}
 										onMouseLeave={handlePopoverClose}
 									>
-										{format(shows[id].datetime, 'M/d')}
+										{showHeadingLabel(id)}
 									</Typography>
 									<Popover
 										sx={{ pointerEvents: 'none' }}
@@ -157,8 +181,12 @@ export default function ShowTable({ showIds }) {
 								}}
 								scope="row"
 							>
-								<Typography variant="body1">{row.name}</Typography>
-								<Typography variant="body2">{row.role}</Typography>
+								<Typography variant="body1" sx={{ lineHeight: 1 }}>
+									{row.name}
+								</Typography>
+								<Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+									{row.role}
+								</Typography>
 							</TableCell>
 							{showIds.map((id, i) => (
 								<TableCell key={id} scope="row">
@@ -167,7 +195,7 @@ export default function ShowTable({ showIds }) {
 											status={row.attendance[i] ? row.attendance[i] : null}
 											performerId={row.id}
 											showId={id}
-											buttonEnabled={true}
+											buttonEnabled={checkButtonEnabled(id)}
 										/>
 									</Box>
 								</TableCell>

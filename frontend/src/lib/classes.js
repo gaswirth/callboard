@@ -2,33 +2,36 @@
  * Classes.
  */
 
+/**
+ * @modle Show
+ *
+ * @param {String} id Unique.
+ * @param {Date} datetime Performance date and time.
+ * @param {Object} attendance A collection of status strings, keyed by performerId.
+ * @param {String} notes Show notes to display.
+ */
 export const Show = class {
-	id = '';
-	datetime = new Date();
-	attendance = {};
-	notes = '';
-
 	constructor(id = 0, datetime = new Date(), attendance = {}, notes = '') {
 		this.id = id;
 		this.datetime = datetime;
-
-		// TODO validate attendance format: { [userId]: <status> }
 		this.attendance = attendance;
-
 		this.notes = notes;
 	}
 };
 
+/**
+ * @module Performer
+ *
+ * @param {String} id Unique.
+ * @param {String} name Performer's name.
+ * @param {String} role Performer's role.
+ * @param {Array} personalDays A collection of Date objects.
+ */
 export const Performer = class {
-	id = '';
-	name = '';
-	role = '';
-	outs = [];
-
-	constructor(id, name, role, outs) {
+	constructor(id, name, role, personalDays) {
 		this.id = id;
 		this.name = name;
 		this.role = role;
-		this.outs = outs;
+		this.personalDays = personalDays;
 	}
 };

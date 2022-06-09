@@ -1,6 +1,6 @@
 import React from 'react';
-import Weekly from '../components/Weekly';
+import Week from '../components/Week';
 
 export default function Home() {
-	return <Weekly />;
+	return <Week />;
 }

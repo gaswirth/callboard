@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 
-import ProductionContext from '..//ProductionContext';
+import ProductionContext from '../ProductionContext';
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 

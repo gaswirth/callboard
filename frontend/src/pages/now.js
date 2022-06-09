@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Typography, Card } from '@mui/material';
 import { Container } from '@mui/system';
 
-import ProductionContext from '..//ProductionContext';
+import ProductionContext from '../ProductionContext';
 import { isEmpty } from 'lodash';
 import ShowTable from '../components/common/ShowTable';
 

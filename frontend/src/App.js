@@ -11,7 +11,7 @@ import { data } from './lib/dummy';
 import Home from './pages/index';
 import Now from './pages/now';
 
-import ProductionContext, { productionReducer, initialProduction } from './/ProductionContext';
+import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
 
 export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
@@ -31,7 +31,7 @@ export default function App() {
 				<Header />
 				<Routes>
 					<Route exact path="/" element={<Home />} />
-					<Route path="/now" element={<Now />} />
+					<Route exact path="/now" element={<Now />} />
 				</Routes>
 			</ProductionContext.Provider>
 		</Router>

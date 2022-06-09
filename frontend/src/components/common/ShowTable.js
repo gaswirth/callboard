@@ -59,7 +59,6 @@ export default function ShowTable({ showIds }) {
 	}, [anchorEls]);
 
 	const handlePopoverOpen = (event) => {
-		// setAnchorEl(event.currentTarget);
 		anchorElDispatch({
 			type: 'MOUSEENTER',
 			id: event.target.getAttribute('id'),
@@ -68,22 +67,26 @@ export default function ShowTable({ showIds }) {
 	};
 
 	const handlePopoverClose = (event) => {
-		// setAnchorEl(null);
 		anchorElDispatch({
 			type: 'MOUSEOUT',
 			id: event.target.getAttribute('id'),
 		});
 	};
 
-	// Disable the icon button if this show is in the future.
-	const checkButtonEnabled = (showId) => {
-		var enabled = true;
+	/**
+	 * Check if a show is in the future.
+	 *
+	 * @param {String} showId
+	 * @returns {Boolean} True if the show is in the future, false otherwise.
+	 */
+	const showInFuture = (showId) => {
+		var future = true;
 
 		if (showId !== currentShow && isAfter(shows[showId].datetime, shows[currentShow].datetime)) {
-			enabled = false;
+			future = false;
 		}
 
-		return enabled;
+		return future;
 	};
 
 	const rows = Object.keys(roster).map((performerId) => {
@@ -132,7 +135,7 @@ export default function ShowTable({ showIds }) {
 											opacity: isAfter(shows[id].datetime, shows[currentShow].datetime) ? 0.4 : 1,
 										}}
 										aria-haspopup="true"
-										onMouseEnter={handlePopoverOpen}
+										onMouseEnter={showInFuture(id) ? handlePopoverOpen : null}
 										onMouseLeave={handlePopoverClose}
 									>
 										{showLabel(shows[id].datetime)}
@@ -187,7 +190,7 @@ export default function ShowTable({ showIds }) {
 											status={row.attendance[i] ? row.attendance[i] : null}
 											performerId={row.id}
 											showId={id}
-											buttonEnabled={checkButtonEnabled(id)}
+											buttonEnabled={showInFuture(id)}
 										/>
 									</Box>
 								</TableCell>

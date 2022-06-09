@@ -1,13 +1,14 @@
 import React, { useContext, useReducer, useMemo, useEffect } from 'react';
-import { isEmpty, isEqual } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
-import { format, isAfter, isBefore } from 'date-fns';
+import { isAfter } from 'date-fns';
 import { Box } from '@mui/system';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 
 import ProductionContext from '../../ProductionContext';
 
 import StatusIcon from './StatusIcon';
+import { showLabel } from '../../lib/functions';
 
 function anchorElReducer(state, action) {
 	switch (action.type) {
@@ -76,15 +77,10 @@ export default function ShowTable({ showIds }) {
 
 	// Disable the icon button if this show is in the future.
 	const checkButtonEnabled = (showId) => {
-		var enabled = false;
+		var enabled = true;
 
-		if (showId === currentShow) {
-			enabled = true;
-		} else if (
-			isBefore(shows[showId].datetime, shows[currentShow].datetime) ||
-			isEqual(shows[showId].datetime, shows[currentShow].datetime)
-		) {
-			enabled = true;
+		if (showId !== currentShow && isAfter(shows[showId].datetime, shows[currentShow].datetime)) {
+			enabled = false;
 		}
 
 		return enabled;
@@ -100,10 +96,6 @@ export default function ShowTable({ showIds }) {
 			}),
 		};
 	});
-
-	const showHeadingLabel = (id) => {
-		return format(shows[id].datetime, 'M/d (ha)');
-	};
 
 	return isEmpty(shows) || isEmpty(showIds) ? null : (
 		<TableContainer component={Paper} sx={{ width: '100%' }}>
@@ -143,7 +135,7 @@ export default function ShowTable({ showIds }) {
 										onMouseEnter={handlePopoverOpen}
 										onMouseLeave={handlePopoverClose}
 									>
-										{showHeadingLabel(id)}
+										{showLabel(shows[id].datetime)}
 									</Typography>
 									<Popover
 										sx={{ pointerEvents: 'none' }}

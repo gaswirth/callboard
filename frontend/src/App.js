@@ -1,6 +1,6 @@
-import React, { useEffect, useReducer } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useEffect, useReducer, useState } from 'react';
 import Header from './components/Header';
+import TabPanel from './components/common/TabPanel';
 
 // Data
 import { data } from './lib/dummy';
@@ -10,13 +10,14 @@ import { data } from './lib/dummy';
  */
 import Home from './pages/index';
 import Now from './pages/now';
-// import Now from './pages/admin';
 
 import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
 
 export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
+	const [currentTab, setCurrentTab] = useState('home');
 
+	// Initialize the Context with data.
 	useEffect(() => {
 		if (production.currentShow === 0) {
 			productionDispatch({
@@ -26,16 +27,19 @@ export default function App() {
 		}
 	}, [production]);
 
+	const handleTabChange = (event, newValue) => {
+		setCurrentTab(newValue);
+	};
+
 	return (
-		<Router>
-			<ProductionContext.Provider value={{ production, productionDispatch }}>
-				<Header />
-				<Routes>
-					<Route exact path="/" element={<Home />} />
-					<Route exact path="/now" element={<Now />} />
-					{/* <Route exact path="/now" element={<Admin />} /> */}
-				</Routes>
-			</ProductionContext.Provider>
-		</Router>
+		<ProductionContext.Provider value={{ production, productionDispatch }}>
+			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
+			<TabPanel currentTab={currentTab} id="home">
+				<Home />
+			</TabPanel>
+			<TabPanel currentTab={currentTab} id="now">
+				<Now />
+			</TabPanel>
+		</ProductionContext.Provider>
 	);
 }

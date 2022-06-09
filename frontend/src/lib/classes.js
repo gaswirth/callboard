@@ -2,6 +2,8 @@
  * Classes.
  */
 
+import { showLabel } from './functions';
+
 /**
  * @modle Show
  *
@@ -14,6 +16,7 @@ export const Show = class {
 	constructor(id = 0, datetime = new Date(), attendance = {}, notes = '') {
 		this.id = id;
 		this.datetime = datetime;
+		this.label = showLabel(datetime);
 		this.attendance = attendance;
 		this.notes = notes;
 	}

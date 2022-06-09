@@ -4,11 +4,10 @@ import { Popover } from '@mui/material';
 import { isAfter } from 'date-fns';
 import { Box } from '@mui/system';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
-
-import ProductionContext from '../../ProductionContext';
-
 import StatusIcon from './StatusIcon';
 import { showLabel } from '../../lib/functions';
+
+import ProductionContext from '../../ProductionContext';
 
 function anchorElReducer(state, action) {
 	switch (action.type) {

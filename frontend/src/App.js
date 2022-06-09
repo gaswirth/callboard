@@ -2,14 +2,15 @@ import React, { useEffect, useReducer, useState } from 'react';
 import Header from './components/Header';
 import TabPanel from './components/common/TabPanel';
 
+/**
+ * Views
+ */
+import Home from './components/views/Home';
+import Now from './components/views/Now';
+import Admin from './components/views/Admin';
+
 // Data
 import { data } from './lib/dummy';
-
-/**
- * Pages
- */
-import Home from './pages/index';
-import Now from './pages/now';
 
 import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
 
@@ -39,6 +40,9 @@ export default function App() {
 			</TabPanel>
 			<TabPanel currentTab={currentTab} id="now">
 				<Now />
+			</TabPanel>
+			<TabPanel currentTab={currentTab} id="admin">
+				<Admin />
 			</TabPanel>
 		</ProductionContext.Provider>
 	);

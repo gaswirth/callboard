@@ -1,26 +1,83 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Container } from '@mui/system';
-import { isEmpty } from 'lodash';
+import React, { useContext, useEffect, useState, useMemo } from 'react';
 import ShowTable from '../common/ShowTable';
 import Note from '../common/Note';
 
 import ProductionContext from '../../ProductionContext';
+import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Show } from '../../lib/classes';
 
-export default function Now() {
-	const { production } = useContext(ProductionContext);
-	const { currentShow, shows } = production;
-	const [show, setShow] = useState({});
+export default function Now({ admin }) {
+	const { production, productionDispatch } = useContext(ProductionContext);
+	const { currentShowId, shows } = production;
+	const [currentShow, setCurrentShow] = useState(new Show());
+	const [notes, setNotes] = useState('');
+
+	const show = useMemo(() => {
+		if (!shows) return;
+
+		return shows[currentShowId];
+	}, [shows, currentShowId]);
+
+	/**
+	 * Set the current
+	 */
+	useEffect(() => {
+		if (!currentShowId) return;
+
+		setCurrentShow(show);
+	}, [currentShowId, show]);
 
 	useEffect(() => {
-		if (isEmpty(shows)) return;
+		setNotes(currentShow.notes);
+	}, [currentShow.notes]);
 
-		setShow(shows[currentShow]);
-	}, [currentShow, shows]);
+	const handleNotesChange = (event) => {
+		setNotes(event.target.value);
+	};
+
+	const handleNotesSubmit = (event) => {
+		productionDispatch({
+			type: 'SET_SHOW_NOTES',
+			showId: currentShow.id,
+			notes,
+		});
+	};
+
+	const handleNotesCancel = (event) => {
+		setNotes(currentShow.notes);
+	};
 
 	return (
-		<Container sx={{ mt: 2, width: 400 }}>
-			<ShowTable showIds={[currentShow]} />
-			{show.notes ? <Note title="Notes:">{show.notes}</Note> : null}
-		</Container>
+		<>
+			<ShowTable showIds={[currentShowId]} buttonsEnabled={!!admin} />
+			<Note title="Notes:">
+				{admin && notes !== undefined ? (
+					<Stack spacing={2}>
+						<TextField
+							id="notes-input"
+							label="Notes"
+							variant="outlined"
+							multiline
+							value={notes}
+							onChange={handleNotesChange}
+						/>
+						<Stack direction="row" spacing={2}>
+							{currentShow.notes === notes ? null : (
+								<Button onClick={handleNotesCancel} id="notes-cancel" variant="contained">
+									Cancel
+								</Button>
+							)}
+							<Button onClick={handleNotesSubmit} id="notes-submit" variant="contained" sx={{ alignSelf: 'flex-end' }}>
+								Save
+							</Button>
+						</Stack>
+					</Stack>
+				) : notes ? (
+					<Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
+						{notes}
+					</Typography>
+				) : null}
+			</Note>
+		</>
 	);
 }

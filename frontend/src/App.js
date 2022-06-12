@@ -5,7 +5,7 @@ import TabPanel from './components/common/TabPanel';
 /**
  * Views
  */
-import Home from './components/views/Home';
+import Week from './components/views/Week';
 import Now from './components/views/Now';
 import Admin from './components/views/Admin';
 
@@ -13,14 +13,15 @@ import Admin from './components/views/Admin';
 import { data } from './lib/dummy';
 
 import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
+import { Container } from '@mui/system';
 
 export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
-	const [currentTab, setCurrentTab] = useState('home');
+	const [currentTab, setCurrentTab] = useState('now');
 
 	// Initialize the Context with data.
 	useEffect(() => {
-		if (production.currentShow === 0) {
+		if (production.currentShowId === 0) {
 			productionDispatch({
 				type: 'INIT',
 				...data,
@@ -35,15 +36,17 @@ export default function App() {
 	return (
 		<ProductionContext.Provider value={{ production, productionDispatch }}>
 			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
-			<TabPanel currentTab={currentTab} id="home">
-				<Home />
-			</TabPanel>
-			<TabPanel currentTab={currentTab} id="now">
-				<Now />
-			</TabPanel>
-			<TabPanel currentTab={currentTab} id="admin">
-				<Admin />
-			</TabPanel>
+			<Container sx={{ p: 3 }} maxWidth="xl">
+				<TabPanel currentTab={currentTab} id="now" title="This Show" addlProps={{ sx: { width: 400 } }}>
+					<Now admin={false} />
+				</TabPanel>
+				<TabPanel currentTab={currentTab} id="admin" title="SM/CM" addlProps={{ sx: { width: 400 } }}>
+					<Admin />
+				</TabPanel>
+				<TabPanel currentTab={currentTab} id="week" title="This Week">
+					<Week />
+				</TabPanel>
+			</Container>
 		</ProductionContext.Provider>
 	);
 }

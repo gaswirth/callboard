@@ -2,8 +2,7 @@ import React, { useContext, useReducer, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { isAfter } from 'date-fns';
-import { Box } from '@mui/system';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 import StatusIcon from './StatusIcon';
 import { showLabel } from '../../lib/functions';
 
@@ -39,9 +38,9 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ showIds }) {
+export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	const {
-		production: { roster, shows, currentShow },
+		production: { roster, shows, currentShowId },
 	} = useContext(ProductionContext);
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
@@ -81,7 +80,7 @@ export default function ShowTable({ showIds }) {
 	const showInFuture = (showId) => {
 		var future = true;
 
-		if (showId !== currentShow && isAfter(shows[showId].datetime, shows[currentShow].datetime)) {
+		if (showId !== currentShowId && isAfter(shows[showId].datetime, shows[currentShowId].datetime)) {
 			future = false;
 		}
 
@@ -100,8 +99,8 @@ export default function ShowTable({ showIds }) {
 	});
 
 	return isEmpty(shows) || isEmpty(showIds) ? null : (
-		<TableContainer component={Paper} sx={{ width: '100%' }}>
-			<Table size="small" aria-label="a weekly attendance table">
+		<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
+			<Table aria-label="show attendance table">
 				<TableHead>
 					<TableRow>
 						<TableCell
@@ -125,13 +124,16 @@ export default function ShowTable({ showIds }) {
 									<Typography
 										variant="button"
 										id={id}
+										lineHeight={1.2}
 										sx={{
 											cursor: 'default',
+											display: 'block',
 											p: 1,
 											borderRadius: 1,
-											backgroundColor: String(currentShow) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
+											backgroundColor:
+												String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
 											fontSize: '1.1em',
-											opacity: isAfter(shows[id].datetime, shows[currentShow].datetime) ? 0.4 : 1,
+											opacity: isAfter(shows[id].datetime, shows[currentShowId].datetime) ? 0.4 : 1,
 										}}
 										aria-haspopup="true"
 										onMouseEnter={showInFuture(id) ? handlePopoverOpen : null}
@@ -166,7 +168,9 @@ export default function ShowTable({ showIds }) {
 						<TableRow key={row.name}>
 							<TableCell
 								sx={{
+									pt: 0.75,
 									pr: 3,
+									pb: 0,
 									pl: 0,
 									borderRightWidth: 1,
 									borderRightColor: 'primary.gray',
@@ -184,14 +188,12 @@ export default function ShowTable({ showIds }) {
 							</TableCell>
 							{showIds.map((id, i) => (
 								<TableCell key={id} scope="row">
-									<Box sx={{ p: 1, lineHeight: 1 }}>
-										<StatusIcon
-											status={row.attendance[i] ? row.attendance[i] : null}
-											performerId={row.id}
-											showId={id}
-											buttonEnabled={showInFuture(id)}
-										/>
-									</Box>
+									<StatusIcon
+										status={row.attendance[i] ? row.attendance[i] : null}
+										performerId={row.id}
+										showId={id}
+										buttonEnabled={buttonsEnabled !== false && showInFuture(id)}
+									/>
 								</TableCell>
 							))}
 						</TableRow>

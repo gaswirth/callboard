@@ -13,7 +13,7 @@ import { showLabel } from './functions';
  * @param {String} notes Show notes to display.
  */
 export const Show = class {
-	constructor(id = 0, datetime = new Date(), attendance = {}, notes = '') {
+	constructor(id = '', datetime = new Date(), attendance = {}, notes = '') {
 		this.id = id;
 		this.datetime = datetime;
 		this.label = showLabel(datetime);
@@ -30,7 +30,7 @@ export const Show = class {
  * @param {String} role Performer's role.
  */
 export const Performer = class {
-	constructor(id, name, role) {
+	constructor(id = '', name = '', role = '') {
 		this.id = id;
 		this.name = name;
 		this.role = role;

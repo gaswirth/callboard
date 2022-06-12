@@ -13,9 +13,7 @@ export default function Note({ title, children }) {
 					<Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
 						{title}
 					</Typography>
-					<Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
-						{children}
-					</Typography>
+					{children}
 				</>
 			) : null}
 		</Container>

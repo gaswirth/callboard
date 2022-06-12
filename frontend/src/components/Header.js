@@ -10,7 +10,7 @@ import { isEmpty } from 'lodash';
 
 export default function Header({ currentTab, handleTabChange }) {
 	const {
-		production: { name, currentShow, shows },
+		production: { name, currentShowId, shows },
 	} = useContext(ProductionContext);
 
 	return (
@@ -26,8 +26,8 @@ export default function Header({ currentTab, handleTabChange }) {
 							textColor="inherit"
 							sx={{ flexGrow: 1 }}
 						>
-							<Tab value="home" label="Weekly" />
-							<Tab value="now" label={`Now: ${shows[currentShow].label}`} />
+							<Tab value="now" label={`Now: ${shows[currentShowId].label}`} />
+							<Tab value="week" label="This Week" />
 							<Tab value="admin" label="Admin" />
 						</Tabs>
 					)}

@@ -7,6 +7,8 @@ import Flight from '@mui/icons-material/Flight';
 
 import ProductionContext from '../../ProductionContext';
 
+// TODO Set possible button choices based on user level (i.e. performers can only set "In").
+
 export default function StatusSelect({ showId, performerId, initStatus, children }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [status, setStatus] = useState('');

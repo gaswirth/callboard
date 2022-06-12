@@ -6,7 +6,7 @@ import { Performer } from './classes';
 
 export const data = {
 	name: 'Sweet Potato: The Musical',
-	currentShow: 6,
+	currentShowId: 6,
 	shows: {
 		1: new Show(
 			1,
@@ -14,7 +14,7 @@ export const data = {
 			{
 				1: 'in',
 				2: 'out',
-				3: 'vac',
+				3: 'in',
 				4: 'out',
 				5: 'in',
 				6: 'in',
@@ -29,7 +29,7 @@ export const data = {
 				2: 'in',
 				3: 'in',
 				4: 'in',
-				5: 'pd',
+				5: 'in',
 				6: 'in',
 			},
 			'Full company'
@@ -39,7 +39,7 @@ export const data = {
 			2: 'in',
 			3: 'in',
 			4: 'out',
-			5: 'pd',
+			5: 'in',
 			6: 'in',
 		}),
 		4: new Show(4, new Date(2022, 1, 3, 20), {
@@ -47,7 +47,7 @@ export const data = {
 			2: 'in',
 			3: 'out',
 			4: 'in',
-			5: 'vac',
+			5: 'in',
 			6: 'in',
 		}),
 		5: new Show(5, new Date(2022, 1, 4, 20), {
@@ -55,7 +55,7 @@ export const data = {
 			2: 'in',
 			3: 'in',
 			4: 'in',
-			5: 'vac',
+			5: 'in',
 			6: 'in',
 		}),
 		6: new Show(
@@ -73,11 +73,11 @@ export const data = {
 		8: new Show(8, new Date(2022, 1, 6, 13), {}, 'Last show of the weeeeeeek'),
 	},
 	roster: {
-		1: new Performer(1, 'F***ing Bob', 'Master Peeler', []),
-		2: new Performer(2, 'Good Sally', 'Chef Marguerite', []),
-		3: new Performer(3, 'Old Jimmifred', 'Doorman', []),
-		4: new Performer(4, 'Robertina Berrypants', 'Swing', []),
-		5: new Performer(5, 'Wilhelm of the Forest', 'A Tree; u/s Peeler', []),
-		6: new Performer(6, 'Rachel Ribbonslaps', 'Herself', []),
+		1: new Performer(1, 'F***ing Bob', 'Master Peeler'),
+		2: new Performer(2, 'Good Sally', 'Chef Marguerite'),
+		3: new Performer(3, 'Old Jimmifred', 'Doorman'),
+		4: new Performer(4, 'Robertina Berrypants', 'Swing'),
+		5: new Performer(5, 'Wilhelm of the Forest', 'A Tree; u/s Peeler'),
+		6: new Performer(6, 'Rachel Ribbonslaps', 'Herself'),
 	},
 };

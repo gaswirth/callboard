@@ -6,20 +6,20 @@ export default ProductionContext;
 export const initialProduction = {
 	name: '',
 	shows: {},
-	currentShow: 0,
+	currentShowId: 0,
 	roster: {},
 };
 
 export function productionReducer(state, action) {
 	switch (action.type) {
 		case 'INIT': {
-			const { name, shows, currentShow, roster } = action;
+			const { name, shows, currentShowId, roster } = action;
 
 			return {
 				...state,
 				shows,
 				name,
-				currentShow,
+				currentShowId,
 				roster,
 			};
 		}
@@ -37,6 +37,21 @@ export function productionReducer(state, action) {
 							...state.shows[showId].attendance,
 							[performerId]: status,
 						},
+					},
+				},
+			};
+		}
+
+		case 'SET_SHOW_NOTES': {
+			const { notes, showId } = action;
+
+			return {
+				...state,
+				shows: {
+					...state.shows,
+					[showId]: {
+						...state.shows[showId],
+						notes: notes,
 					},
 				},
 			};

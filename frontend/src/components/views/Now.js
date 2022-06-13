@@ -3,7 +3,7 @@ import ShowTable from '../common/ShowTable';
 import Note from '../common/Note';
 
 import ProductionContext from '../../ProductionContext';
-import { Button, Stack, TextField, Typography } from '@mui/material';
+import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import { Show } from '../../lib/classes';
 
 export default function Now({ admin }) {
@@ -48,7 +48,7 @@ export default function Now({ admin }) {
 	};
 
 	return (
-		<>
+		<Container sx={{ width: '100%', maxWidth: 400 }}>
 			<ShowTable showIds={[currentShowId]} buttonsEnabled={!!admin} />
 			<Note title="Notes:">
 				{admin && notes !== undefined ? (
@@ -78,6 +78,6 @@ export default function Now({ admin }) {
 					</Typography>
 				) : null}
 			</Note>
-		</>
+		</Container>
 	);
 }

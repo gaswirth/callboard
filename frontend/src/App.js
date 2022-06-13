@@ -37,7 +37,7 @@ export default function App() {
 		<ProductionContext.Provider value={{ production, productionDispatch }}>
 			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
 			<Container sx={{ p: 3 }} maxWidth="xl">
-				<TabPanel currentTab={currentTab} id="now" title="This Show">
+				<TabPanel currentTab={currentTab} id="now" title="This Show" addlProps={{ sx: { width: 600, maxWidth: '100%', display: 'block' } }}>
 					<Now admin={false} />
 				</TabPanel>
 				<TabPanel currentTab={currentTab} id="admin" title="SM/CM">

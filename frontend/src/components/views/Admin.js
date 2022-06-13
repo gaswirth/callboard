@@ -1,9 +1,18 @@
-import { Button, Grid, Stack } from '@mui/material';
-import React from 'react';
+import React, { useContext } from 'react';
+import { Button, ButtonGroup, Grid, IconButton, Stack, Typography } from '@mui/material';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ViewHeading from '../common/ViewHeading';
 import Now from './Now';
 
+import ProductionContext from '../../ProductionContext';
+import { Box } from '@mui/system';
+
 export default function Admin() {
+	const { production: { currentShowId, shows } } = useContext(ProductionContext);
+
+	console.log(shows);
+
 	return (
 		<Grid container spacing={2}>
 			<Grid item xs={4}>
@@ -26,6 +35,20 @@ export default function Admin() {
 			</Grid>
 			<Grid item xs={4}>
 				<ViewHeading variant="h6">Show Control</ViewHeading>
+				{shows ?
+					<ButtonGroup sx={{ alignItems: 'center', width: '100%' }}>
+						<IconButton sx={{ flexGrow: 1 }} variant="contained">
+							<ArrowBackIosNewIcon />
+						</IconButton>
+						<Box sx={{ flexGrow: 1, textAlign: 'center' }}>
+							<Typography variant="body1" sx={{ fontWeight: 600 }}>
+								{shows[currentShowId].label}
+							</Typography>
+						</Box>
+						<IconButton sx={{ flexGrow: 1 }}>
+							<ArrowForwardIosIcon />
+						</IconButton>
+					</ButtonGroup> : null}
 			</Grid>
 		</Grid>
 	);

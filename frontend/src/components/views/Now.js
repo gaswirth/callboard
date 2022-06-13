@@ -19,7 +19,7 @@ export default function Now({ admin }) {
 	}, [shows, currentShowId]);
 
 	/**
-	 * Set the current
+	 * Set the current show.
 	 */
 	useEffect(() => {
 		if (!currentShowId) return;

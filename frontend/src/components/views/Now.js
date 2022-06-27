@@ -50,9 +50,14 @@ export default function Now({ admin }) {
 	return (
 		<Container sx={{ width: '100%', maxWidth: 400 }}>
 			<ShowTable showIds={[currentShowId]} buttonsEnabled={!!admin} />
-			<Note title="Notes:">
+			<Note>
 				{admin && notes !== undefined ? (
 					<Stack spacing={2}>
+						{!admin ? (
+							<Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
+								Notes
+							</Typography>
+						) : null}
 						<TextField
 							id="notes-input"
 							label="Notes"

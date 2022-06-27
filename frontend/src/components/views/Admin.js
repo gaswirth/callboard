@@ -9,9 +9,9 @@ import ProductionContext from '../../ProductionContext';
 import { Box } from '@mui/system';
 
 export default function Admin() {
-	const { production: { currentShowId, shows } } = useContext(ProductionContext);
-
-	console.log(shows);
+	const {
+		production: { currentShowId, shows },
+	} = useContext(ProductionContext);
 
 	return (
 		<Grid container spacing={2}>
@@ -35,7 +35,7 @@ export default function Admin() {
 			</Grid>
 			<Grid item xs={4}>
 				<ViewHeading variant="h6">Show Control</ViewHeading>
-				{shows ?
+				{shows ? (
 					<ButtonGroup sx={{ alignItems: 'center', width: '100%' }}>
 						<IconButton sx={{ flexGrow: 1 }} variant="contained">
 							<ArrowBackIosNewIcon />
@@ -48,7 +48,8 @@ export default function Admin() {
 						<IconButton sx={{ flexGrow: 1 }}>
 							<ArrowForwardIosIcon />
 						</IconButton>
-					</ButtonGroup> : null}
+					</ButtonGroup>
+				) : null}
 			</Grid>
 		</Grid>
 	);

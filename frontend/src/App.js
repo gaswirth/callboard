@@ -1,52 +1,25 @@
-import React, { useEffect, useReducer, useState } from 'react';
-import Header from './components/Header';
-import TabPanel from './components/common/TabPanel';
-
-/**
- * Views
- */
-import Week from './components/views/Week';
-import Now from './components/views/Now';
-import Admin from './components/views/Admin';
-
-// Data
-import { data } from './lib/dummy';
+import React, { useReducer } from 'react';
+import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import Main from './components/Main';
 
 import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
-import { Container } from '@mui/system';
+
+/**
+ * Apollo client.
+ */
+const client = new ApolloClient({
+	uri: 'http://localhost/backend/graphql',
+	cache: new InMemoryCache(),
+});
 
 export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
-	const [currentTab, setCurrentTab] = useState('now');
-
-	// Initialize the Context with data.
-	useEffect(() => {
-		if (production.currentShowId === 0) {
-			productionDispatch({
-				type: 'INIT',
-				...data,
-			});
-		}
-	}, [production]);
-
-	const handleTabChange = (event, newValue) => {
-		setCurrentTab(newValue);
-	};
 
 	return (
-		<ProductionContext.Provider value={{ production, productionDispatch }}>
-			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
-			<Container sx={{ p: 3 }} maxWidth="xl">
-				<TabPanel currentTab={currentTab} id="now" title="This Show" addlProps={{ sx: { width: 600, maxWidth: '100%', display: 'block' } }}>
-					<Now admin={false} />
-				</TabPanel>
-				<TabPanel currentTab={currentTab} id="admin" title="SM/CM">
-					<Admin />
-				</TabPanel>
-				<TabPanel currentTab={currentTab} id="week" title="This Week">
-					<Week />
-				</TabPanel>
-			</Container>
-		</ProductionContext.Provider>
+		<ApolloProvider client={client}>
+			<ProductionContext.Provider value={{ production, productionDispatch }}>
+				<Main />
+			</ProductionContext.Provider>
+		</ApolloProvider>
 	);
 }

@@ -8,17 +8,17 @@ import { showLabel } from './functions';
  * @modle Show
  *
  * @param {String} id Unique.
- * @param {Date} datetime Performance date and time.
+ * @param {String} datetime Performance date and time.
  * @param {Object} attendance A collection of status strings, keyed by performerId.
  * @param {String} notes Show notes to display.
  */
 export const Show = class {
-	constructor(id = '', datetime = new Date(), attendance = {}, notes = '') {
+	constructor(id = '', datetime = '', attendance = {}, notes = '') {
 		this.id = id;
 		this.datetime = datetime;
-		this.label = showLabel(datetime);
 		this.attendance = attendance;
 		this.notes = notes;
+		this.label = showLabel(datetime);
 	}
 };
 

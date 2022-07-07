@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import { prepareShows, prepareRoster } from './lib/functions';
 
 const ProductionContext = createContext({});
 export default ProductionContext;
@@ -12,15 +13,38 @@ export const initialProduction = {
 
 export function productionReducer(state, action) {
 	switch (action.type) {
-		case 'INIT': {
-			const { name, shows, currentShowId, roster } = action;
+		case 'SET_ROSTER': {
+			const { payload } = action;
+
+			const roster = prepareRoster(payload);
 
 			return {
 				...state,
-				shows,
-				name,
-				currentShowId,
 				roster,
+			};
+		}
+
+		case 'SET_SHOWS': {
+			const { payload } = action;
+
+			const shows = prepareShows(payload);
+
+			// Merges the incoming shows payload with existing data (overwriting existing).
+			return {
+				...state,
+				shows: {
+					...state.shows,
+					...shows,
+				},
+			};
+		}
+
+		case 'SET_CURRENT_SHOW_ID': {
+			const { id } = action;
+
+			return {
+				...state,
+				currentShowId: id,
 			};
 		}
 

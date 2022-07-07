@@ -1,5 +1,6 @@
-import React, { useContext, useReducer, useMemo, useEffect } from 'react';
+import React, { useContext, useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
+import { useQuery, gql } from '@apollo/client';
 import { Popover } from '@mui/material';
 import { isAfter } from 'date-fns';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
@@ -7,6 +8,27 @@ import StatusIcon from './StatusIcon';
 import { showLabel } from '../../lib/functions';
 
 import ProductionContext from '../../ProductionContext';
+
+const QUERY_SHOWS = gql`
+	query Shows($showIds: [ID] = "") {
+		shows(where: { in: $showIds }) {
+			nodes {
+				databaseId
+				showData {
+					datetime
+					attendance {
+						castMember {
+							... on CastMember {
+								databaseId
+							}
+						}
+						status
+					}
+				}
+			}
+		}
+	}
+`;
 
 function anchorElReducer(state, action) {
 	switch (action.type) {
@@ -41,7 +63,36 @@ function anchorElReducer(state, action) {
 export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	const {
 		production: { roster, shows, currentShowId },
+		productionDispatch,
 	} = useContext(ProductionContext);
+	const [dataMessage, setDataMessage] = useState('');
+	const [rows, setRows] = useState([]);
+
+	/**
+	 * Retrieve the show's data.
+	 */
+	const { loading, error, data } = useQuery(QUERY_SHOWS, {
+		variables: { showIds },
+		pollInterval: 500,
+	});
+
+	/**
+	 * Retrieve and set the current show.
+	 */
+	useEffect(() => {
+		if (data) {
+			// Send Show to context.
+			productionDispatch({
+				type: 'SET_SHOWS',
+				payload: data.shows.nodes,
+			});
+		}
+
+		if (loading) setDataMessage('Loading show...');
+		if (error) setDataMessage('Show Error', error.message);
+
+		return () => setDataMessage('');
+	}, [error, loading, data, productionDispatch]);
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
 
@@ -87,18 +138,33 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 		return future;
 	};
 
-	const rows = Object.keys(roster).map((performerId) => {
-		return {
-			name: roster[performerId].name,
-			role: roster[performerId].role,
-			id: performerId,
-			attendance: showIds.map((showId) => {
-				return shows[showId].attendance[performerId];
-			}),
-		};
-	});
+	/**
+	 * Build the table rows.
+	 */
+	useEffect(() => {
+		if (isEmpty(roster) || isEmpty(shows)) return;
 
-	return isEmpty(shows) || isEmpty(showIds) ? null : (
+		var rows = [];
+
+		for (let performer of roster) {
+			const { name, role, id: performerId } = performer;
+
+			rows.push({
+				name: name,
+				role: role,
+				id: performerId,
+				attendance: showIds.map((showId) => {
+					return shows ? shows[showId].attendance[performerId] : null;
+				}),
+			});
+		}
+
+		setRows(rows);
+	}, [roster, data, showIds, shows]);
+
+	return isEmpty(showIds) ? (
+		<Typography>{dataMessage}</Typography>
+	) : (
 		<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
 			<Table aria-label="show attendance table">
 				<TableHead>
@@ -118,49 +184,51 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 								Performer
 							</Typography>
 						</TableCell>
-						{showIds.map((id) => {
-							return (
-								<TableCell key={id}>
-									<Typography
-										variant="button"
-										id={id}
-										lineHeight={1.2}
-										sx={{
-											cursor: 'default',
-											display: 'block',
-											p: 1,
-											borderRadius: 1,
-											backgroundColor:
-												String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
-											fontSize: '1.1em',
-											opacity: isAfter(shows[id].datetime, shows[currentShowId].datetime) ? 0.4 : 1,
-										}}
-										aria-haspopup="true"
-										onMouseEnter={showInFuture(id) ? handlePopoverOpen : null}
-										onMouseLeave={handlePopoverClose}
-									>
-										{showLabel(shows[id].datetime)}
-									</Typography>
-									<Popover
-										sx={{ pointerEvents: 'none' }}
-										open={!!anchorEl[id]}
-										anchorEl={anchorEl[id]}
-										anchorOrigin={{
-											vertical: 'bottom',
-											horizontal: 'left',
-										}}
-										onClose={handlePopoverClose}
-										disableRestoreFocus
-									>
-										{shows[id].notes ? (
-											<Typography sx={{ p: 2 }}>{shows[id].notes}</Typography>
-										) : (
-											<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
-										)}
-									</Popover>
-								</TableCell>
-							);
-						})}
+						{!isEmpty(shows)
+							? showIds.map((id) => {
+									return (
+										<TableCell key={id}>
+											<Typography
+												variant="button"
+												id={id}
+												lineHeight={1.2}
+												sx={{
+													cursor: 'default',
+													display: 'block',
+													p: 1,
+													borderRadius: 1,
+													backgroundColor:
+														String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
+													fontSize: '1.1em',
+													opacity: isAfter(shows[id].datetime, shows[currentShowId].datetime) ? 0.4 : 1,
+												}}
+												aria-haspopup="true"
+												onMouseEnter={showInFuture(id) ? handlePopoverOpen : null}
+												onMouseLeave={handlePopoverClose}
+											>
+												{showLabel(shows[id].datetime)}
+											</Typography>
+											<Popover
+												sx={{ pointerEvents: 'none' }}
+												open={!!anchorEl[id]}
+												anchorEl={anchorEl[id]}
+												anchorOrigin={{
+													vertical: 'bottom',
+													horizontal: 'left',
+												}}
+												onClose={handlePopoverClose}
+												disableRestoreFocus
+											>
+												{shows[id]?.notes ? (
+													<Typography sx={{ p: 2 }}>{shows[id].notes}</Typography>
+												) : (
+													<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
+												)}
+											</Popover>
+										</TableCell>
+									);
+							  })
+							: null}
 					</TableRow>
 				</TableHead>
 				<TableBody>
@@ -189,8 +257,8 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 							{showIds.map((id, i) => (
 								<TableCell key={id} scope="row">
 									<StatusIcon
-										status={row.attendance[i] ? row.attendance[i] : null}
-										performerId={row.id}
+										status={row.attendance[i] ? row.attendance[i] : ''}
+										performer={row.id}
 										showId={id}
 										buttonEnabled={buttonsEnabled !== false && showInFuture(id)}
 									/>

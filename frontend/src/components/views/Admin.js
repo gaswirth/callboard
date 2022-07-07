@@ -17,7 +17,8 @@ export default function Admin() {
 		<Grid container spacing={2}>
 			<Grid item xs={4}>
 				<ViewHeading variant="h6">Attendance</ViewHeading>
-				<Now admin={true} />
+				{/* TODO Set actual user value */}
+				<Now userIsAdmin={true} />
 			</Grid>
 			<Grid item xs={4}>
 				<ViewHeading variant="h6">Export</ViewHeading>

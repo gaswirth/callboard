@@ -1,47 +1,61 @@
 import React, { useContext, useEffect, useState, useMemo } from 'react';
+import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import ShowTable from '../common/ShowTable';
 import Note from '../common/Note';
-
-import ProductionContext from '../../ProductionContext';
-import { Button, Container, Stack, TextField, Typography } from '@mui/material';
 import { Show } from '../../lib/classes';
 
-export default function Now({ admin }) {
-	const { production, productionDispatch } = useContext(ProductionContext);
-	const { currentShowId, shows } = production;
-	const [currentShow, setCurrentShow] = useState(new Show());
+import ProductionContext from '../../ProductionContext';
+
+export default function Now({ userIsAdmin }) {
+	const {
+		production: { currentShowId },
+		productionDispatch,
+	} = useContext(ProductionContext);
+	const [currentShow, setCurrentShow] = useState(null);
 	const [notes, setNotes] = useState('');
+	const [showId, setShowId] = useState(0);
 
-	const show = useMemo(() => {
-		if (!shows) return;
+	useEffect(() => {
+		if (currentShowId === 0) return;
 
-		return shows[currentShowId];
-	}, [shows, currentShowId]);
+		setShowId(currentShowId);
+	}, [currentShowId]);
+
+	// const show = useMemo(() => {
+	// 	if (!shows) return;
+
+	// 	return data;
+	// }, [shows, currentShowId]);
+
+	// /**
+	//  * Set the current show state.
+	//  */
+	// useEffect(() => {
+	// 	if (!currentShowId) return;
+
+	// 	setCurrentShow(show);
+	// }, [currentShowId, show]);
 
 	/**
-	 * Set the current show.
+	 * Set the show notes state.
 	 */
-	useEffect(() => {
-		if (!currentShowId) return;
+	// useEffect(() => {
+	// 	if (currentShow) {
+	// 		setNotes(currentShow.notes);
+	// 	}
+	// }, [currentShow.notes]);
 
-		setCurrentShow(show);
-	}, [currentShowId, show]);
+	// const handleNotesChange = (event) => {
+	// 	setNotes(event.target.value);
+	// };
 
-	useEffect(() => {
-		setNotes(currentShow.notes);
-	}, [currentShow.notes]);
-
-	const handleNotesChange = (event) => {
-		setNotes(event.target.value);
-	};
-
-	const handleNotesSubmit = (event) => {
-		productionDispatch({
-			type: 'SET_SHOW_NOTES',
-			showId: currentShow.id,
-			notes,
-		});
-	};
+	// const handleNotesSubmit = (event) => {
+	// 	productionDispatch({
+	// 		type: 'SET_SHOW_NOTES',
+	// 		showId: currentShow.id,
+	// 		notes,
+	// 	});
+	// };
 
 	const handleNotesCancel = (event) => {
 		setNotes(currentShow.notes);
@@ -49,11 +63,11 @@ export default function Now({ admin }) {
 
 	return (
 		<Container sx={{ width: '100%', maxWidth: 400 }}>
-			<ShowTable showIds={[currentShowId]} buttonsEnabled={!!admin} />
-			<Note>
-				{admin && notes !== undefined ? (
+			{showId ? <ShowTable showIds={[showId]} buttonsEnabled={!!userIsAdmin} /> : 'Waiting for showId...'}
+			{/* <Note>
+				{userIsAdmin && notes !== undefined ? (
 					<Stack spacing={2}>
-						{!admin ? (
+						{!userIsAdmin ? (
 							<Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
 								Notes
 							</Typography>
@@ -82,7 +96,7 @@ export default function Now({ admin }) {
 						{notes}
 					</Typography>
 				) : null}
-			</Note>
+			</Note> */}
 		</Container>
 	);
 }

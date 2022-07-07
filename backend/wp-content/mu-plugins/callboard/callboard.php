@@ -19,3 +19,4 @@ define( 'CALLBOARD_VERSION', '0.0.1' );
  */
 require_once plugin_dir_path( __FILE__ ) . 'class-callboard.php';
 require_once plugin_dir_path( __FILE__ ) . 'class-callboard-utils.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-callboard-graphql.php';

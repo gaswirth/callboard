@@ -6,7 +6,6 @@ old-frontend-tries/
 !wp-content/
 wp-content/*
 !wp-content/mu-plugins/
-wp-content/mu-plugins/*/vendor/
 # !wp-content/plugins/
 # !wp-content/themes/
 wp-content/themes/twenty*/

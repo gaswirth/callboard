@@ -57,7 +57,7 @@ function callboard_register_required_plugins() {
 			'force_activation'   => true,
 			'force_deactivation' => false,
 			'required'           => true,
-			'source'             => WP_CONTENT_DIR . '/callboard-lib/plugins/advanced-custom-fields-pro.zip',
+			'source'             => WPMU_PLUGIN_DIR . '/callboard/lib/plugins/advanced-custom-fields-pro.zip',
 		),
 
 		array(

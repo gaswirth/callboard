@@ -1,12 +1,2 @@
 # VSCode settings
 .vscode/
-old-frontend-tries/
-
-# WordPress
-!wp-content/
-wp-content/*
-!wp-content/mu-plugins/
-# !wp-content/plugins/
-# !wp-content/themes/
-wp-content/themes/twenty*/
-node_modules/

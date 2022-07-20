@@ -13,10 +13,11 @@
  * Constants.
  */
 define( 'CALLBOARD_VERSION', '0.0.1' );
+define( 'CALLBOARD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
  * Load modules.
  */
-require_once plugin_dir_path( __FILE__ ) . 'class-callboard.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-callboard-utils.php';
-require_once plugin_dir_path( __FILE__ ) . 'class-callboard-graphql.php';
+require_once CALLBOARD_PLUGIN_PATH . 'class-callboard.php';
+require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-utils.php';
+require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-graphql.php';

@@ -1,12 +1,12 @@
 {
-	"name": "gaswirth/callboard-wp",
+	"name": "gaswirth/callboard",
 	"type": "wordpress-plugin",
 	"description": "Callboard core.",
 	"keywords": [
 		"WordPress",
 		"Plugins"
 	],
-	"homepage": "https://github.com/gaswirth/callboard-wp",
+	"homepage": "https://github.com/gaswirth/callboard",
 	"license": "GPL-2.0-or-later",
 	"authors": [
 		{
@@ -31,7 +31,7 @@
 		"make-pot": "wp i18n make-pot . languages/_s.pot"
 	},
 	"support": {
-		"issues": "https://github.com/gaswirth/callboard-wp/issues",
-		"source": "https://github.com/gaswirth/callboard-wp"
+		"issues": "https://github.com/gaswirth/callboard/issues",
+		"source": "https://github.com/gaswirth/callboard"
 	}
 }

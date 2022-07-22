@@ -20,20 +20,22 @@ export function showLabel(datetime) {
 /**
  * Creates a collection of Performer objects out of
  *
- * @param Array rosterData A collection of `cast_member` data.
+ * @param Array rosterData A collection of `company_member` data.
  * @returns Array An array of Performers.
  */
 export function prepareRoster(rosterData) {
-	return rosterData.map((item) => new Performer(item.databaseId, item.title, item.role));
+	return rosterData.map((item) => new Performer(item.databaseId, item.title, item.companyMemberData.role));
 }
 
 export function prepareShows(showNodes) {
 	var shows = {};
+
 	showNodes.forEach((item) => {
 		const {
 			databaseId,
 			showData: { datetime, attendance },
 		} = item;
+
 		shows[databaseId] = new Show(databaseId, new Date(datetime), prepareShowAttendance(attendance));
 	});
 
@@ -46,7 +48,7 @@ export function prepareShowAttendance(attendance) {
 	if (!isEmpty(attendance)) {
 		attendance.forEach((item) => {
 			const {
-				castMember: { databaseId: id },
+				companyMember: { databaseId: id },
 				status,
 			} = item;
 

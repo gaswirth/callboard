@@ -17,8 +17,8 @@ const QUERY_SHOWS = gql`
 				showData {
 					datetime
 					attendance {
-						castMember {
-							... on CastMember {
+						companyMember {
+							... on CompanyMember {
 								databaseId
 							}
 						}
@@ -71,7 +71,7 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	/**
 	 * Retrieve the show's data.
 	 */
-	const { loading, error, data } = useQuery(QUERY_SHOWS, {
+	const { data, loading, error } = useQuery(QUERY_SHOWS, {
 		variables: { showIds },
 		pollInterval: 500,
 	});

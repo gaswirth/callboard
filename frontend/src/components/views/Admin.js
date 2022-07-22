@@ -35,7 +35,7 @@ export default function Admin() {
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
-				<ViewHeading variant="h6">Show Control</ViewHeading>
+				<ViewHeading variant="h6">Current Show</ViewHeading>
 				{shows ? (
 					<ButtonGroup sx={{ alignItems: 'center', width: '100%' }}>
 						<IconButton sx={{ flexGrow: 1 }} variant="contained">

@@ -16,9 +16,9 @@ import { Typography } from '@mui/material';
 
 const QUERY_ROSTER = gql`
 	query Roster {
-		castMembers {
+		companyMembers {
 			nodes {
-				castMemberData {
+				companyMemberData {
 					role
 				}
 				databaseId
@@ -41,7 +41,7 @@ export default function Main() {
 	useEffect(() => {
 		productionDispatch({
 			type: 'SET_CURRENT_SHOW_ID',
-			id: 5,
+			id: 16,
 		});
 	}, [productionDispatch]);
 
@@ -53,7 +53,7 @@ export default function Main() {
 			// Send Roster to context.
 			productionDispatch({
 				type: 'SET_ROSTER',
-				payload: rosterData.castMembers.nodes,
+				payload: rosterData.companyMembers.nodes,
 			});
 		}
 

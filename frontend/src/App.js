@@ -8,7 +8,7 @@ import ProductionContext, { productionReducer, initialProduction } from './Produ
  * Apollo client.
  */
 const client = new ApolloClient({
-	uri: 'http://localhost/backend/graphql',
+	uri: '/graphql',
 	cache: new InMemoryCache(),
 });
 

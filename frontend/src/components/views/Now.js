@@ -56,8 +56,8 @@ export default function Now({ userIsAdmin }) {
 	return (
 		<Container sx={{ width: '100%', maxWidth: 400 }}>
 			{currentShowId ? <ShowTable showIds={[currentShowId]} buttonsEnabled={!!userIsAdmin} /> : null}
-			<Note>
-				{userIsAdmin && notes !== undefined ? (
+			{userIsAdmin && notes !== undefined ? (
+				<Note>
 					<Stack spacing={2}>
 						{!userIsAdmin ? (
 							<Typography variant="subtitle1" component="h3" sx={{ fontWeight: 700 }}>
@@ -83,12 +83,12 @@ export default function Now({ userIsAdmin }) {
 							</Button>
 						</Stack>
 					</Stack>
-				) : notes ? (
+					) : notes ? (
 					<Typography variant="body2" sx={{ mt: 2, mb: 1 }}>
 						{notes}
 					</Typography>
-				) : null}
-			</Note>
+				</Note>
+			) : null}
 		</Container>
 	);
 }

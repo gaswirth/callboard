@@ -1,56 +1,87 @@
-import React, { useContext } from 'react';
-import { Button, ButtonGroup, Grid, IconButton, Stack, Typography } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import React, { useContext, useState } from 'react';
+import { Grid, Stack, Button, TextField } from '@mui/material';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ViewHeading from '../common/ViewHeading';
-import Now from './Now';
+import ShowTable from '../common/ShowTable';
 
 import ProductionContext from '../../ProductionContext';
-import { Box } from '@mui/system';
+import { gql, useMutation } from '@apollo/client';
+import Note from '../common/Note';
+import { useShow } from '../../lib/hooks';
+
+const MUTATE_CURRENT_SHOW = gql`
+	mutation UpdateCurrentShow($input: UpdateSettingsInput!) {
+		updateSettings(input: $input) {
+			clientMutationId
+			callboardOptionsSettings {
+				currentShow
+			}
+		}
+	}
+`;
 
 export default function Admin() {
 	const {
-		production: { currentShowId, shows },
+		production: { currentShowId, previousShowId, shows },
 	} = useContext(ProductionContext);
 
+	// eslint-disable-next-line
+	const [updateCurrentShowId, { data, loading, error }] = useMutation(MUTATE_CURRENT_SHOW);
+	const currentShow = useShow(shows, currentShowId);
+	const [newShowClicked, setNewShowClicked] = useState(false);
+
+	// const handleCurrentShowIdSubmit = (event) => {
+	// 	updateCurrentShowId({
+	// 		variables: {
+	// 			input: {
+	// 				clientMutationId: 'currentShowSettingsMutation',
+	// 				callboardOptionsSettingsCurrentShow: currentShowId,
+	// 			},
+	// 		},
+	// 	});
+	// };
+
+	const handleStartNewShow = (event) => {
+		setNewShowClicked(true);
+	};
+
+	const handleDateTimeChange = (newValue) => {
+		// TODO mutation to add new show with datetime.
+	};
+
 	return (
-		<Grid container spacing={2}>
+		<Grid container spacing={5}>
 			<Grid item xs={4}>
-				<ViewHeading variant="h6">Attendance</ViewHeading>
-				{/* TODO Set actual user value */}
-				<Now userIsAdmin={true} />
-			</Grid>
-			<Grid item xs={4}>
-				<ViewHeading variant="h6">Export</ViewHeading>
 				<Stack spacing={2}>
-					<Button fullWidth={true} variant="contained">
-						Google Sheets
-					</Button>
-					<Button fullWidth={true} variant="contained">
-						Excel
-					</Button>
-					<Button fullWidth={true} variant="contained">
-						CSV
-					</Button>
+					<ViewHeading variant="h6">Last Show</ViewHeading>
+					<ShowTable showIds={[previousShowId]} buttonsEnabled={false} />
+					<Note>{currentShow ? currentShow.notes : 'No notes.'}</Note>
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
-				<ViewHeading variant="h6">Current Show</ViewHeading>
-				{shows ? (
-					<ButtonGroup sx={{ alignItems: 'center', width: '100%' }}>
-						<IconButton sx={{ flexGrow: 1 }} variant="contained">
-							<ArrowBackIosNewIcon />
-						</IconButton>
-						<Box sx={{ flexGrow: 1, textAlign: 'center' }}>
-							<Typography variant="body1" sx={{ fontWeight: 600 }}>
-								{shows[currentShowId].label}
-							</Typography>
-						</Box>
-						<IconButton sx={{ flexGrow: 1 }}>
-							<ArrowForwardIosIcon />
-						</IconButton>
-					</ButtonGroup>
-				) : null}
+				<Stack spacing={2}>
+					<ViewHeading variant="h6">This Show</ViewHeading>
+					<ShowTable showIds={[currentShowId]} buttonsEnabled={true} />
+					<Note>{currentShow && currentShow.notes ? currentShow.notes : 'No notes.'}</Note>
+				</Stack>
+			</Grid>
+			<Grid item xs={4}>
+				<Stack spacing={2}>
+					<ViewHeading variant="h6">Options</ViewHeading>
+					<Stack spacing={2}>
+						<Button variant="contained" size="large" onClick={handleStartNewShow}>
+							Start New Show
+						</Button>
+						{newShowClicked ? (
+							<DateTimePicker
+								label="Show Date and Time"
+								value={new Date()}
+								onChange={handleDateTimeChange}
+								renderInput={(params) => <TextField {...params} />}
+							/>
+						) : null}
+					</Stack>
+				</Stack>
 			</Grid>
 		</Grid>
 	);

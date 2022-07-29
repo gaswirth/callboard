@@ -28,22 +28,38 @@ const QUERY_ROSTER = gql`
 	}
 `;
 
+const QUERY_CURRENT_SHOW_ID = gql`
+	query GetCurrentShowId {
+		callboardOptionsSettings {
+			currentShow
+		}
+	}
+`;
+
 export default function Main() {
 	const [currentTab, setCurrentTab] = useState('now');
 	const { productionDispatch } = useContext(ProductionContext);
 	const [rosterMessage, setRosterMessage] = useState('');
 
-	// Query Roster
+	// Get roster
 	const { data: rosterData, loading: rosterLoading, error: rosterError } = useQuery(QUERY_ROSTER);
 
-	// Query current show
-	// TODO get real data from the server
+	// Get current show ID.
+	const {
+		data: currentShowData,
+		loading: currentShowLoading,
+		error: currentShowError,
+	} = useQuery(QUERY_CURRENT_SHOW_ID);
+
+	// Query current show.
 	useEffect(() => {
+		if (!currentShowData) return;
+
 		productionDispatch({
 			type: 'SET_CURRENT_SHOW_ID',
-			id: 16,
+			id: currentShowData.callboardOptionsSettings.currentShow,
 		});
-	}, [productionDispatch]);
+	}, [productionDispatch, currentShowData]);
 
 	/**
 	 * Retrieve and set the roster.
@@ -78,7 +94,10 @@ export default function Main() {
 					title="This Show"
 					addlProps={{ sx: { width: 600, maxWidth: '100%', display: 'block' } }}
 				>
-					<Now userIsAdmin={false} />
+					{currentShowLoading ? 'Loading show...' : <Now />}
+					{currentShowError ? (
+						<Typography variant="subtitle2" color="warning.main">{`Error: ${currentShowError}`}</Typography>
+					) : null}
 				</TabPanel>
 				<TabPanel currentTab={currentTab} id="admin" title="SM/CM">
 					<Admin />

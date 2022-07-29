@@ -51,6 +51,6 @@ export default function StatusIcon({ status, performerId, showId, buttonEnabled 
 			{icon(status)}
 		</StatusSelect>
 	) : (
-		<Box sx={{ minHeight: 40 }}>{icon(status)}</Box>
+		<Box sx={{ /* minHeight: 40 */ }}>{icon(status)}</Box>
 	);
 }

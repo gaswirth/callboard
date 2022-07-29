@@ -19,5 +19,5 @@ define( 'CALLBOARD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
  * Load modules.
  */
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard.php';
-require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-utils.php';
+require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-functions.php';
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-graphql.php';

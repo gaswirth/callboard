@@ -5,7 +5,7 @@
 import { showLabel } from './functions';
 
 /**
- * @modle Show
+ * @module Show
  *
  * @param {String} id Unique.
  * @param {String} datetime Performance date and time.

@@ -14,14 +14,19 @@ export default function StatusSelect({ showId, performerId, initStatus, children
 	const [status, setStatus] = useState('');
 	const { productionDispatch } = useContext(ProductionContext);
 
-	// Sync status to props.
+	/**
+	 * Sync status to props.
+	 */
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
 
+	/**
+	 * Update the context if status changes.
+	 */
 	useEffect(() => {
 		if (status !== '') {
-			// Only dispatch if the status has changed.
+			// TODO Change/adapt to send Mutation to update status. MAYBE means don't need to update context manually like this?
 			productionDispatch({
 				type: 'SET_ATTENDANCE_STATUS',
 				showId,

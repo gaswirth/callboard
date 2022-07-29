@@ -31,3 +31,15 @@ export function useInterval(callback, delay) {
 		}
 	}, [delay]);
 }
+
+/**
+ *
+ * @param {Object} shows A collection of Shows.
+ * @param {Number} id The Show to retrieve's ID.
+ * @returns {Show|void} The selected Show, or void.
+ */
+export function useShow(shows, id) {
+	if (!shows || !id || shows[id]) return;
+
+	return shows[id];
+}

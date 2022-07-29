@@ -1,3 +1,4 @@
+import { addDays, startOfWeek } from 'date-fns';
 import { createContext } from 'react';
 import { prepareShows, prepareRoster } from './lib/functions';
 
@@ -7,8 +8,17 @@ export default ProductionContext;
 export const initialProduction = {
 	name: '',
 	shows: {},
-	currentShowId: 0,
+	currentShowId: 23,
+	previousShowId: 20,
 	roster: {},
+	view: {
+		week: {
+			range: {
+				start: startOfWeek(new Date()),
+				end: addDays(startOfWeek(new Date()), 7),
+			},
+		},
+	},
 };
 
 export function productionReducer(state, action) {
@@ -60,6 +70,24 @@ export function productionReducer(state, action) {
 						attendance: {
 							...state.shows[showId].attendance,
 							[performerId]: status,
+						},
+					},
+				},
+			};
+		}
+
+		case 'SET_WEEK_RANGE': {
+			const { start, end } = action;
+
+			return {
+				...state,
+				view: {
+					...state.view,
+					week: {
+						...state.view.week,
+						range: {
+							start: start,
+							end: end,
 						},
 					},
 				},

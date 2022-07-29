@@ -3,11 +3,7 @@
  * Utils.
  */
 
-class Callboard_Utils extends Callboard {
-	public function __construct() {
-		add_filter( 'acf/validate_value/name=show_id', array( $this, 'callboard_acf_unique_value_field' ), 10, 4 );
-	}
-
+class Callboard_Functions extends Callboard {
 	/**
 	 * Sanitizes date time input
 	 * https://www.lehelmatyus.com/1416/sanitize-date-time-value-in-wordpress

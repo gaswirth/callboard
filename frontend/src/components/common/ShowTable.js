@@ -2,33 +2,11 @@ import React, { useContext, useReducer, useState, useMemo, useEffect } from 'rea
 import { isEmpty } from 'lodash';
 import { useQuery, gql } from '@apollo/client';
 import { Popover } from '@mui/material';
-import { isAfter } from 'date-fns';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 import StatusIcon from './StatusIcon';
 import { showLabel } from '../../lib/functions';
 
 import ProductionContext from '../../ProductionContext';
-
-const QUERY_SHOWS = gql`
-	query Shows($showIds: [ID] = "") {
-		shows(where: { in: $showIds }) {
-			nodes {
-				databaseId
-				showData {
-					datetime
-					attendance {
-						companyMember {
-							... on CompanyMember {
-								databaseId
-							}
-						}
-						status
-					}
-				}
-			}
-		}
-	}
-`;
 
 function anchorElReducer(state, action) {
 	switch (action.type) {
@@ -59,6 +37,27 @@ function anchorElReducer(state, action) {
 			return state;
 	}
 }
+
+const QUERY_SHOWS = gql`
+	query Shows($showIds: [ID] = "") {
+		shows(where: { in: $showIds }) {
+			nodes {
+				databaseId
+				showData {
+					datetime
+					attendance {
+						companyMember {
+							... on CompanyMember {
+								databaseId
+							}
+						}
+						status
+					}
+				}
+			}
+		}
+	}
+`;
 
 export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	const {
@@ -123,22 +122,6 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	};
 
 	/**
-	 * Check if a show is in the future.
-	 *
-	 * @param {String} showId
-	 * @returns {Boolean} True if the show is in the future, false otherwise.
-	 */
-	const showInFuture = (showId) => {
-		var future = true;
-
-		if (showId !== currentShowId && isAfter(shows[showId].datetime, shows[currentShowId].datetime)) {
-			future = false;
-		}
-
-		return future;
-	};
-
-	/**
 	 * Build the table rows.
 	 */
 	useEffect(() => {
@@ -154,7 +137,7 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 				role: role,
 				id: performerId,
 				attendance: showIds.map((showId) => {
-					return shows ? shows[showId].attendance[performerId] : null;
+					return shows && shows[showId] ? shows[showId].attendance[performerId] : null;
 				}),
 			});
 		}
@@ -186,7 +169,7 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 						</TableCell>
 						{!isEmpty(shows)
 							? showIds.map((id) => {
-									return (
+									return shows[id] ? (
 										<TableCell key={id}>
 											<Typography
 												variant="button"
@@ -200,10 +183,9 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 													backgroundColor:
 														String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
 													fontSize: '1.1em',
-													opacity: isAfter(shows[id].datetime, shows[currentShowId].datetime) ? 0.4 : 1,
 												}}
 												aria-haspopup="true"
-												onMouseEnter={showInFuture(id) ? handlePopoverOpen : null}
+												onMouseEnter={handlePopoverOpen}
 												onMouseLeave={handlePopoverClose}
 											>
 												{showLabel(shows[id].datetime)}
@@ -226,6 +208,8 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 												)}
 											</Popover>
 										</TableCell>
+									) : (
+										''
 									);
 							  })
 							: null}
@@ -254,13 +238,14 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 									{row.role}
 								</Typography>
 							</TableCell>
+
 							{showIds.map((id, i) => (
-								<TableCell key={id} scope="row">
+								<TableCell key={id} scope="row" sx={{ pt: 2.1 }}>
 									<StatusIcon
 										status={row.attendance[i] ? row.attendance[i] : ''}
 										performer={row.id}
 										showId={id}
-										buttonEnabled={buttonsEnabled !== false && showInFuture(id)}
+										buttonEnabled={buttonsEnabled !== false}
 									/>
 								</TableCell>
 							))}

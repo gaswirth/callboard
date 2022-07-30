@@ -7,7 +7,7 @@ import Flight from '@mui/icons-material/Flight';
 
 import ProductionContext from '../../ProductionContext';
 
-// TODO Set possible button choices based on user level (i.e. company members can only set "In").
+// TODO Only Admin can change in/out status.
 
 export default function StatusSelect({ showId, companyMemberId, initStatus, children }) {
 	const [anchorEl, setAnchorEl] = useState(null);

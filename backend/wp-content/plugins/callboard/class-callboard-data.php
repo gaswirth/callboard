@@ -4,31 +4,32 @@
  */
 
 class Callboard_Data extends Callboard {
-	private const SHOW_FIELDS = array(
+	private const SHOW_DATA_FIELDS = [
 		'datetime'   => 'datetime_string',
 		'attendance' => 'array',
-	);
+		'final'       => 'checkbox'
+	];
 
 	/**
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'register_cpt_show' ) );
-		add_action( 'save_post', array( $this, 'save_show_meta' ), 1, 2 );
+		add_action( 'init', [$this, 'register_cpt_show'] );
+		add_action( 'save_post', [$this, 'save_show_meta'], 1, 2 );
 	}
 
 	/**
 	 * Custom fields getter for the `show` meta fields constant.
 	 */
 	public function showFields() {
-		return self::SHOW_FIELDS;
+		return self::SHOW_DATA_FIELDS;
 	}
 
 	/**
 	 * Register Post Type: Shows.
 	 */
 	public function register_cpt_show() {
-		$labels = array(
+		$labels = [
 			'name'                     => __( 'Shows', 'callboard' ),
 			'singular_name'            => __( 'Show', 'callboard' ),
 			'menu_name'                => __( 'Shows', 'callboard' ),
@@ -61,9 +62,9 @@ class Callboard_Data extends Callboard {
 			'item_scheduled'           => __( 'Show scheduled', 'callboard' ),
 			'item_updated'             => __( 'Show updated.', 'callboard' ),
 			'parent_item_colon'        => __( 'Parent Show:', 'callboard' ),
-		);
+		];
 
-		$args = array(
+		$args = [
 			'label'                 => __( 'Shows', 'callboard' ),
 			'labels'                => $labels,
 			'description'           => '',
@@ -84,14 +85,14 @@ class Callboard_Data extends Callboard {
 			'map_meta_cap'          => true,
 			'hierarchical'          => false,
 			'can_export'            => false,
-			'rewrite'               => array( 'slug' => 'show', 'with_front' => true ),
+			'rewrite'               => ['slug' => 'show', 'with_front' => true],
 			'query_var'             => true,
-			'supports'              => array( 'title', 'thumbnail' ),
+			'supports'              => [''], // Needs an empty value in the array or it defaults to ['title', 'editor].
 			'show_in_graphql'       => true,
 			'graphql_single_name'   => 'Show',
 			'graphql_plural_name'   => 'Shows',
-			'register_meta_box_cb'  => array( $this, 'register_show_custom_fields' ),
-		);
+			'register_meta_box_cb'  => [$this, 'register_show_custom_fields'],
+		];
 
 		register_post_type( 'show', $args );
 	}
@@ -100,108 +101,126 @@ class Callboard_Data extends Callboard {
 	 * Adds `show` CPT meta boxes.
 	 */
 	public function register_show_custom_fields() {
+		// TODO combine these meta fields into one `show_data` box.
 		add_meta_box(
-			'datetime',
-			__( 'Show Date/Time', 'callboard' ),
-			array( $this, 'show_datetime_field' ),
+			'show_data',
+			__( 'Show Details', 'callboard' ),
+			[$this, 'show_data_fields'],
 			'show',
 			'normal',
 			'high'
 		);
 
-		add_meta_box(
-			'attendance',
-			sprintf( '%1$s (%2$s)',
-				__( 'Company Attendance', 'callboard' ),
-				__( 'DO NOT EDIT MANUALLY', 'callboard' ) ),
-			array( $this, 'show_attendance_field' ),
-			'show',
-			'normal',
-			'high'
-		);
+		// add_meta_box(
+		// 	'datetime',
+		// 	__( 'Show Date/Time', 'callboard' ),
+		// 	[$this, 'show_datetime_field'],
+		// 	'show',
+		// 	'normal',
+		// 	'high'
+		// );
+
+		// add_meta_box(
+		// 	'attendance',
+		// 	__( 'Company Attendance', 'callboard' ),
+		// 	[$this, 'show_attendance_field'],
+		// 	'show',
+		// 	'normal',
+		// 	'high'
+		// );
+
+		// add_meta_box(
+		// 	'final',
+		// 	__( 'Final', 'callboard' ),
+		// 	[$this, 'show_final_field'],
+		// 	'show',
+		// 	'side',
+		// 	'default'
+		// );
 	}
 
 	/**
-	 * Custom field callback: `datetime`
+	 * Render the `show` meta fields.
 	 */
-	public function show_datetime_field() {
+	public function show_data_fields() {
 		global $post;
 
-		// Nonce field to validate form request came from current site.
-		wp_nonce_field( basename( __FILE__ ), 'datetime_nonce' );
+		wp_nonce_field( basename( __FILE__ ), 'show_data_nonce' );
 
-		// Get the datetime data if it's already been entered.
-		$datetime = get_post_meta( $post->ID, 'datetime', true );
+		$meta = get_post_meta( $post->ID );
+		?>
 
-		// Helper text.
-		$description = sprintf( '<a href="%1$s" target="_blank">%2$s</a>: <code>%3$s</code>', esc_url( 'https://www.php.net/manual/en/datetime.format.php' ), __( 'Date Format', 'callboard' ), CALLBOARD_DATETIME_FORMAT );
+		<style>
+			.columns {
+				display: flex;
+				justify-content: flex-start;
+				flex-wrap: wrap;
+			}
+			.column {
+				flex: 1;
+				padding: 0 1%;
+			}
+			label {
+				display: inline-block;
+				font-weight: bold;
+			}
+			.warning {
+				font-size: 1.2em;
+				font-weight: bold;
+			}
+		</style>
 
-		// Output the field
-		printf( '<p>%s</p>', $description );
-		printf( '<input type="text" name="datetime" value="%s" class="widefat">', esc_textarea( $datetime ) );
-	}
+		<p class="warning"><?php esc_html_e( 'WARNING: DO NOT EDIT THESE FIELDS MANUALLY.', 'callboard' ); ?></p>
+		<div class="columns">
+			<div class="column">
+				<label for="show_data[datetime]">
+					<a href="https://www.php.net/manual/en/datetime.format.php" target="_blank"><?php esc_html_e( 'Date Format', 'callboard' ); ?></a>: <code><?php echo esc_textarea( CALLBOARD_DATETIME_FORMAT, 'callboard' ); ?></code>
+				</label>
+				<input type="text" id="show_data[datetime]" name="show_data[datetime]" placeholder="10/12/2022 08:00 PM" value="<?php echo isset( $meta['datetime'] ) ? esc_textarea(  $meta['datetime'][0] ) : ''; ?>">
+			</div>
+			<div class="column">
+				<label for="show_data[attendance]">Attendance</label>
+				<p><?php esc_html_e( 'Format each pair on a separate line as', 'callboard'); ?> <code>user_id : status</code></p>
+				<p>Allowed status values: <code><?php echo implode( '</code><code>', ['in', 'out', 'vac', 'pd'] ); ?></code></p>
+				<textarea id="show_data[attendance]" name="show_data[attendance]" class="widefat"><?php echo isset( $meta['attendance'] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : ''; ?></textarea>
+			</div>
+			<div class="column">
+				<label for="show_data[final]">Show is Finalized</label>	
+				<input type="checkbox" id="show_data[final]" name="show_data[final]" value="yes" <?php if ( isset( $meta['final'] ) ) checked( $meta['final'][0], 'yes' ); ?> />
+			</div>
+		</div>
 
-	/**
-	 * Custom field callback: `attendance`
-	 */
-	public function show_attendance_field() {
-		global $post;
-
-		// Nonce field to validate form request came from current site
-		wp_nonce_field( basename( __FILE__ ), 'attendance_nonce' );
-
-		// Get the attendance data if it's already been entered
-		$attendance = maybe_unserialize( get_post_meta( $post->ID, 'attendance', true ) );
-
-		// Helper text.
-		$description      = __( 'Format each pair as <code>user_id : status</code>, separated by line.', 'callboard' );
-		$allowed_statuses = 'Allowed status values: <code>' . implode( '</code><code>', array( 'in', 'out', 'vac', 'pd' ) ) . '</code>';
-
-		// Output the description and field
-		printf( '<p>%1$s %2$s</p>', $description, $allowed_statuses );
-		printf( '<textarea name="attendance" class="widefat">%s</textarea>', Callboard_Functions::format_attendance_array_for_textarea( $attendance ) );
+		<?php
 	}
 
 /**
  * Save the metabox data
  */
 	public function save_show_meta( $post_id, $post ) {
+		// Escape conditions.
+		$is_autosave        = wp_is_post_autosave( $post_id );
+		$is_revision        = wp_is_post_revision( $post_id );
+		$is_user_authorized = current_user_can( 'edit_post', $post_id ) ? true : false;
+		$is_valid_nonce = isset( $_POST['show_data_nonce'] ) && wp_verify_nonce( $_POST['show_data_nonce'], basename( __FILE__ ) ) ? true : false;
 
-		// Return if the user doesn't have edit permissions.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return $post_id;
+		if ( $is_autosave || $is_revision || ! $is_user_authorized || ! $is_valid_nonce) {
+			return;
 		}
 
-		// Verify this came from the our screen and with proper authorization,
-		// because save_post can be triggered at other times.
-		foreach ( $this->showFields() as $field => $value ) {
-			if ( ! isset( $_POST[$field . '_nonce'] ) || ! wp_verify_nonce( $_POST[$field . '_nonce'], basename( __FILE__ ) ) ) {
-
-				// Return unless all nonces are found.
-				return $post_id;
-			}
-
-		}
-
-		$fields_present = array();
+		$fields_present = [];
 		foreach ( $this->showFields() as $field => $type ) {
-			if ( isset( $_POST[$field] ) ) {
-				$fields_present[] = array(
+			if ( isset( $_POST['show_data'][$field] ) ) {
+				$fields_present[] = [
 					'key'   => $field,
 					'type'  => $type,
-					'value' => $_POST[$field],
-				);
+					'value' => $_POST['show_data'][$field],
+				];
 			}
 
 			// Bounce if none of the Show meta fields are present in $_POST.
 			if ( empty( $fields_present ) ) {
 				return $post_id;
 			}
-		}
-
-		// Don't store custom data twice
-		if ( 'revision' === $post->post_type ) {
-			return;
 		}
 
 		// Now that we're authenticated, time to save the data.
@@ -215,14 +234,17 @@ class Callboard_Data extends Callboard {
 				case 'datetime_string':
 					// Make sure this resolves to a real DateTime(), and restore the old value if it doesn't.
 					$value = Callboard_Functions::validate_date_string( $field['value'] ) ? $field['value'] : get_post_meta( $post_id, $field['key'], true );
+					break;
 
+				case 'checkbox':
+					$value = esc_attr( $field['value'] );
 					break;
 
 				case 'array':
 					// Serialize the data first
 					$array = preg_split( '/\r\n|\r|\n/', $field['value'] );
 
-					$value = array();
+					$value = [];
 					foreach ( $array as $item ) {
 						// loop through and sanitize each value, then update_post_meta
 						$result = preg_match( '/(.*):(.*)$/', $item, $matches );
@@ -248,9 +270,8 @@ class Callboard_Data extends Callboard {
 				update_post_meta( $post_id, $field['key'], $value );
 
 				if ( 'datetime_string' === $field['type'] ) {
-					// Update the hidden _show_date field for WP_Query comparisions.
+					// Update the `_show_date` hidden companion field for some WP_Query range comparisions.
 					$date = new DateTime( $field['value'] );
-
 					update_post_meta( $post_id, '_show_date', $date->format( CALLBOARD_DATE_FORMAT ) );
 				}
 			} else {

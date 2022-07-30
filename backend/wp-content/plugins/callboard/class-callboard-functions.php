@@ -7,16 +7,15 @@ class Callboard_Functions extends Callboard {
 	/**
 	 * Converts the $user_id => $status key/value pairs to a string (one per line) for backend use.
 	 *
-	 * @param array $attendance The attendance array of $user_id => $status
+	 * @param array|string $attendance The attendance array of $user_id => $status
 	 * @return string The formatted string of key : value pairs.
 	 */
 	public static function format_attendance_array_for_textarea( $attendance ) {
-		if ( ! is_array( $attendance ) ) {
-			// TODO return WP_Error WP_REST_Error or some such?
-			return;
+		if ( is_string( $attendance ) ) {
+			$attendance = maybe_unserialize( $attendance );
 		}
 
-		$lines = array();
+		$lines = [];
 		foreach ( $attendance as $user_id => $status ) {
 			$lines[] = sprintf( '%1$s : %2$s', $user_id, $status );
 		}

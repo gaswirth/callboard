@@ -7,9 +7,9 @@ import Flight from '@mui/icons-material/Flight';
 
 import ProductionContext from '../../ProductionContext';
 
-// TODO Set possible button choices based on user level (i.e. performers can only set "In").
+// TODO Set possible button choices based on user level (i.e. company members can only set "In").
 
-export default function StatusSelect({ showId, performerId, initStatus, children }) {
+export default function StatusSelect({ showId, companyMemberId, initStatus, children }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [status, setStatus] = useState('');
 	const { productionDispatch } = useContext(ProductionContext);
@@ -30,11 +30,11 @@ export default function StatusSelect({ showId, performerId, initStatus, children
 			productionDispatch({
 				type: 'SET_ATTENDANCE_STATUS',
 				showId,
-				performerId,
+				companyMemberId,
 				status,
 			});
 		}
-	}, [productionDispatch, showId, performerId, status]);
+	}, [productionDispatch, showId, companyMemberId, status]);
 
 	const buttons = [
 		{

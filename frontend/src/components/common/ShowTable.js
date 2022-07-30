@@ -1,12 +1,15 @@
 import React, { useContext, useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Popover } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 import StatusIcon from './StatusIcon';
+import Note from './Note';
 import { showLabel } from '../../lib/functions';
+import { QUERY_SHOWS } from '../../lib/gql';
 
 import ProductionContext from '../../ProductionContext';
+import { useShow } from '../../lib/hooks';
 
 function anchorElReducer(state, action) {
 	switch (action.type) {
@@ -38,27 +41,6 @@ function anchorElReducer(state, action) {
 	}
 }
 
-const QUERY_SHOWS = gql`
-	query Shows($showIds: [ID] = "") {
-		shows(where: { in: $showIds }) {
-			nodes {
-				databaseId
-				showData {
-					datetime
-					attendance {
-						companyMember {
-							... on CompanyMember {
-								databaseId
-							}
-						}
-						status
-					}
-				}
-			}
-		}
-	}
-`;
-
 export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	const {
 		production: { roster, shows, currentShowId },
@@ -66,6 +48,8 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	} = useContext(ProductionContext);
 	const [dataMessage, setDataMessage] = useState('');
 	const [rows, setRows] = useState([]);
+
+	const firstShow = useShow(shows, showIds[0]);
 
 	/**
 	 * Retrieve the show's data.
@@ -129,16 +113,16 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 
 		var rows = [];
 
-		for (let performer of roster) {
-			const { name, role, id: performerId } = performer;
+		for (let companyMember of roster) {
+			const { name, callboardRole, companyMemberId } = companyMember;
 
 			rows.push({
-				name: name,
-				role: role,
-				id: performerId,
-				attendance: showIds.map((showId) => {
-					return shows && shows[showId] ? shows[showId].attendance[performerId] : null;
-				}),
+				companyMemberId,
+				name,
+				callboardRole,
+				attendance: showIds.map((showId) =>
+					shows && shows[showId] ? shows[showId].attendance[companyMemberId] : null
+				),
 			});
 		}
 
@@ -148,111 +132,114 @@ export default function ShowTable({ showIds, buttonsEnabled, addlProps }) {
 	return isEmpty(showIds) ? (
 		<Typography>{dataMessage}</Typography>
 	) : (
-		<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
-			<Table aria-label="show attendance table">
-				<TableHead>
-					<TableRow>
-						<TableCell
-							sx={{
-								flexShrink: 1,
-								flexGrow: 1,
-								textAlign: 'right',
-								borderRightWidth: 1,
-								borderRightColor: 'primary.gray',
-								borderRightStyle: 'solid',
-								textTransform: 'uppercase',
-							}}
-						>
-							<Typography variant="button" sx={{ fontSize: '1.1em' }}>
-								Performer
-							</Typography>
-						</TableCell>
-						{!isEmpty(shows)
-							? showIds.map((id) => {
-									return shows[id] ? (
-										<TableCell key={id}>
-											<Typography
-												variant="button"
-												id={id}
-												lineHeight={1.2}
-												sx={{
-													cursor: 'default',
-													display: 'block',
-													p: 1,
-													borderRadius: 1,
-													backgroundColor:
-														String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
-													fontSize: '1.1em',
-												}}
-												aria-haspopup="true"
-												onMouseEnter={handlePopoverOpen}
-												onMouseLeave={handlePopoverClose}
-											>
-												{showLabel(shows[id].datetime)}
-											</Typography>
-											<Popover
-												sx={{ pointerEvents: 'none' }}
-												open={!!anchorEl[id]}
-												anchorEl={anchorEl[id]}
-												anchorOrigin={{
-													vertical: 'bottom',
-													horizontal: 'left',
-												}}
-												onClose={handlePopoverClose}
-												disableRestoreFocus
-											>
-												{shows[id]?.notes ? (
-													<Typography sx={{ p: 2 }}>{shows[id].notes}</Typography>
-												) : (
-													<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
-												)}
-											</Popover>
-										</TableCell>
-									) : (
-										''
-									);
-							  })
-							: null}
-					</TableRow>
-				</TableHead>
-				<TableBody>
-					{rows.map((row) => (
-						<TableRow key={row.name}>
+		<>
+			<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
+				<Table aria-label="show attendance table">
+					<TableHead>
+						<TableRow>
 							<TableCell
 								sx={{
-									pt: 0.75,
-									pr: 3,
-									pb: 0,
-									pl: 0,
+									flexShrink: 1,
+									flexGrow: 1,
+									textAlign: 'right',
 									borderRightWidth: 1,
 									borderRightColor: 'primary.gray',
 									borderRightStyle: 'solid',
-									textAlign: 'right',
+									textTransform: 'uppercase',
 								}}
-								scope="row"
 							>
-								<Typography variant="body1" sx={{ lineHeight: 1 }}>
-									{row.name}
-								</Typography>
-								<Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-									{row.role}
+								<Typography variant="button" sx={{ fontSize: '1.1em' }}>
+									Company Member
 								</Typography>
 							</TableCell>
-
-							{showIds.map((id, i) => (
-								<TableCell key={id} scope="row" sx={{ pt: 2.1 }}>
-									<StatusIcon
-										status={row.attendance[i] ? row.attendance[i] : ''}
-										performer={row.id}
-										showId={id}
-										buttonEnabled={buttonsEnabled !== false}
-									/>
-								</TableCell>
-							))}
+							{!isEmpty(shows)
+								? showIds.map((id) => {
+										return shows[id] ? (
+											<TableCell key={id}>
+												<Typography
+													variant="button"
+													id={id}
+													lineHeight={1.2}
+													sx={{
+														cursor: 'default',
+														display: 'block',
+														p: 1,
+														borderRadius: 1,
+														backgroundColor:
+															String(currentShowId) === id && showIds.length > 1 ? 'secondary.main' : 'inherit',
+														fontSize: '1.1em',
+													}}
+													aria-haspopup="true"
+													onMouseEnter={handlePopoverOpen}
+													onMouseLeave={handlePopoverClose}
+												>
+													{showLabel(shows[id].datetime)}
+												</Typography>
+												<Popover
+													sx={{ pointerEvents: 'none' }}
+													open={!!anchorEl[id]}
+													anchorEl={anchorEl[id]}
+													anchorOrigin={{
+														vertical: 'bottom',
+														horizontal: 'left',
+													}}
+													onClose={handlePopoverClose}
+													disableRestoreFocus
+												>
+													{shows[id]?.notes ? (
+														<Typography sx={{ p: 2 }}>{shows[id].notes}</Typography>
+													) : (
+														<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
+													)}
+												</Popover>
+											</TableCell>
+										) : (
+											''
+										);
+								  })
+								: null}
 						</TableRow>
-					))}
-				</TableBody>
-			</Table>
-		</TableContainer>
+					</TableHead>
+					<TableBody>
+						{rows.map((row) => (
+							<TableRow key={row.name}>
+								<TableCell
+									sx={{
+										pt: 0.75,
+										pr: 3,
+										pb: 0,
+										pl: 0,
+										borderRightWidth: 1,
+										borderRightColor: 'primary.gray',
+										borderRightStyle: 'solid',
+										textAlign: 'right',
+									}}
+									scope="row"
+								>
+									<Typography variant="body1" sx={{ lineHeight: 1 }}>
+										{row.name}
+									</Typography>
+									<Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+										{row.role}
+									</Typography>
+								</TableCell>
+
+								{showIds.map((id, i) => (
+									<TableCell key={id} scope="row" sx={{ pt: 2.1 }}>
+										<StatusIcon
+											status={row.attendance[i] ? row.attendance[i] : ''}
+											companyMemberId={row.companyMemberId}
+											showId={id}
+											buttonEnabled={id === currentShowId ? true : false}
+										/>
+									</TableCell>
+								))}
+							</TableRow>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+			{showIds.length === 1 && firstShow ? <Note>{firstShow.notes ? firstShow.notes : 'No notes.'}</Note> : null}
+		</>
 	);
 }

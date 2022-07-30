@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { Container } from '@mui/system';
 import Header from './Header';
 import TabPanel from './common/TabPanel';
+import { QUERY_ROSTER, QUERY_IMMEDIATE_POST_IDS } from '../lib/gql';
 
 /**
  * Views
@@ -13,53 +14,43 @@ import Admin from './views/Admin';
 
 import ProductionContext from '../ProductionContext';
 import { Typography } from '@mui/material';
-
-const QUERY_ROSTER = gql`
-	query Roster {
-		companyMembers {
-			nodes {
-				companyMemberData {
-					role
-				}
-				databaseId
-				title
-			}
-		}
-	}
-`;
-
-const QUERY_CURRENT_SHOW_ID = gql`
-	query GetCurrentShowId {
-		callboardOptionsSettings {
-			currentShow
-		}
-	}
-`;
+import { useShow } from '../lib/hooks';
 
 export default function Main() {
 	const [currentTab, setCurrentTab] = useState('now');
-	const { productionDispatch } = useContext(ProductionContext);
+	const {
+		production: { currentShowId, shows },
+		productionDispatch,
+	} = useContext(ProductionContext);
 	const [rosterMessage, setRosterMessage] = useState('');
+
+	const currentShow = useShow(shows, currentShowId);
 
 	// Get roster
 	const { data: rosterData, loading: rosterLoading, error: rosterError } = useQuery(QUERY_ROSTER);
 
 	// Get current show ID.
 	const {
-		data: currentShowData,
+		data: showData,
 		loading: currentShowLoading,
 		error: currentShowError,
-	} = useQuery(QUERY_CURRENT_SHOW_ID);
+	} = useQuery(QUERY_IMMEDIATE_POST_IDS, {
+		variables: {
+			showsBefore: currentShow?.datetime,
+		},
+		pollInterval: 500,
+	});
 
 	// Query current show.
 	useEffect(() => {
-		if (!currentShowData) return;
+		if (!showData) return;
 
 		productionDispatch({
-			type: 'SET_CURRENT_SHOW_ID',
-			id: currentShowData.callboardOptionsSettings.currentShow,
+			type: 'SET_CURRENT_PREVIOUS_SHOW_ID',
+			currentShowId: showData.callboardOptionsSettings.currentShow,
+			previousShowId: showData.shows.nodes[0].databaseId,
 		});
-	}, [productionDispatch, currentShowData]);
+	}, [productionDispatch, showData]);
 
 	/**
 	 * Retrieve and set the roster.
@@ -69,12 +60,12 @@ export default function Main() {
 			// Send Roster to context.
 			productionDispatch({
 				type: 'SET_ROSTER',
-				payload: rosterData.companyMembers.nodes,
+				payload: rosterData.companyMembers,
 			});
 		}
 
 		if (rosterLoading) setRosterMessage('Loading roster...');
-		if (rosterError) setRosterMessage(`Error: ${rosterError.message}`);
+		if (rosterError) setRosterMessage(`${rosterError.message}`);
 
 		return () => setRosterMessage('');
 	}, [rosterError, rosterLoading, rosterData, productionDispatch]);
@@ -96,7 +87,7 @@ export default function Main() {
 				>
 					{currentShowLoading ? 'Loading show...' : <Now />}
 					{currentShowError ? (
-						<Typography variant="subtitle2" color="warning.main">{`Error: ${currentShowError}`}</Typography>
+						<Typography variant="subtitle2" color="warning.main">{`${currentShowError}`}</Typography>
 					) : null}
 				</TabPanel>
 				<TabPanel currentTab={currentTab} id="admin" title="SM/CM">

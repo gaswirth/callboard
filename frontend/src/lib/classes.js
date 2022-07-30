@@ -9,7 +9,7 @@ import { showLabel } from './functions';
  *
  * @param {String} id Unique.
  * @param {String} datetime Performance date and time.
- * @param {Object} attendance A collection of status strings, keyed by performerId.
+ * @param {Object} attendance A collection of status strings, keyed by companyMemberId.
  * @param {String} notes Show notes to display.
  */
 export const Show = class {
@@ -23,16 +23,16 @@ export const Show = class {
 };
 
 /**
- * @module Performer
+ * @module CompanyMember
  *
  * @param {String} id Unique.
- * @param {String} name Performer's name.
- * @param {String} role Performer's role.
+ * @param {String} name CompanyMember's name.
+ * @param {String} role CompanyMember's role.
  */
-export const Performer = class {
-	constructor(id = '', name = '', role = '') {
-		this.id = id;
+export const CompanyMember = class {
+	constructor(companyMemberId = '', name = '', callboardRole = '') {
+		this.companyMemberId = companyMemberId;
 		this.name = name;
-		this.role = role;
+		this.callboardRole = callboardRole;
 	}
 };

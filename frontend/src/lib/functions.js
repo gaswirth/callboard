@@ -4,7 +4,7 @@
 
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
-import { Performer, Show } from './classes';
+import { CompanyMember, Show } from './classes';
 
 /**
  * Generate a show's label from it's date and time.
@@ -18,13 +18,13 @@ export function showLabel(datetime) {
 }
 
 /**
- * Creates a collection of Performer objects out of
+ * Creates a collection of CompanyMember objects out of
  *
  * @param Array rosterData A collection of `company_member` data.
- * @returns Array An array of Performers.
+ * @returns Array An array of CompanyMembers.
  */
 export function prepareRoster(rosterData) {
-	return rosterData.map((item) => new Performer(item.databaseId, item.title, item.companyMemberData.role));
+	return rosterData.map((item) => new CompanyMember(item.companyMemberId, item.name, item.callboardRole));
 }
 
 /**
@@ -37,10 +37,7 @@ export function prepareShows(showNodes) {
 	var shows = {};
 
 	showNodes.forEach((item) => {
-		const {
-			databaseId,
-			showData: { datetime, attendance },
-		} = item;
+		const { databaseId, datetime, attendance } = item;
 
 		shows[databaseId] = new Show(databaseId, new Date(datetime), prepareShowAttendance(attendance));
 	});
@@ -55,16 +52,12 @@ export function prepareShows(showNodes) {
  * @returns {Object} The prepared collection of company member attendance data keyed by `id`.
  */
 export function prepareShowAttendance(attendance) {
+	const attendanceObj = JSON.parse(attendance);
+
 	var formattedAttendance = {};
-
-	if (!isEmpty(attendance)) {
-		attendance.forEach((item) => {
-			const {
-				companyMember: { databaseId: id },
-				status,
-			} = item;
-
-			formattedAttendance[id] = status;
+	if (!isEmpty(attendanceObj)) {
+		Object.keys(attendanceObj).forEach((companyMemberId) => {
+			formattedAttendance[companyMemberId] = attendanceObj[companyMemberId];
 		});
 	}
 

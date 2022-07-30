@@ -39,7 +39,7 @@ export function useInterval(callback, delay) {
  * @returns {Show|void} The selected Show, or void.
  */
 export function useShow(shows, id) {
-	if (!shows || !id || shows[id]) return;
+	if (!shows || !id || !shows[id]) return;
 
 	return shows[id];
 }

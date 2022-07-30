@@ -45,9 +45,9 @@ const icon = (status) => {
 	return icon;
 };
 
-export default function StatusIcon({ status, performerId, showId, buttonEnabled }) {
+export default function StatusIcon({ status, companyMemberId, showId, buttonEnabled }) {
 	return buttonEnabled ? (
-		<StatusSelect performerId={performerId} showId={showId} initStatus={status}>
+		<StatusSelect companyMemberId={companyMemberId} showId={showId} initStatus={status}>
 			{icon(status)}
 		</StatusSelect>
 	) : (

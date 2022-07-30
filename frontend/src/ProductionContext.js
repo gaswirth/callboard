@@ -8,8 +8,8 @@ export default ProductionContext;
 export const initialProduction = {
 	name: '',
 	shows: {},
-	currentShowId: 23,
-	previousShowId: 20,
+	currentShowId: 0,
+	previousShowId: 0,
 	roster: {},
 	view: {
 		week: {
@@ -49,17 +49,18 @@ export function productionReducer(state, action) {
 			};
 		}
 
-		case 'SET_CURRENT_SHOW_ID': {
-			const { id } = action;
+		case 'SET_CURRENT_PREVIOUS_SHOW_ID': {
+			const { currentShowId, previousShowId } = action;
 
 			return {
 				...state,
-				currentShowId: id,
+				currentShowId,
+				previousShowId,
 			};
 		}
 
 		case 'SET_ATTENDANCE_STATUS': {
-			const { showId, performerId, status } = action;
+			const { showId, companyMemberId, status } = action;
 
 			return {
 				...state,
@@ -69,7 +70,7 @@ export function productionReducer(state, action) {
 						...state.shows[showId],
 						attendance: {
 							...state.shows[showId].attendance,
-							[performerId]: status,
+							[companyMemberId]: status,
 						},
 					},
 				},

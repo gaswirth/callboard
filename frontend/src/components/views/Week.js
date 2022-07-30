@@ -1,23 +1,11 @@
-import { gql, useQuery } from '@apollo/client';
-import { isEmpty } from 'lodash';
 import React, { useContext, useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
+import { useQuery } from '@apollo/client';
 import { prepareDateForRangeQuery } from '../../lib/functions';
-
-import ProductionContext from '../../ProductionContext';
+import { QUERY_SHOWS_IN_RANGE } from '../../lib/gql';
 import ShowTable from '../common/ShowTable';
 
-const QUERY_SHOWS_IN_RANGE = gql`
-	query ShowsInRange($rangeStart: String, $rangeEnd: String) {
-		shows(where: { showsAfter: $rangeStart, showsBefore: $rangeEnd, orderby: { field: TITLE, order: ASC } }) {
-			nodes {
-				databaseId
-				showData {
-					datetime
-				}
-			}
-		}
-	}
-`;
+import ProductionContext from '../../ProductionContext';
 
 export default function Week() {
 	const {
@@ -36,7 +24,7 @@ export default function Week() {
 
 	const { data, loading /*error*/ } = useQuery(QUERY_SHOWS_IN_RANGE, {
 		variables: { rangeStart, rangeEnd },
-		// pollInterval: 500,
+		pollInterval: 500,
 	});
 
 	/**

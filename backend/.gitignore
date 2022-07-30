@@ -69,3 +69,4 @@ Thumbs.db
 
 # Plugins and Themes
 !wp-content/themes/wds-headless-theme
+!wp-content/plugins/callboard

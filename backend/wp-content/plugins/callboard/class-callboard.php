@@ -7,17 +7,7 @@ class Callboard {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', array( $this, 'create_user_roles' ) );
-		add_action( 'init', array( $this, 'register_settings' ) );
-	}
-
-	/**
-	 * Creates necessary user roles.
-	 *
-	 * @return void
-	 */
-	public function create_user_roles() {
-		add_role( 'performer', 'Performer', get_role( 'contributor' )->capabilities );
+		add_action( 'init', [ $this, 'register_settings' ] );
 	}
 
 	/**
@@ -27,14 +17,15 @@ class Callboard {
 		register_setting(
 			'callboard_options',
 			'current_show',
-			array(
+			[
 				'type'              => 'integer',
 				'sanitize_callback' => 'absint',
 				'default'           => NULL,
 				'show_in_graphql'   => true,
-			)
+			]
 		);
 	}
+
 }
 
 $callboard = new Callboard();

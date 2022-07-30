@@ -17,8 +17,7 @@
 	"require": {
 		"php": ">=7.4",
 		"automattic/vipwpcs": "^2.3",
-		"lipemat/wp-phpcs": "*",
-		"tgmpa/tgm-plugin-activation": "*"
+		"lipemat/wp-phpcs": "*"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",

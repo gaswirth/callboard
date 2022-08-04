@@ -23,7 +23,7 @@ This monorepo holds the backend and frontend components for a complete installat
 
 ### Backend:
 
-- Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_.
+- Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Currently, the backend is looking for a WP install at `http://localhost/backend`, which will ultimately not be hard coded.
 
 ## Dreams
 

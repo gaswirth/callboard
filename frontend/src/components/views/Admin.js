@@ -31,8 +31,6 @@ export default function Admin() {
 		});
 	};
 
-	const handleFinalizeShow = () => {};
-
 	return (
 		<Grid container spacing={5}>
 			<Grid item xs={4}>
@@ -45,10 +43,6 @@ export default function Admin() {
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">This Show</ViewHeading>
 					<ShowTable showIds={[currentShowId]} />
-					{/* // TODO Finalize Show: mutation to set currentShow to next by `datetime`, and also update previous */}
-					<Button variant="contained" size="large" onClick={handleFinalizeShow}>
-						Finalize Show
-					</Button>
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
@@ -69,7 +63,7 @@ export default function Admin() {
 							</>
 						) : (
 							<Button variant="contained" size="large" onClick={() => setNewShowClicked(true)}>
-								Create New Show
+								New Show
 							</Button>
 						)}
 					</Stack>

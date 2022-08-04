@@ -22,6 +22,7 @@ export default function Week() {
 	const [rangeEnd, setRangeEnd] = useState('');
 	const [rangeShows, setRangeShows] = useState([]);
 
+	// TODO implement GraphQL `error`
 	const { data, loading /*error*/ } = useQuery(QUERY_SHOWS_IN_RANGE, {
 		variables: { rangeStart, rangeEnd },
 		pollInterval: 500,
@@ -37,7 +38,7 @@ export default function Week() {
 	}, [start, end]);
 
 	/**
-	 * Prepare the shows.
+	 * Prepare the shows in range.
 	 */
 	// TODO Maybe memoize?
 	useEffect(() => {

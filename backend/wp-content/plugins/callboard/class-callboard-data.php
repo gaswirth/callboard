@@ -7,7 +7,6 @@ class Callboard_Data extends Callboard {
 	private const SHOW_DATA_FIELDS = [
 		'datetime'   => 'datetime_string',
 		'attendance' => 'array',
-		'final'       => 'checkbox'
 	];
 
 	/**
@@ -101,7 +100,6 @@ class Callboard_Data extends Callboard {
 	 * Adds `show` CPT meta boxes.
 	 */
 	public function register_show_custom_fields() {
-		// TODO combine these meta fields into one `show_data` box.
 		add_meta_box(
 			'show_data',
 			__( 'Show Details', 'callboard' ),
@@ -110,33 +108,6 @@ class Callboard_Data extends Callboard {
 			'normal',
 			'high'
 		);
-
-		// add_meta_box(
-		// 	'datetime',
-		// 	__( 'Show Date/Time', 'callboard' ),
-		// 	[$this, 'show_datetime_field'],
-		// 	'show',
-		// 	'normal',
-		// 	'high'
-		// );
-
-		// add_meta_box(
-		// 	'attendance',
-		// 	__( 'Company Attendance', 'callboard' ),
-		// 	[$this, 'show_attendance_field'],
-		// 	'show',
-		// 	'normal',
-		// 	'high'
-		// );
-
-		// add_meta_box(
-		// 	'final',
-		// 	__( 'Final', 'callboard' ),
-		// 	[$this, 'show_final_field'],
-		// 	'show',
-		// 	'side',
-		// 	'default'
-		// );
 	}
 
 	/**
@@ -157,7 +128,7 @@ class Callboard_Data extends Callboard {
 				flex-wrap: wrap;
 			}
 			.column {
-				flex: 1;
+				flex: 1 1 33%;
 				padding: 0 1%;
 			}
 			label {
@@ -183,10 +154,6 @@ class Callboard_Data extends Callboard {
 				<p><?php esc_html_e( 'Format each pair on a separate line as', 'callboard'); ?> <code>user_id : status</code></p>
 				<p>Allowed status values: <code><?php echo implode( '</code><code>', ['in', 'out', 'vac', 'pd'] ); ?></code></p>
 				<textarea id="show_data[attendance]" name="show_data[attendance]" class="widefat"><?php echo isset( $meta['attendance'] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : ''; ?></textarea>
-			</div>
-			<div class="column">
-				<label for="show_data[final]">Show is Finalized</label>	
-				<input type="checkbox" id="show_data[final]" name="show_data[final]" value="yes" <?php if ( isset( $meta['final'] ) ) checked( $meta['final'][0], 'yes' ); ?> />
 			</div>
 		</div>
 

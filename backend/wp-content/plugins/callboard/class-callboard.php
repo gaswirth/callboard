@@ -7,7 +7,7 @@ class Callboard {
 	 * Constructor.
 	 */
 	public function __construct() {
-		add_action( 'init', [ $this, 'register_settings' ] );
+		add_action( 'init', [$this, 'register_settings'] );
 	}
 
 	/**

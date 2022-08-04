@@ -29,7 +29,6 @@ This monorepo holds the backend and frontend components for a complete installat
 
 ---
 
-- Socket.io (or some such) for live udpating
 - Passwordless user logins for seamless on-site sign-ins.
 - Emergency offline functionality
 - Dreeeeeeams....

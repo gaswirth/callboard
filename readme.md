@@ -1,6 +1,6 @@
 # Callboard
 
-## A web app for contactless employee sign-in with a dedicated management interface.
+## A web app for contactless employee sign-in with a management interface.
 
 This monorepo holds the backend and frontend components for a complete installation.
 

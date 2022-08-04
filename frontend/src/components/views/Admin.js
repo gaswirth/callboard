@@ -1,24 +1,30 @@
-import React, { useContext, useState } from 'react';
-import { useMutation } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import { Grid, Stack, Button, TextField } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { formatISO } from 'date-fns';
 import ViewHeading from '../common/ViewHeading';
 import ShowTable from '../common/ShowTable';
-import { MUTATE_CREATE_NEW_SHOW } from '../../lib/gql';
-
-import ProductionContext from '../../ProductionContext';
+import { QUERY_RECENT_SHOWS, MUTATE_CREATE_NEW_SHOW } from '../../lib/gql';
 
 export default function Admin() {
-	const {
-		production: { currentShowId, previousShowId },
-	} = useContext(ProductionContext);
-
-	// eslint-disable-next-line
 	const [createNewShow, { data: newShowData, loading: newShowLoading, error: newShowError }] =
 		useMutation(MUTATE_CREATE_NEW_SHOW);
+	const {
+		data: showData,
+		loading: loadingData,
+		error: errorData,
+	} = useQuery(QUERY_RECENT_SHOWS, {
+		pollInterval: 500,
+	});
+	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
-	const [newShowDateTime, setNewShowDateTime] = useState('');
+	const [newShowDateTime, setNewShowDateTime] = useState(null);
+
+	// Store the number of shows retrieved.
+	useEffect(() => {
+		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
+	}, [showData?.shows.nodes]);
 
 	const handleSubmitNewShow = () => {
 		// TODO make sure date time is unique?
@@ -26,23 +32,29 @@ export default function Admin() {
 		// Run the mutation.
 		createNewShow({
 			variables: {
-				datetime: formatISO(newShowDateTime),
+				input: {
+					clientMutationId: 'createNewShowMutation',
+					datetime: formatISO(newShowDateTime),
+				},
 			},
 		});
+
+		// Clear the dateTime field.
+		setNewShowDateTime(null);
 	};
 
-	return (
+	return showCount > 0 ? (
 		<Grid container spacing={5}>
 			<Grid item xs={4}>
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">Last Show</ViewHeading>
-					<ShowTable showIds={[previousShowId]} />
+					<ShowTable shows={[showData.shows.nodes[1]]} />
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">This Show</ViewHeading>
-					<ShowTable showIds={[currentShowId]} />
+					<ShowTable shows={[showData.shows.nodes[0]]} />
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
@@ -53,11 +65,16 @@ export default function Admin() {
 							<>
 								<DateTimePicker
 									label="Show Date and Time"
-									value={newShowDateTime || new Date()}
+									value={newShowDateTime}
 									onChange={(newValue) => setNewShowDateTime(newValue)}
 									renderInput={(params) => <TextField {...params} />}
 								/>
-								<Button variant="contained" size="large" onClick={handleSubmitNewShow}>
+								<Button
+									variant="contained"
+									size="large"
+									onClick={handleSubmitNewShow}
+									disabled={newShowDateTime ? false : true}
+								>
 									Confirm
 								</Button>
 							</>
@@ -69,6 +86,11 @@ export default function Admin() {
 					</Stack>
 				</Stack>
 			</Grid>
+			<Grid item xs={12}>
+				<ShowTable shows={showData.shows.nodes.slice(2)} />
+			</Grid>
 		</Grid>
+	) : (
+		''
 	);
 }

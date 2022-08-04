@@ -1,18 +1,15 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import HorizontalRule from '@mui/icons-material/HorizontalRule';
 import Flight from '@mui/icons-material/Flight';
 
-import ProductionContext from '../../ProductionContext';
-
 // TODO Only Admin can change in/out status.
 
-export default function StatusSelect({ showId, companyMemberId, initStatus, children }) {
+export default function StatusSelect({ initStatus, children }) {
 	const [anchorEl, setAnchorEl] = useState(null);
 	const [status, setStatus] = useState('');
-	const { productionDispatch } = useContext(ProductionContext);
 
 	/**
 	 * Sync status to props.
@@ -20,21 +17,6 @@ export default function StatusSelect({ showId, companyMemberId, initStatus, chil
 	useEffect(() => {
 		setStatus(initStatus);
 	}, [initStatus]);
-
-	/**
-	 * Update the context if status changes.
-	 */
-	useEffect(() => {
-		if (status !== '') {
-			// TODO Change/adapt to send Mutation to update status. MAYBE means don't need to update context manually like this?
-			productionDispatch({
-				type: 'SET_ATTENDANCE_STATUS',
-				showId,
-				companyMemberId,
-				status,
-			});
-		}
-	}, [productionDispatch, showId, companyMemberId, status]);
 
 	const buttons = [
 		{

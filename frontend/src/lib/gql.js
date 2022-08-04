@@ -4,21 +4,16 @@
 
 import { gql } from '@apollo/client';
 
-export const QUERY_IMMEDIATE_POST_IDS = gql`
-	query CurrentPreviousShowIds($showsBefore: String) {
-		callboardOptionsSettings {
-			currentShow
-		}
-		shows(where: { showsBefore: $showsBefore }, last: 1) {
+export const QUERY_INIT = gql`
+	query Init {
+		shows(first: 1) {
 			nodes {
 				databaseId
 			}
 		}
-	}
-`;
-
-export const QUERY_ROSTER = gql`
-	query CompanyMembers {
+		callboardOptionsSettings {
+			companyTitle
+		}
 		companyMembers {
 			callboardRole
 			name
@@ -27,9 +22,9 @@ export const QUERY_ROSTER = gql`
 	}
 `;
 
-export const QUERY_SHOWS = gql`
-	query Shows($showIds: [ID] = "") {
-		shows(where: { in: $showIds }) {
+export const QUERY_RECENT_SHOWS = gql`
+	query RecentShows($last: Int = 8) {
+		shows(first: $last) {
 			nodes {
 				databaseId
 				datetime
@@ -39,12 +34,13 @@ export const QUERY_SHOWS = gql`
 	}
 `;
 
-export const QUERY_SHOWS_IN_RANGE = gql`
-	query ShowsInRange($rangeStart: String, $rangeEnd: String) {
-		shows(where: { showsAfter: $rangeStart, showsBefore: $rangeEnd, orderby: { field: TITLE, order: ASC } }) {
+export const QUERY_LATEST_SHOW = gql`
+	query LatestShow {
+		shows(first: 1) {
 			nodes {
 				databaseId
 				datetime
+				attendance
 			}
 		}
 	}

@@ -141,9 +141,17 @@ class Callboard_GraphQL extends Callboard {
 				'mutateAndGetPayload' => function ( $input, $context, $info ) {
 					$newShowId = null;
 
-					$currentShowId    = get_option( 'current_show' );
-					$currentShowTitle = absint( get_the_title( $currentShowId ) );
-					$post_title       = $currentShowTitle + 1;
+					// $currentShowId    = get_option( 'current_show' );
+					// $currentShowTitle = absint( get_the_title( $currentShowId ) );
+					$last_show = get_posts( [
+						'post_type'      => 'show',
+						'posts_per_page' => 1,
+						'post_status'    => 'publish',
+					] );
+
+					// Increment the show count (title)
+					// TODO `show_number` field that can be autofilled with this value, and also changed? Or just do this with `post_title` even?
+					$post_title = absint( $last_show[0]->post_title ) + 1;
 
 					$newShowId = wp_insert_post(
 						[
@@ -155,6 +163,10 @@ class Callboard_GraphQL extends Callboard {
 							],
 						]
 					);
+
+					if ( ! is_wp_error( $newShowId ) && $newShowId ) {
+						update_option( 'current_show', $newShowId );
+					}
 
 					return [
 						'newShowId' => $newShowId,

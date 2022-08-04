@@ -25,7 +25,7 @@ export default function Header({ currentTab, handleTabChange }) {
 						sx={{ flexGrow: 1 }}
 					>
 						<Tab value="now" label="Now" />
-						<Tab value="week" label="This Week" />
+						{/* <Tab value="week" label="This Week" /> */}
 						<Tab value="admin" label="Admin" />
 					</Tabs>
 

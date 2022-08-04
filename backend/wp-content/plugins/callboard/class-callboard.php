@@ -16,16 +16,15 @@ class Callboard {
 	public function register_settings() {
 		register_setting(
 			'callboard_options',
-			'current_show',
+			'company_title',
 			[
-				'type'              => 'integer',
-				'sanitize_callback' => 'absint',
+				'type'              => 'string',
+				'sanitize_callback' => 'esc_textarea',
 				'default'           => NULL,
 				'show_in_graphql'   => true,
 			]
 		);
 	}
-
 }
 
 $callboard = new Callboard();

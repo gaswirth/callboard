@@ -1,12 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import ShowTable from '../common/ShowTable';
-
-import ProductionContext from '../../ProductionContext';
+import { QUERY_LATEST_SHOW } from '../../lib/gql';
+import { isEmpty } from 'lodash';
 
 export default function Now() {
-	const {
-		production: { currentShowId },
-	} = useContext(ProductionContext);
+	const { data, loading, error } = useQuery(QUERY_LATEST_SHOW, {
+		pollInterval: 500,
+	});
 
-	return currentShowId ? <ShowTable showIds={[currentShowId]} /> : null;
+	return !isEmpty(data) ? <ShowTable shows={data?.shows.nodes} /> : null;
 }

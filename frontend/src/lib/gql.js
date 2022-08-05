@@ -6,19 +6,24 @@ import { gql } from '@apollo/client';
 
 export const QUERY_INIT = gql`
 	query Init {
-		shows(first: 1) {
+		shows(first: 8) {
 			nodes {
 				id
 				databaseId
 			}
 		}
-		callboardOptionsSettings {
-			companyTitle
-		}
 		companyMembers {
 			callboardRole
 			name
 			companyMemberId
+		}
+	}
+`;
+
+export const QUERY_COMPANY_NAME = gql`
+	query GetCompanyName {
+		callboardOptionsSettings {
+			companyName
 		}
 	}
 `;
@@ -63,6 +68,17 @@ export const MUTATE_UPDATE_SHOW_ATTENDANCE = gql`
 		updateShowAttendance(input: $input) {
 			clientMutationId
 			newStatus
+		}
+	}
+`;
+
+export const MUTATE_UPDATE_COMPANY_NAME = gql`
+	mutation UpdateCompanyName($input: UpdateSettingsInput!) {
+		updateSettings(input: $input) {
+			clientMutationId
+			callboardOptionsSettings {
+				companyName
+			}
 		}
 	}
 `;

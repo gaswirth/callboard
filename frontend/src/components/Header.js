@@ -1,16 +1,15 @@
-import React, { useContext } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import { Tab, Tabs } from '@mui/material';
-import Typography from '@mui/material/Typography';
+import { Tab, Tabs, TextField, Typography } from '@mui/material';
+import { QUERY_COMPANY_NAME, MUTATE_UPDATE_COMPANY_NAME } from '../lib/gql';
 
 import ProductionContext from '../ProductionContext';
 
 export default function Header({ currentTab, handleTabChange }) {
-	const {
-		production: { name },
-	} = useContext(ProductionContext);
+	const { data, loading, error } = useQuery(QUERY_COMPANY_NAME);
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -29,8 +28,8 @@ export default function Header({ currentTab, handleTabChange }) {
 						<Tab value="admin" label="Admin" />
 					</Tabs>
 
-					<Typography variant="h6" component="div" sx={{ textTransform: 'uppercase' }}>
-						{name}
+					<Typography variant="h6" textTransform="uppercase">
+						{data?.callboardOptionsSettings.companyName}
 					</Typography>
 				</Toolbar>
 			</AppBar>

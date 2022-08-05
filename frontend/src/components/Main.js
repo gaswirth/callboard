@@ -26,14 +26,10 @@ export default function Main() {
 	useEffect(() => {
 		if (isEmpty(initData)) return;
 
-		const {
-			callboardOptionsSettings: { companyTitle },
-			companyMembers,
-		} = initData;
+		const { companyMembers } = initData;
 
 		productionDispatch({
-			type: 'INIT',
-			name: companyTitle,
+			type: 'SET_ROSTER',
 			roster: companyMembers,
 		});
 	}, [initData, productionDispatch]);

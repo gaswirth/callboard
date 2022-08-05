@@ -147,7 +147,9 @@ class Callboard_GraphQL extends Callboard {
 						'post_status'    => 'publish',
 					] );
 
-					// Increment the show count (title)
+					/**
+					 * Increment the show count (title)
+					 */
 					// TODO `show_number` field that can be autofilled with this value, and also changed? Or just do this with `post_title` even?
 					$post_title = absint( $last_show[0]->post_title ) + 1;
 

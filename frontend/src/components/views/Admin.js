@@ -5,12 +5,15 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { formatISO } from 'date-fns';
 import ViewHeading from '../common/ViewHeading';
 import ShowTable from '../common/ShowTable';
-import { QUERY_RECENT_SHOWS, MUTATE_CREATE_NEW_SHOW } from '../../lib/gql';
+import {
+	QUERY_RECENT_SHOWS,
+	MUTATE_CREATE_NEW_SHOW,
+	MUTATE_UPDATE_COMPANY_NAME,
+	QUERY_COMPANY_NAME,
+} from '../../lib/gql';
 import { isEmpty } from 'lodash';
 
 export default function Admin() {
-	const [createNewShow, { data: newShowData, loading: newShowLoading, error: newShowError }] =
-		useMutation(MUTATE_CREATE_NEW_SHOW);
 	const {
 		data: showData,
 		loading: loadingData,
@@ -18,9 +21,22 @@ export default function Admin() {
 		startPolling: showStartPolling,
 		stopPolling: showStopPolling,
 	} = useQuery(QUERY_RECENT_SHOWS);
+
+	const { data: companyNameData, loading: companyNameLoading, error: companyNameError } = useQuery(QUERY_COMPANY_NAME);
+
+	const [createNewShow, { data: newShowData, loading: newShowLoading, error: newShowError }] =
+		useMutation(MUTATE_CREATE_NEW_SHOW);
+
+	const [
+		updateCompanyName,
+		{ data: updateCompanyNameData, loading: updateCompanyNameLoading, error: updateCompanyNameError },
+	] = useMutation(MUTATE_UPDATE_COMPANY_NAME);
+
 	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
+	const [renameCompanyClicked, setRenameCompanyClicked] = useState(false);
+	const [companyName, setCompanyName] = useState(null);
 
 	/**
 	 * Manually run startPolling
@@ -42,6 +58,10 @@ export default function Admin() {
 		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
 	}, [showData?.shows.nodes]);
 
+	useEffect(() => {
+		setCompanyName(companyNameData?.callboardOptionsSettings.companyName);
+	}, []);
+
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
@@ -58,6 +78,20 @@ export default function Admin() {
 
 		// Clear the dateTime field.
 		setNewShowDateTime(null);
+	};
+
+	/**
+	 * Fire the mutation to update the Company Name.
+	 */
+	const handleRenameCompanyName = () => {
+		updateCompanyName({
+			variables: {
+				input: {
+					clientMutationId: 'updateCompanyNameMutation',
+					callboardOptionsSettingsCompanyName: companyName,
+				},
+			},
+		});
 	};
 
 	return showCount > 0 ? (
@@ -98,6 +132,21 @@ export default function Admin() {
 						) : (
 							<Button variant="contained" size="large" onClick={() => setNewShowClicked(true)}>
 								New Show
+							</Button>
+						)}
+					</Stack>
+					<Stack spacing={2}>
+						{renameCompanyClicked ? (
+							<>
+								<TextField label="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
+								<Button variant="contained" onClick={handleRenameCompanyName}>
+									Save
+								</Button>
+							</>
+						) : (
+							<Button variant="outlined" size="medium" onClick={() => setRenameCompanyClicked(true)}>
+								{/* TODO Authentication! */}
+								Change Show Name (NEEDS AUTH TO WORK)
 							</Button>
 						)}
 					</Stack>

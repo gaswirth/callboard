@@ -22,7 +22,6 @@ define( 'CALLBOARD_DATE_FORMAT', 'Y-m-d' );
  * Load modules.
  */
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard.php';
-require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-data.php';
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-users.php';
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-functions.php';
 require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-graphql.php';

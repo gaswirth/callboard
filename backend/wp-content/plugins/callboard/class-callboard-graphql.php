@@ -134,6 +134,7 @@ class Callboard_GraphQL extends Callboard {
 				],
 				'outputFields'        => [
 					'newShowId' => [
+						// TODO should this be type 'ID'?
 						'type'        => 'String',
 						'description' => 'The newly created Show ID',
 					],
@@ -141,8 +142,6 @@ class Callboard_GraphQL extends Callboard {
 				'mutateAndGetPayload' => function ( $input, $context, $info ) {
 					$newShowId = null;
 
-					// $currentShowId    = get_option( 'current_show' );
-					// $currentShowTitle = absint( get_the_title( $currentShowId ) );
 					$last_show = get_posts( [
 						'post_type'      => 'show',
 						'posts_per_page' => 1,
@@ -170,6 +169,48 @@ class Callboard_GraphQL extends Callboard {
 
 					return [
 						'newShowId' => $newShowId,
+					];
+				},
+			]
+		);
+
+		/**
+		 * Update a show's attendance status array.
+		 */
+		register_graphql_mutation(
+			'updateShowAttendance',
+			[
+				'inputFields'         => [
+					'description'     => "A company member's status for a specific show.",
+					'showId'          => [
+						'type'        => 'ID',
+						'description' => 'The show databaseId',
+					],
+					'companyMemberId' => [
+						'type'        => 'ID',
+						'description' => 'The user databaseId',
+					],
+					'status'          => [
+						'type'        => 'String',
+						'description' => 'The vacation status. One of: in, out, vac, pd.',
+					],
+				],
+				'outputFields'        => [
+					'newStatus' => [
+						'type'        => 'String',
+						'description' => 'The updated status.',
+					],
+				],
+				'mutateAndGetPayload' => function ( $input, $context, $info ) {
+					$attendance                                    = get_post_meta( $input['showId'], 'attendance', true );
+					$updated_attendance                            = $attendance ? $attendance : [];
+					$updated_attendance[$input['companyMemberId']] = $input['status'];
+
+					$result = update_post_meta( $input['showId'], 'attendance', $updated_attendance );
+
+					// If `update_post_meta` returns false, there was either an error, or the submitted value was identical.
+					return [
+						'newStatus' => $result ? $input['status'] : $attendance[$input['companyMemberId']],
 					];
 				},
 			]

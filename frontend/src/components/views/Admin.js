@@ -6,6 +6,7 @@ import { formatISO } from 'date-fns';
 import ViewHeading from '../common/ViewHeading';
 import ShowTable from '../common/ShowTable';
 import { QUERY_RECENT_SHOWS, MUTATE_CREATE_NEW_SHOW } from '../../lib/gql';
+import { isEmpty } from 'lodash';
 
 export default function Admin() {
 	const [createNewShow, { data: newShowData, loading: newShowLoading, error: newShowError }] =
@@ -14,22 +15,38 @@ export default function Admin() {
 		data: showData,
 		loading: loadingData,
 		error: errorData,
-	} = useQuery(QUERY_RECENT_SHOWS, {
-		pollInterval: 500,
-	});
+		startPolling: showStartPolling,
+		stopPolling: showStopPolling,
+	} = useQuery(QUERY_RECENT_SHOWS);
 	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
 
-	// Store the number of shows retrieved.
+	/**
+	 * Manually run startPolling
+	 *
+	 * @see {@link https://github.com/apollographql/apollo-client/issues/9819}
+	 */
+	useEffect(() => {
+		if (isEmpty(showData)) return;
+
+		showStartPolling(500);
+
+		return () => showStopPolling();
+	}, [showData, showStartPolling, showStopPolling]);
+
+	/**
+	 * Store the number of shows retrieved.
+	 */
 	useEffect(() => {
 		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
 	}, [showData?.shows.nodes]);
 
+	/**
+	 * Fire the mutation to create a new Show.
+	 */
 	const handleSubmitNewShow = () => {
 		// TODO make sure date time is unique?
-
-		// Run the mutation.
 		createNewShow({
 			variables: {
 				input: {
@@ -48,13 +65,13 @@ export default function Admin() {
 			<Grid item xs={4}>
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">Last Show</ViewHeading>
-					<ShowTable shows={[showData.shows.nodes[1]]} />
+					<ShowTable shows={[showData.shows.nodes[1]]} buttonsEnabled={true} />
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">This Show</ViewHeading>
-					<ShowTable shows={[showData.shows.nodes[0]]} />
+					<ShowTable shows={[showData.shows.nodes[0]]} buttonsEnabled={true} />
 				</Stack>
 			</Grid>
 			<Grid item xs={4}>
@@ -87,7 +104,7 @@ export default function Admin() {
 				</Stack>
 			</Grid>
 			<Grid item xs={12}>
-				<ShowTable shows={showData.shows.nodes.slice(2)} />
+				<ShowTable shows={showData.shows.nodes.slice(2)} buttonsEnabled={true} />
 			</Grid>
 		</Grid>
 	) : (

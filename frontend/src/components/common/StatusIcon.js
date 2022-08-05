@@ -47,10 +47,10 @@ const icon = (status) => {
 
 export default function StatusIcon({ status, companyMemberId, showId, buttonEnabled }) {
 	return buttonEnabled ? (
-		<StatusSelect companyMemberId={companyMemberId} showId={showId} initStatus={status}>
+		<StatusSelect companyMemberId={companyMemberId} showId={showId} status={status}>
 			{icon(status)}
 		</StatusSelect>
 	) : (
-		<Box sx={{ /* minHeight: 40 */ }}>{icon(status)}</Box>
+		<Box sx={{ minHeight: 40 }}>{icon(status)}</Box>
 	);
 }

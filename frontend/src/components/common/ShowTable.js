@@ -3,7 +3,7 @@ import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 import StatusIcon from './StatusIcon';
-import { showLabel } from '../../lib/functions';
+import { prepareShowAttendance, showLabel } from '../../lib/functions';
 
 import ProductionContext from '../../ProductionContext';
 
@@ -37,9 +37,9 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, addlProps }) {
+export default function ShowTable({ shows, buttonsEnabled, addlProps }) {
 	const {
-		production: { roster, currentShowId },
+		production: { roster },
 	} = useContext(ProductionContext);
 	const [rows, setRows] = useState([]);
 
@@ -77,6 +77,8 @@ export default function ShowTable({ shows, addlProps }) {
 	useEffect(() => {
 		if (isEmpty(roster) || isEmpty(shows)) return;
 
+		const attendance = shows.map((show) => prepareShowAttendance(show.attendance));
+
 		var rows = [];
 
 		for (let companyMember of roster) {
@@ -86,7 +88,7 @@ export default function ShowTable({ shows, addlProps }) {
 				companyMemberId,
 				name,
 				callboardRole,
-				attendance: shows.map((show) => show.attendance[companyMemberId]),
+				attendance: shows.map((show, index) => attendance[index][companyMemberId]),
 			});
 		}
 
@@ -193,7 +195,7 @@ export default function ShowTable({ shows, addlProps }) {
 												status={row.attendance[i] ? row.attendance[i] : ''}
 												companyMemberId={row.companyMemberId}
 												showId={id}
-												buttonEnabled={id === currentShowId ? true : false}
+												buttonEnabled={buttonsEnabled}
 											/>
 										</TableCell>
 									);

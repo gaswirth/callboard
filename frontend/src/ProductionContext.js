@@ -9,7 +9,6 @@ export const initialProduction = {
 	name: '',
 	shows: {},
 	roster: {},
-	currentShowId: 0,
 };
 
 // TODO audit all cases and trim the fat.
@@ -17,13 +16,12 @@ export const initialProduction = {
 export function productionReducer(state, action) {
 	switch (action.type) {
 		case 'INIT': {
-			const { name, roster, currentShowId } = action;
+			const { name, roster } = action;
 
 			return {
 				...state,
 				name,
 				roster: prepareRoster(roster),
-				currentShowId,
 			};
 		}
 

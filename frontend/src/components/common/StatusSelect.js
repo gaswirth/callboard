@@ -1,22 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useMutation } from '@apollo/client';
 import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
-import HorizontalRule from '@mui/icons-material/HorizontalRule';
 import Flight from '@mui/icons-material/Flight';
+import HorizontalRule from '@mui/icons-material/HorizontalRule';
+import { MUTATE_UPDATE_SHOW_ATTENDANCE, QUERY_RECENT_SHOWS } from '../../lib/gql';
+import { isEmpty } from 'lodash';
 
 // TODO Only Admin can change in/out status.
 
-export default function StatusSelect({ initStatus, children }) {
-	const [anchorEl, setAnchorEl] = useState(null);
-	const [status, setStatus] = useState('');
+export default function StatusSelect({ status, children, companyMemberId, showId }) {
+	const [updateShowAttendance, { data, loading, error }] = useMutation(MUTATE_UPDATE_SHOW_ATTENDANCE);
 
-	/**
-	 * Sync status to props.
-	 */
-	useEffect(() => {
-		setStatus(initStatus);
-	}, [initStatus]);
+	const [anchorEl, setAnchorEl] = useState(null);
 
 	const buttons = [
 		{
@@ -41,12 +38,35 @@ export default function StatusSelect({ initStatus, children }) {
 		},
 	];
 
+	/**
+	 * Sets the anchor element for the popover.
+	 *
+	 * @param {Object} event onClick event.
+	 */
 	const handleOpenIcons = (event) => {
 		setAnchorEl(event.currentTarget);
 	};
 
+	/**
+	 * Fire the mutation to update a company member's status within a show.
+	 *
+	 * @param {Object} event onClick event.
+	 * @param {string} newValue The updated value.
+	 */
 	const handleIconClick = (event, newValue) => {
-		setStatus(newValue);
+		updateShowAttendance({
+			variables: {
+				input: {
+					clientMutationId: 'updateShowAttendanceMutation',
+					showId,
+					companyMemberId,
+					status: newValue,
+				},
+			},
+			refetchQueries: [{ query: QUERY_RECENT_SHOWS }],
+		});
+
+		if (!error && !loading) setAnchorEl(null);
 	};
 
 	return (

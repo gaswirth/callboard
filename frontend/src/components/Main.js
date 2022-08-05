@@ -19,7 +19,7 @@ export default function Main() {
 
 	const [currentTab, setCurrentTab] = useState('now');
 
-	// Get the latest show ID
+	// Get the Roster and latest show ID.
 	const { data: initData, loading: initLoading, error: initError } = useQuery(QUERY_INIT);
 
 	// Send data to ProductionContext
@@ -28,14 +28,12 @@ export default function Main() {
 
 		const {
 			callboardOptionsSettings: { companyTitle },
-			shows: { nodes },
 			companyMembers,
 		} = initData;
 
 		productionDispatch({
 			type: 'INIT',
 			name: companyTitle,
-			currentShowId: nodes[0].databaseId,
 			roster: companyMembers,
 		});
 	}, [initData, productionDispatch]);

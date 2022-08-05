@@ -16,19 +16,18 @@ This monorepo holds the backend and frontend components for a complete installat
 
 ---
 
-### Frontend:
-
-- Extract the contents of `backend/wp-contents/` to your WP install.
-- Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
-
 ### Backend:
 
 - Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Currently, the backend is looking for a WP install at `http://localhost/backend`, which will ultimately not be hard coded.
+
+### Frontend:
+
+- Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
 
 ## Dreams
 
 ---
 
 - Passwordless user logins for seamless on-site sign-ins.
-- Emergency offline functionality
+- Emergency offline functionality (attendance import?)
 - Dreeeeeeams....

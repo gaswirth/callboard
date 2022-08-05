@@ -11,8 +11,6 @@ export const initialProduction = {
 	roster: {},
 };
 
-// TODO audit all cases and trim the fat.
-
 export function productionReducer(state, action) {
 	switch (action.type) {
 		case 'INIT': {

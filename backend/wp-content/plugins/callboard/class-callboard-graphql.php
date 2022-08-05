@@ -134,8 +134,7 @@ class Callboard_GraphQL extends Callboard {
 				],
 				'outputFields'        => [
 					'newShowId' => [
-						// TODO should this be type 'ID'?
-						'type'        => 'String',
+						'type'        => 'ID',
 						'description' => 'The newly created Show ID',
 					],
 				],

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card,
 import StatusIcon from './StatusIcon';
 import { prepareShowAttendance, showLabel } from '../../lib/functions';
 
-import ProductionContext from '../../ProductionContext';
+import ProductionContext from '../../context/ProductionContext';
 
 function anchorElReducer(state, action) {
 	switch (action.type) {

@@ -1,12 +1,10 @@
-import React, { useCallback, useContext, useEffect } from 'react';
-import { useMutation, useQuery } from '@apollo/client';
+import React from 'react';
+import { useQuery } from '@apollo/client';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
-import { Tab, Tabs, TextField, Typography } from '@mui/material';
-import { QUERY_COMPANY_NAME, MUTATE_UPDATE_COMPANY_NAME } from '../lib/gql';
-
-import ProductionContext from '../ProductionContext';
+import { Tab, Tabs, Typography } from '@mui/material';
+import { QUERY_COMPANY_NAME } from '../lib/gql';
 
 export default function Header({ currentTab, handleTabChange }) {
 	const { data, loading, error } = useQuery(QUERY_COMPANY_NAME);
@@ -24,7 +22,6 @@ export default function Header({ currentTab, handleTabChange }) {
 						sx={{ flexGrow: 1 }}
 					>
 						<Tab value="now" label="Now" />
-						{/* <Tab value="week" label="This Week" /> */}
 						<Tab value="admin" label="Admin" />
 					</Tabs>
 

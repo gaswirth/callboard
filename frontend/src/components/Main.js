@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Container } from '@mui/system';
+import { isEmpty } from 'lodash';
+import { QUERY_ROSTER } from '../lib/gql';
 import Header from './Header';
 import TabPanel from './common/TabPanel';
-import { QUERY_INIT } from '../lib/gql';
 
 /**
  * Views
@@ -11,8 +12,7 @@ import { QUERY_INIT } from '../lib/gql';
 import Now from './views/Now';
 import Admin from './views/Admin';
 
-import ProductionContext from '../ProductionContext';
-import { isEmpty } from 'lodash';
+import ProductionContext from '../context/ProductionContext';
 
 export default function Main() {
 	const { productionDispatch } = useContext(ProductionContext);
@@ -20,19 +20,19 @@ export default function Main() {
 	const [currentTab, setCurrentTab] = useState('now');
 
 	// Get the Roster and latest show ID.
-	const { data: initData, loading: initLoading, error: initError } = useQuery(QUERY_INIT);
+	const { data: rosterData, loading: rosterLoading, error: rosterError } = useQuery(QUERY_ROSTER);
 
 	// Send data to ProductionContext
 	useEffect(() => {
-		if (isEmpty(initData)) return;
+		if (isEmpty(rosterData)) return;
 
-		const { companyMembers } = initData;
+		const { companyMembers } = rosterData;
 
 		productionDispatch({
 			type: 'SET_ROSTER',
 			roster: companyMembers,
 		});
-	}, [initData, productionDispatch]);
+	}, [rosterData, productionDispatch]);
 
 	const handleTabChange = (event, newValue) => {
 		setCurrentTab(newValue);
@@ -54,6 +54,7 @@ export default function Main() {
 					<Admin />
 				</TabPanel>
 			</Container>
+			)
 		</>
 	);
 }

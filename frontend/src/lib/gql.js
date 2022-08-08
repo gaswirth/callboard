@@ -4,14 +4,8 @@
 
 import { gql } from '@apollo/client';
 
-export const QUERY_INIT = gql`
-	query Init {
-		shows(first: 8) {
-			nodes {
-				id
-				databaseId
-			}
-		}
+export const QUERY_ROSTER = gql`
+	query Roster {
 		companyMembers {
 			callboardRole
 			name
@@ -50,6 +44,15 @@ export const QUERY_LATEST_SHOW = gql`
 				datetime
 				attendance
 			}
+		}
+	}
+`;
+
+export const MUTATE_LOGIN = gql`
+	mutation LoginUser($input: LoginWithCookiesInput!) {
+		loginWithCookies(input: $input) {
+			status
+			clientMutationId
 		}
 	}
 `;

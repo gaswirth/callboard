@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { isEmpty } from 'lodash';
 import { useMutation, useQuery } from '@apollo/client';
 import { Grid, Stack, Button, TextField } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -11,7 +12,6 @@ import {
 	MUTATE_UPDATE_COMPANY_NAME,
 	QUERY_COMPANY_NAME,
 } from '../../lib/gql';
-import { isEmpty } from 'lodash';
 
 export default function Admin() {
 	const {
@@ -58,8 +58,17 @@ export default function Admin() {
 		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
 	}, [showData?.shows.nodes]);
 
+	/**
+	 *
+	 */
 	useEffect(() => {
+		// Only run once.
+		if (companyName) return;
+
 		setCompanyName(companyNameData?.callboardOptionsSettings.companyName);
+
+		// Run Once
+		// eslint-disable-next-line
 	}, []);
 
 	/**
@@ -83,7 +92,7 @@ export default function Admin() {
 	/**
 	 * Fire the mutation to update the Company Name.
 	 */
-	const handleRenameCompanyName = () => {
+	const handleSubmitCompanyName = () => {
 		updateCompanyName({
 			variables: {
 				input: {
@@ -91,7 +100,21 @@ export default function Admin() {
 					callboardOptionsSettingsCompanyName: companyName,
 				},
 			},
+			refetchQueries: [{ query: QUERY_COMPANY_NAME }, 'GetCompanyName'],
 		});
+
+		if (!companyNameLoading && !companyNameError) {
+			setCompanyName('');
+			setRenameCompanyClicked(false);
+		}
+	};
+
+	/**
+	 * Cancel renaming Company Name.
+	 */
+	const handleResetRenameCompanyName = () => {
+		setCompanyName('');
+		setRenameCompanyClicked(false);
 	};
 
 	return showCount > 0 ? (
@@ -131,7 +154,7 @@ export default function Admin() {
 							</>
 						) : (
 							<Button variant="contained" size="large" onClick={() => setNewShowClicked(true)}>
-								New Show
+								Start New Show
 							</Button>
 						)}
 					</Stack>
@@ -139,8 +162,11 @@ export default function Admin() {
 						{renameCompanyClicked ? (
 							<>
 								<TextField label="Company Name" value={companyName} onChange={(e) => setCompanyName(e.target.value)} />
-								<Button variant="contained" onClick={handleRenameCompanyName}>
+								<Button variant="contained" onClick={handleSubmitCompanyName}>
 									Save
+								</Button>
+								<Button variant="outline" onClick={handleResetRenameCompanyName}>
+									Cancel
 								</Button>
 							</>
 						) : (

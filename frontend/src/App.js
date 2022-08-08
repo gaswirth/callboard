@@ -1,11 +1,11 @@
 import React, { useReducer } from 'react';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import Main from './components/Main';
 
-import ProductionContext, { productionReducer, initialProduction } from './ProductionContext';
+import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
 
 /**
  * TODO
@@ -16,8 +16,12 @@ import ProductionContext, { productionReducer, initialProduction } from './Produ
 /**
  * Apollo client.
  */
-const client = new ApolloClient({
+const httpLink = createHttpLink({
 	uri: '/graphql',
+});
+
+const client = new ApolloClient({
+	link: httpLink,
 	cache: new InMemoryCache(),
 });
 

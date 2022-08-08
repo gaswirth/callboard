@@ -2,7 +2,7 @@
  * Hooks.
  */
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 /**
  * Runs a function at an interval.

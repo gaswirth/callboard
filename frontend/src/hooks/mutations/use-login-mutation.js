@@ -16,6 +16,7 @@ export const useLoginMutation = () => {
 		return mutation({
 			variables: {
 				input: {
+					clientMutationId: 'loginMutation',
 					login: username,
 					password,
 				},

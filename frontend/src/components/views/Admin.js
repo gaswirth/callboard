@@ -4,12 +4,11 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ViewHeading from 'components/common/ViewHeading';
 import ShowTable from 'components/common/ShowTable';
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
-import { useCreateNewShow } from 'hooks/mutations/use-create-new-show';
+import { useNewShow } from 'hooks/mutations/use-new-show';
 
 export default function Admin() {
 	const { data: showData, loading: showLoading } = useRecentShows();
-
-	const { newShowMutation } = useCreateNewShow();
+	const { newShowMutation } = useNewShow();
 
 	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
@@ -60,7 +59,7 @@ export default function Admin() {
 			</Grid>
 			<Grid item xs={4}>
 				<Stack spacing={2}>
-					<ViewHeading variant="h6">Options</ViewHeading>
+					<ViewHeading variant="h6">Actions</ViewHeading>
 					<Stack spacing={2}>
 						{newShowClicked ? (
 							<>

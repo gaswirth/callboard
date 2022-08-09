@@ -13,7 +13,6 @@ export const MUTATE_UPDATE_SHOW_ATTENDANCE = gql`
 export const useUpdateAttendance = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_UPDATE_SHOW_ATTENDANCE);
 
-	// TODO make sure date time is unique?
 	const updateAttendanceMutation = ({ showId, companyMemberId, status }) => {
 		return mutation({
 			variables: {

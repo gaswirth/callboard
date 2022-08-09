@@ -25,19 +25,19 @@ class Callboard_GraphQL extends Callboard {
 		register_graphql_object_type(
 			'CompanyMember',
 			[
-				'description' => 'Company Member',
+				'description' => __( 'Company Member', 'callboard' ),
 				'fields'      => [
 					'companyMemberId' => [
 						'type'        => 'String',
-						'description' => 'User ID',
+						'description' => __( 'User ID', 'callboard' ),
 					],
 					'name'            => [
 						'type'        => 'String',
-						'description' => 'Name',
+						'description' => __( 'Name', 'callboard' ),
 					],
 					'callboardRole'   => [
 						'type'        => 'String',
-						'description' => 'The public role to display on the frontend.',
+						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
 				],
 			] );
@@ -48,7 +48,7 @@ class Callboard_GraphQL extends Callboard {
 		register_graphql_fields( 'Show', [
 			'datetime'   => [
 				'type'        => 'String',
-				'description' => 'The show date and time.',
+				'description' => __( 'The show date and time.', 'callboard' ),
 				'resolve'     => function ( $show ) {
 					$datetime = get_post_meta( $show->ID, 'datetime', true );
 
@@ -57,7 +57,7 @@ class Callboard_GraphQL extends Callboard {
 			],
 			'attendance' => [
 				'type'        => 'String',
-				'description' => 'The serialized array of companyMemberIds and their respective attendance statuses.',
+				'description' => __( 'The serialized array of companyMemberIds and their respective attendance statuses.', 'callboard' ),
 				'resolve'     => function ( $show ) {
 					$attendance = maybe_unserialize( get_post_meta( $show->ID, 'attendance', true ) );
 
@@ -75,7 +75,7 @@ class Callboard_GraphQL extends Callboard {
 			'companyMembers',
 			[
 				'type'        => ['list_of' => 'CompanyMember'],
-				'description' => 'The public "role" to display on the frontend.',
+				'description' => __( 'The public "role" to display on the frontend.', 'callboard' ),
 				'resolve'     => function () {
 					$users = get_users( [
 						'role__in' => 'company_member',
@@ -115,7 +115,7 @@ class Callboard_GraphQL extends Callboard {
 				'outputFields'        => [
 					'status' => [
 						'type'        => 'String',
-						'description' => 'Login operation status',
+						'description' => __( 'Login operation status', 'callboard' ),
 						'resolve'     => function ( $payload ) {
 							return $payload['status'];
 						},
@@ -150,7 +150,7 @@ class Callboard_GraphQL extends Callboard {
 				'outputFields'        => [
 					'status' => [
 						'type'        => 'String',
-						'description' => 'Logout result',
+						'description' => __( 'Logout result', 'callboard' ),
 						'resolve'     => function ( $payload ) {
 							return $payload['status'];
 						},
@@ -167,19 +167,19 @@ class Callboard_GraphQL extends Callboard {
 		 * Create a new show, and update the `current_show` setting.
 		 */
 		register_graphql_mutation(
-			'createNewShow',
+			'newShow',
 			[
 				'inputFields'         => [
-					'description' => 'New Show data.',
+					'description' => __( 'New Show data.', 'callboard' ),
 					'datetime'    => [
 						'type'        => 'String',
-						'description' => 'Date and time string',
+						'description' => __( 'Date and time string', 'callboard' ),
 					],
 				],
 				'outputFields'        => [
 					'newShowId' => [
 						'type'        => 'ID',
-						'description' => 'The newly created Show ID',
+						'description' => __( 'The newly created Show ID', 'callboard' ),
 					],
 				],
 				'mutateAndGetPayload' => function ( $input, $context, $info ) {
@@ -229,21 +229,21 @@ class Callboard_GraphQL extends Callboard {
 					'description'     => "A company member's status for a specific show.",
 					'showId'          => [
 						'type'        => 'ID',
-						'description' => 'The show databaseId',
+						'description' => __( 'The show databaseId', 'callboard' ),
 					],
 					'companyMemberId' => [
 						'type'        => 'ID',
-						'description' => 'The user databaseId',
+						'description' => __( 'The user databaseId', 'callboard' ),
 					],
 					'status'          => [
 						'type'        => 'String',
-						'description' => 'The vacation status. One of: in, out, vac, pd.',
+						'description' => __( 'The vacation status. One of: in, out, vac, pd.', 'callboard' ),
 					],
 				],
 				'outputFields'        => [
 					'newStatus' => [
 						'type'        => 'String',
-						'description' => 'The updated status.',
+						'description' => __( 'The updated status.', 'callboard' ),
 					],
 				],
 				'mutateAndGetPayload' => function ( $input, $context, $info ) {

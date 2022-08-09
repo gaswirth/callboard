@@ -1,18 +1,16 @@
 import { gql, useMutation } from '@apollo/client';
 import { formatISO } from 'date-fns';
 
-// TODO createNewShow --> newShow
-
 export const MUTATE_NEW_SHOW = gql`
-	mutation CreateNewShow($input: CreateNewShowInput!) {
-		createNewShow(input: $input) {
+	mutation newShow($input: newShowInput!) {
+		newShow(input: $input) {
 			clientMutationId
 			newShowId
 		}
 	}
 `;
 
-export const useCreateNewShow = (datetime) => {
+export const useNewShow = (datetime) => {
 	const [mutation, mutationResults] = useMutation(MUTATE_NEW_SHOW);
 
 	// TODO make sure date time is unique?
@@ -20,7 +18,7 @@ export const useCreateNewShow = (datetime) => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'createNewShowMutation',
+					clientMutationId: 'newShowMutation',
 					datetime: formatISO(datetime),
 				},
 			},

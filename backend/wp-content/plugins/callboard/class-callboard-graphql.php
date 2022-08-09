@@ -4,9 +4,13 @@
  */
 
 class Callboard_GraphQL extends Callboard {
+	// TODO set this in options somewhere
+	const HEADLESS_FRONTEND_URL = 'http://localhost';
+
 	public function __construct() {
 		add_action( 'graphql_register_types', [$this, 'register_types'] );
 		add_filter( 'graphql_register_types', [$this, 'register_mutations'] );
+		add_filter( 'graphql_response_headers_to_send', [$this, 'response_headers_to_send'] );
 	}
 
 	/**
@@ -92,6 +96,73 @@ class Callboard_GraphQL extends Callboard {
 	}
 
 	public function register_mutations() {
+		/**
+		 * Login mutation (HTTP Cookies).
+		 */
+		register_graphql_mutation(
+			'loginWithCookies',
+			[
+				'inputFields'         => [
+					'login'    => [
+						'type'        => ['non_null' => 'String'],
+						'description' => __( 'Input your username/email.' ),
+					],
+					'password' => [
+						'type'        => ['non_null' => 'String'],
+						'description' => __( 'Input your password.' ),
+					],
+				],
+				'outputFields'        => [
+					'status' => [
+						'type'        => 'String',
+						'description' => 'Login operation status',
+						'resolve'     => function ( $payload ) {
+							return $payload['status'];
+						},
+					],
+				],
+				'mutateAndGetPayload' => function ( $input ) {
+					$user = wp_signon(
+						[
+							'user_login'    => wp_unslash( $input['login'] ),
+							'user_password' => $input['password'],
+							'remember'      => true,
+						],
+						true
+					);
+
+					if ( is_wp_error( $user ) ) {
+						throw new \GraphQL\Error\UserError( ! empty( $user->get_error_code() ) ? $user->get_error_code() : 'invalid login' );
+					}
+
+					return ['status' => 'SUCCESS'];
+				},
+			]
+		);
+
+		/**
+		 * Logout mutation.
+		 */
+		register_graphql_mutation(
+			'logout',
+			[
+				'inputFields'         => [],
+				'outputFields'        => [
+					'status' => [
+						'type'        => 'String',
+						'description' => 'Logout result',
+						'resolve'     => function ( $payload ) {
+							return $payload['status'];
+						},
+					],
+				],
+				'mutateAndGetPayload' => function () {
+					wp_logout(); // This destroys the WP Login cookie.
+					return ['status' => 'SUCCESS'];
+				},
+			]
+		);
+
 		/**
 		 * Create a new show, and update the `current_show` setting.
 		 */
@@ -189,6 +260,29 @@ class Callboard_GraphQL extends Callboard {
 				},
 			]
 		);
+	}
+
+	/**
+	 * Set CORS to allow frontend logins
+	 *
+	 * @param array $headers
+	 * @return array The modified headers.
+	 */
+	public function response_headers_to_send( $headers ) {
+		$http_origin     = get_http_origin();
+		$allowed_origins = [
+			self::HEADLESS_FRONTEND_URL,
+		];
+
+		// If the request is coming from an allowed origin (HEADLESS_FRONTEND_URL), tell the browser it can accept the response.
+		if ( in_array( $http_origin, $allowed_origins, true ) ) {
+			$headers['Access-Control-Allow-Origin'] = $http_origin;
+		}
+
+		// Tells browsers to expose the response to frontend JavaScript code when the request credentials mode is "include".
+		$headers['Access-Control-Allow-Credentials'] = 'true';
+
+		return $headers;
 	}
 }
 

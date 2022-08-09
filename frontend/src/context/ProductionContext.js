@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { prepareRoster } from '../lib/functions';
+import { prepareRoster } from 'lib/functions';
 
 const ProductionContext = createContext({});
 export default ProductionContext;

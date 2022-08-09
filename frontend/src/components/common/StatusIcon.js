@@ -1,12 +1,10 @@
 import React from 'react';
-
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import FlightIcon from '@mui/icons-material/Flight';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
 import StatusSelect from './StatusSelect';
-import { Box } from '@mui/system';
 
 /**
  * Chooses the appropriate icon for attendance status.
@@ -51,6 +49,6 @@ export default function StatusIcon({ status, companyMemberId, showId, buttonEnab
 			{icon(status)}
 		</StatusSelect>
 	) : (
-		<Box sx={{ minHeight: 40 }}>{icon(status)}</Box>
+		icon(status)
 	);
 }

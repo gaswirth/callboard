@@ -6,18 +6,14 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import Main from './components/Main';
 
 import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
-
-/**
- * TODO
- *
- * - "Freeze" or "Record" show: once attendance is complete, lock it in and "record" it. No further changes can be made.
- */
+import { AuthContextProvider } from './context/AuthContext';
 
 /**
  * Apollo client.
  */
 const httpLink = createHttpLink({
 	uri: '/graphql',
+	credentials: 'include',
 });
 
 const client = new ApolloClient({
@@ -29,12 +25,14 @@ export default function App() {
 	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
 
 	return (
-		<ApolloProvider client={client}>
-			<ProductionContext.Provider value={{ production, productionDispatch }}>
-				<LocalizationProvider dateAdapter={AdapterDateFns}>
-					<Main />
-				</LocalizationProvider>
-			</ProductionContext.Provider>
-		</ApolloProvider>
+		<AuthContextProvider>
+			<ApolloProvider client={client}>
+				<ProductionContext.Provider value={{ production, productionDispatch }}>
+					<LocalizationProvider dateAdapter={AdapterDateFns}>
+						<Main />
+					</LocalizationProvider>
+				</ProductionContext.Provider>
+			</ApolloProvider>
+		</AuthContextProvider>
 	);
 }

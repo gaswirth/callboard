@@ -3,9 +3,9 @@ import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 import StatusIcon from './StatusIcon';
-import { prepareShowAttendance, showLabel } from '../../lib/functions';
+import { prepareShowAttendance, showLabel } from 'lib/functions';
 
-import ProductionContext from '../../context/ProductionContext';
+import ProductionContext from 'context/ProductionContext';
 
 function anchorElReducer(state, action) {
 	switch (action.type) {

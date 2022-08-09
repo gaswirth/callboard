@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { useMutation } from '@apollo/client';
 import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import Flight from '@mui/icons-material/Flight';
 import HorizontalRule from '@mui/icons-material/HorizontalRule';
-import { MUTATE_UPDATE_SHOW_ATTENDANCE, QUERY_RECENT_SHOWS } from '../../lib/gql';
-import { isEmpty } from 'lodash';
+import { useUpdateAttendance } from 'hooks/mutations/use-update-show-attendance';
 
 // TODO Only Admin can change in/out status.
 
 export default function StatusSelect({ status, children, companyMemberId, showId }) {
-	const [updateShowAttendance, { data, loading, error }] = useMutation(MUTATE_UPDATE_SHOW_ATTENDANCE);
+	const {
+		updateAttendanceMutation,
+		results: { loading: updateAttendanceLoading, error: updateAttendanceError },
+	} = useUpdateAttendance();
 
 	const [anchorEl, setAnchorEl] = useState(null);
 
@@ -54,19 +55,9 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 	 * @param {string} newValue The updated value.
 	 */
 	const handleIconClick = (event, newValue) => {
-		updateShowAttendance({
-			variables: {
-				input: {
-					clientMutationId: 'updateShowAttendanceMutation',
-					showId,
-					companyMemberId,
-					status: newValue,
-				},
-			},
-			refetchQueries: [{ query: QUERY_RECENT_SHOWS }],
-		});
+		updateAttendanceMutation({ showId, companyMemberId, status: newValue });
 
-		if (!error && !loading) setAnchorEl(null);
+		if (!updateAttendanceError && !updateAttendanceLoading) setAnchorEl(null);
 	};
 
 	return (

@@ -72,8 +72,8 @@ export default function Main() {
 					<TabPanel currentTab={currentTab} id="admin" title="SM/CM">
 						<Admin />
 					</TabPanel>
-					<Container sx={{ my: 1, textAlign: 'right' }}>
-						<Button variant="text" onClick={handleLogout}>
+					<Container sx={{ mt: 5, textAlign: 'left' }}>
+						<Button variant="outlined" onClick={handleLogout}>
 							Logout
 						</Button>
 						{logoutErrorCode ? (

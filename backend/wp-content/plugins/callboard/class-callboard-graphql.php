@@ -208,10 +208,6 @@ class Callboard_GraphQL extends Callboard {
 						]
 					);
 
-					if ( ! is_wp_error( $newShowId ) && $newShowId ) {
-						update_option( 'current_show', $newShowId );
-					}
-
 					return [
 						'newShowId' => $newShowId,
 					];

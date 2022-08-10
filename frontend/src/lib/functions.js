@@ -4,7 +4,7 @@
 
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
-import { CompanyMember, Show } from './classes';
+import { CompanyMember } from './classes';
 
 /**
  * Generate a show's label from it's date and time.

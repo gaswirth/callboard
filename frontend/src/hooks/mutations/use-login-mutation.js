@@ -4,6 +4,7 @@ const MUTATE_LOGIN = gql`
 	mutation LoginUser($input: LoginWithCookiesInput!) {
 		loginWithCookies(input: $input) {
 			status
+			companyMemberId
 			clientMutationId
 		}
 	}

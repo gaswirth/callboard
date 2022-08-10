@@ -113,11 +113,18 @@ class Callboard_GraphQL extends Callboard {
 					],
 				],
 				'outputFields'        => [
-					'status' => [
+					'status'          => [
 						'type'        => 'String',
 						'description' => __( 'Login operation status', 'callboard' ),
 						'resolve'     => function ( $payload ) {
 							return $payload['status'];
+						},
+					],
+					'companyMemberId' => [
+						'type'        => 'String',
+						'description' => __( 'User ID', 'callboard' ),
+						'resolve'     => function ( $payload ) {
+							return $payload['companyMemberId'];
 						},
 					],
 				],
@@ -135,7 +142,10 @@ class Callboard_GraphQL extends Callboard {
 						throw new \GraphQL\Error\UserError( ! empty( $user->get_error_code() ) ? $user->get_error_code() : 'invalid login' );
 					}
 
-					return ['status' => 'SUCCESS'];
+					return [
+						'status'          => 'SUCCESS',
+						'companyMemberId' => $user->ID,
+					];
 				},
 			]
 		);

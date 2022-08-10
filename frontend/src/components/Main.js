@@ -19,7 +19,7 @@ import Admin from './views/Admin';
 
 export default function Main() {
 	const { productionDispatch } = useContext(ProductionContext);
-	const { isLoggedIn, setIsLoggedIn } = useContext(AuthContext);
+	const { isLoggedIn, setIsLoggedIn, setUserId } = useContext(AuthContext);
 	const { logoutMutation } = useLogoutMutation();
 	const [logoutErrorCode, setLogoutErrorCode] = useState('');
 
@@ -40,11 +40,14 @@ export default function Main() {
 		});
 	}, [rosterData, productionDispatch]);
 
+	const onLogout = () => {
+		setIsLoggedIn(false);
+		setUserId(null);
+	};
+
 	const handleLogout = () => {
 		logoutMutation()
-			.then(() => {
-				setIsLoggedIn(false);
-			})
+			.then(onLogout)
 			.catch((errors) => setLogoutErrorCode(errors.message));
 	};
 

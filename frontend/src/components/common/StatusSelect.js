@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography } from '@mui/material';
+import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
 import Check from '@mui/icons-material/Check';
 import Close from '@mui/icons-material/Close';
 import Flight from '@mui/icons-material/Flight';
 import HorizontalRule from '@mui/icons-material/HorizontalRule';
+
 import { useUpdateAttendance } from 'hooks/mutations/use-update-show-attendance';
 
 // TODO Only Admin can change in/out status.
@@ -68,11 +69,12 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 					borderRadius: 1,
 					cursor: 'pointer',
 					backgroundColor: children ? 'none' : 'primary.lightgray',
+					p: 1,
 				}}
 				onClick={handleOpenIcons}
 				aria-haspopup="true"
 			>
-				{children ? children : <Typography variant="button" sx={{ px: 2, py: 1.5 }}></Typography>}
+				{children ? children : <Box sx={{ px: 0, py: 1.5 }}></Box>}
 			</IconButton>
 			<Popover
 				open={!!anchorEl}
@@ -83,7 +85,6 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 				<ToggleButtonGroup
 					value={status}
 					size="small"
-					sx={{ p: 0.75 }}
 					onChange={handleIconClick}
 					aria-label="Attendance status choices"
 					exclusive

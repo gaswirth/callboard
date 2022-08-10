@@ -1,25 +1,19 @@
-/**
- * @see {@link https://github.com/mikejolley/morrics-magical-cauldron/blob/main/src/context/auth-context.js}
- */
 import { createContext } from 'react';
 import { useLocalStorage } from 'hooks/hooks';
 
+export const adminRoles = ['administrator'];
+
 export const AuthContext = createContext({
-	isLoggedIn: false,
-	userId: null,
-	setIsLoggedIn: () => null,
-	setUserId: () => null,
+	user: null,
+	setUser: () => null,
 });
 
 export const AuthContextProvider = ({ children }) => {
-	const [isLoggedIn, setIsLoggedIn] = useLocalStorage(false);
-	const [userId, setUserId] = useLocalStorage(null);
+	const [user, setUser] = useLocalStorage(null);
 
 	const contextValue = {
-		isLoggedIn,
-		userId,
-		setIsLoggedIn,
-		setUserId,
+		user,
+		setUser,
 	};
 
 	return <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>;

@@ -1,8 +1,5 @@
-/**
- * Classes.
- */
-
 import { showLabel } from './functions';
+import { adminRoles } from 'context/AuthContext';
 
 /**
  * @module Show
@@ -30,9 +27,27 @@ export const Show = class {
  * @param {String} role CompanyMember's role.
  */
 export const CompanyMember = class {
-	constructor(companyMemberId = '', name = '', callboardRole = '') {
+	constructor(companyMemberId = '', name = '', role = '') {
 		this.companyMemberId = companyMemberId;
 		this.name = name;
-		this.callboardRole = callboardRole;
+		this.role = role;
+	}
+};
+
+/**
+ * @module User Represents the current logged-in user.
+ *
+ * @param {String} userId Unique.
+ * @param {String} roles WP user roles.
+ */
+export const User = class {
+	constructor(userId = '', roles = '') {
+		this.id = userId;
+		this.roles = roles.split('c');
+		this.isAdmin = this.setIsAdmin();
+	}
+
+	setIsAdmin() {
+		return this.roles.some((item) => adminRoles.indexOf(item) >= 0);
 	}
 };

@@ -11,6 +11,6 @@ export default function Now() {
 			<ShowTable />
 		</Skeleton>
 	) : (
-		<ShowTable shows={data?.shows.nodes} buttonsEnabled={false} />
+		<ShowTable shows={data?.shows.nodes} buttonsDisabled={true} />
 	);
 }

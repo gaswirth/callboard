@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
 import { Button, FormGroup, TextField, Typography } from '@mui/material';
+
 import { useLoginError } from 'hooks/hooks';
 import { useLoginMutation } from 'hooks/mutations/use-login-mutation';
 
 import { AuthContext } from 'context/AuthContext';
+import { User } from 'lib/classes';
 
 export default function Login() {
-	const { setIsLoggedIn, setUserId } = useContext(AuthContext);
+	const { setUser } = useContext(AuthContext);
 	const [errorCode, setErrorCode] = useState('');
 	const [credentials, setCredentials] = useState({});
 	const { loginMutation } = useLoginMutation();
@@ -20,12 +22,11 @@ export default function Login() {
 
 	const onLogin = ({ data }) => {
 		const {
-			loginWithCookies: { status, companyMemberId },
+			loginWithCookies: { status, userId, roles },
 		} = data;
 
 		if ('SUCCESS' === status) {
-			setIsLoggedIn(true);
-			setUserId(companyMemberId);
+			setUser(new User(userId, roles));
 		}
 	};
 

@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import HorizontalRuleIcon from '@mui/icons-material/HorizontalRule';
 import FlightIcon from '@mui/icons-material/Flight';
 import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
-import StatusSelect from './StatusSelect';
 import { Box } from '@mui/system';
+
+import StatusSelect from './StatusSelect';
+
+import { AuthContext } from 'context/AuthContext';
 
 /**
  * Chooses the appropriate icon for attendance status.
@@ -45,12 +48,14 @@ const icon = (status) => {
 	return icon;
 };
 
-export default function StatusIcon({ status, companyMemberId, showId, buttonEnabled }) {
-	return buttonEnabled ? (
+export default function StatusIcon({ status, companyMemberId, showId, buttonDisabled }) {
+	const { user } = useContext(AuthContext);
+
+	return buttonDisabled || !user?.isAdmin ? (
+		<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>{icon(status)}</Box>
+	) : (
 		<StatusSelect companyMemberId={companyMemberId} showId={showId} status={status}>
 			{icon(status)}
 		</StatusSelect>
-	) : (
-		<Box sx={{ minHeight: 30 }}>{icon(status)}</Box>
 	);
 }

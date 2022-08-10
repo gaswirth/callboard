@@ -1,11 +1,12 @@
-import React, { useReducer } from 'react';
+import React from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import Main from './components/Main';
 
-import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
+// import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
+import { ProductionProvider } from './context/ProductionContext';
 import { AuthContextProvider } from './context/AuthContext';
 
 /**
@@ -22,16 +23,14 @@ const client = new ApolloClient({
 });
 
 export default function App() {
-	const [production, productionDispatch] = useReducer(productionReducer, initialProduction);
-
 	return (
 		<AuthContextProvider>
 			<ApolloProvider client={client}>
-				<ProductionContext.Provider value={{ production, productionDispatch }}>
+				<ProductionProvider>
 					<LocalizationProvider dateAdapter={AdapterDateFns}>
 						<Main />
 					</LocalizationProvider>
-				</ProductionContext.Provider>
+				</ProductionProvider>
 			</ApolloProvider>
 		</AuthContextProvider>
 	);

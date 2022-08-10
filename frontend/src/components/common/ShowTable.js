@@ -2,6 +2,7 @@ import React, { useContext, useReducer, useState, useMemo, useEffect } from 'rea
 import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
+
 import StatusIcon from './StatusIcon';
 import { prepareShowAttendance, showLabel } from 'lib/functions';
 
@@ -37,7 +38,7 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, buttonsEnabled, addlProps }) {
+export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 	const {
 		production: { roster },
 	} = useContext(ProductionContext);
@@ -82,12 +83,12 @@ export default function ShowTable({ shows, buttonsEnabled, addlProps }) {
 		var rows = [];
 
 		for (let companyMember of roster) {
-			const { name, callboardRole, companyMemberId } = companyMember;
+			const { name, role, companyMemberId } = companyMember;
 
 			rows.push({
 				companyMemberId,
 				name,
-				callboardRole,
+				role,
 				attendance: shows.map((show, index) => attendance[index][companyMemberId]),
 			});
 		}
@@ -195,7 +196,7 @@ export default function ShowTable({ shows, buttonsEnabled, addlProps }) {
 												status={row.attendance[i] ? row.attendance[i] : ''}
 												companyMemberId={row.companyMemberId}
 												showId={id}
-												buttonEnabled={buttonsEnabled}
+												buttonDisabled={buttonsDisabled}
 											/>
 										</TableCell>
 									);

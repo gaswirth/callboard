@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 export const QUERY_ROSTER = gql`
 	query Roster {
 		companyMembers {
-			callboardRole
+			role
 			name
 			companyMemberId
 		}

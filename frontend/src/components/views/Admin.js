@@ -41,7 +41,7 @@ export default function Admin() {
 							<ShowTable />
 						</Skeleton>
 					) : (
-						<ShowTable shows={[showData.shows.nodes[1]]} buttonsEnabled={true} />
+						<ShowTable shows={[showData.shows.nodes[1]]} />
 					)}
 				</Stack>
 			</Grid>
@@ -53,7 +53,7 @@ export default function Admin() {
 							<ShowTable />
 						</Skeleton>
 					) : (
-						<ShowTable shows={[showData.shows.nodes[0]]} buttonsEnabled={true} />
+						<ShowTable shows={[showData.shows.nodes[0]]} />
 					)}
 				</Stack>
 			</Grid>
@@ -92,7 +92,7 @@ export default function Admin() {
 						<ShowTable />
 					</Skeleton>
 				) : (
-					<ShowTable shows={showData.shows.nodes.slice(2)} buttonsEnabled={true} />
+					<ShowTable shows={showData.shows.nodes.slice(2)} />
 				)}
 			</Grid>
 		</Grid>

@@ -35,7 +35,7 @@ class Callboard_GraphQL extends Callboard {
 						'type'        => 'String',
 						'description' => __( 'Name', 'callboard' ),
 					],
-					'callboardRole'   => [
+					'role'   => [
 						'type'        => 'String',
 						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
@@ -86,7 +86,7 @@ class Callboard_GraphQL extends Callboard {
 						$company_members[] = [
 							'companyMemberId' => $user->ID,
 							'name'            => sprintf( '%1$s %2$s', $user->first_name, $user->last_name ),
-							'callboardRole'   => get_user_meta( $user->ID, 'callboard-role', true ),
+							'role'   => get_user_meta( $user->ID, 'callboard-role', true ),
 						];
 					}
 
@@ -113,18 +113,25 @@ class Callboard_GraphQL extends Callboard {
 					],
 				],
 				'outputFields'        => [
-					'status'          => [
+					'status' => [
 						'type'        => 'String',
 						'description' => __( 'Login operation status', 'callboard' ),
 						'resolve'     => function ( $payload ) {
 							return $payload['status'];
 						},
 					],
-					'companyMemberId' => [
+					'userId' => [
 						'type'        => 'String',
 						'description' => __( 'User ID', 'callboard' ),
 						'resolve'     => function ( $payload ) {
-							return $payload['companyMemberId'];
+							return $payload['userId'];
+						},
+					],
+					'roles'  => [
+						'type'        => 'String',
+						'description' => __( 'The user\'s roles', 'callboard' ),
+						'resolve'     => function ( $payload ) {
+							return $payload['roles'];
 						},
 					],
 				],
@@ -143,8 +150,9 @@ class Callboard_GraphQL extends Callboard {
 					}
 
 					return [
-						'status'          => 'SUCCESS',
-						'companyMemberId' => $user->ID,
+						'status' => 'SUCCESS',
+						'userId' => $user->ID,
+						'roles'  => implode( ',', $user->roles ),
 					];
 				},
 			]

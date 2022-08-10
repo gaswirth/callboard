@@ -5,6 +5,7 @@ import { isEmpty } from 'lodash';
 import Header from './Header';
 import TabPanel from './common/TabPanel';
 import Login from './common/Login';
+
 import { useLogoutMutation } from 'hooks/mutations/use-logout-mutation';
 import { useRoster } from 'hooks/queries/use-roster';
 
@@ -19,7 +20,7 @@ import Admin from './views/Admin';
 
 export default function Main() {
 	const { productionDispatch } = useContext(ProductionContext);
-	const { isLoggedIn, setIsLoggedIn, setUserId } = useContext(AuthContext);
+	const { user, setUser } = useContext(AuthContext);
 	const { logoutMutation } = useLogoutMutation();
 	const [logoutErrorCode, setLogoutErrorCode] = useState('');
 
@@ -41,8 +42,7 @@ export default function Main() {
 	}, [rosterData, productionDispatch]);
 
 	const onLogout = () => {
-		setIsLoggedIn(false);
-		setUserId(null);
+		setUser(null);
 	};
 
 	const handleLogout = () => {
@@ -58,7 +58,7 @@ export default function Main() {
 	return (
 		<>
 			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
-			{!isLoggedIn ? (
+			{!user?.id ? (
 				<Box maxWidth={400} sx={{ my: 2, mx: 'auto' }}>
 					<Login />
 				</Box>

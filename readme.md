@@ -1,3 +1,5 @@
+[![DeepScan grade](https://deepscan.io/api/teams/14424/projects/21921/branches/639584/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=14424&pid=21921&bid=639584)
+
 # Callboard
 
 ## A web app for contactless employee sign-in with a management interface.

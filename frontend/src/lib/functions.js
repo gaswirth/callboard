@@ -28,24 +28,6 @@ export function prepareRoster(rosterData) {
 }
 
 /**
- * Takes a collection of Shows and prepares each one for use by the app.
- *
- * @param {Array} showNodes A collection of nodes representing individual Shows.
- * @returns The prepared collection of Shows.
- */
-export function prepareShows(showNodes) {
-	var shows = {};
-
-	showNodes.forEach((item) => {
-		const { databaseId, datetime, attendance } = item;
-
-		shows[databaseId] = new Show(databaseId, new Date(datetime), prepareShowAttendance(attendance));
-	});
-
-	return shows;
-}
-
-/**
  * Prepares a show's attendance data for use by the app.
  *
  * @param {Array} attendance A collection of company members.
@@ -62,14 +44,4 @@ export function prepareShowAttendance(attendance) {
 	}
 
 	return formattedAttendance;
-}
-
-/**
- * Prepares a date for the "range" GraphQL query.
- *
- * @param {Date} date The date to format.
- * @returns {String} The YYYY-MM-DD formatted date string.
- */
-export function prepareDateForRangeQuery(date) {
-	return format(date, 'yyyy-LL-dd');
 }

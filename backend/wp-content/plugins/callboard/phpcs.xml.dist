@@ -7,10 +7,6 @@
     <description>Starting Point Rule Set.</description>
     <version>2.3.0</version>
 
-    <!-- Include when not specified -->
-    <file>./wp-content/plugins/core</file>
-    <file>./wp-content/themes/core</file>
-
     <!-- sniff both PHP and JS -->
     <arg name="extensions" value="php/PHP,js/JS,jsx/JS,ts/JS,tsx/JS" />
     <!-- Show sniff codes in all reports, and progress when running -->
@@ -25,7 +21,7 @@
     <exclude-pattern>*/vendor/*</exclude-pattern>
     <exclude-pattern>*/wp/*</exclude-pattern>
 
-    <config name="minimum_supported_wp_version" value="5.8.1" />
+    <config name="minimum_supported_wp_version" value="" />
 
     <!-- @see https://github.com/PHPCompatibility/PHPCompatibility#using-a-custom-ruleset -->
     <config name="testVersion" value="8.0-" />
@@ -34,11 +30,9 @@
 
     <rule ref="WordPress">
         <!-- Only target the theme and core plugin -->
-        <include-pattern>*/core/*</include-pattern>
-        <exclude-pattern>*/js/*</exclude-pattern>
 
         <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
-        <exclude name="Generic.Commenting" />
+        <!-- <exclude name="Generic.Commenting" /> -->
         <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound" />
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
         <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
@@ -49,15 +43,20 @@
         <exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments" />
         <exclude name="PEAR.Functions.FunctionCallSignature.OpeningIndent" />
 
-        <exclude name="Squiz.Commenting" />
+        <!-- <exclude name="Squiz.Commenting" /> -->
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
 
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />
 
         <exclude name="WordPress.Files.FileName.InvalidClassFileName" />
         <exclude name="WordPress.Files.FileName.NotHyphenatedLowercase" />
-        <exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" />
+        <!-- <exclude name="WordPress.NamingConventions.ValidHookName.UseUnderscores" /> -->
         <exclude name="WordPress.PHP.DisallowShortTernary.Found" />
+
+        <!-- RHD -->
+        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceAfterArrayOpener" />
+        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing.NoSpaceBeforeArrayCloser" />
+        <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions.NoSpacesAroundArrayKeys" />
     </rule>
 
     <!-- Functions which don't require extra un-slashing and sanitization -->
@@ -95,3 +94,4 @@
         </properties>
     </rule>
 </ruleset>
+

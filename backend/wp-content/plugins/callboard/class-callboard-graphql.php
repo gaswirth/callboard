@@ -1,12 +1,17 @@
 <?php
 /**
  * GraphQL.
+ *
+ * @package Callboard
  */
 
+/**
+ * Callboard_GraphQL class.
+ */
 class Callboard_GraphQL extends Callboard {
-	// TODO set this in options somewhere
-	const HEADLESS_FRONTEND_URL = 'http://localhost';
-
+	/**
+	 * Constructor.
+	 */
 	public function __construct() {
 		add_action( 'graphql_register_types', [$this, 'register_types'] );
 		add_filter( 'graphql_register_types', [$this, 'register_mutations'] );
@@ -35,36 +40,39 @@ class Callboard_GraphQL extends Callboard {
 						'type'        => 'String',
 						'description' => __( 'Name', 'callboard' ),
 					],
-					'role'   => [
+					'role'            => [
 						'type'        => 'String',
 						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
 				],
-			] );
+			]
+		);
 
 		/**
 		 * Registers the `show` custom fields.
 		 */
-		register_graphql_fields( 'Show', [
-			'datetime'   => [
-				'type'        => 'String',
-				'description' => __( 'The show date and time.', 'callboard' ),
-				'resolve'     => function ( $show ) {
-					$datetime = get_post_meta( $show->ID, 'datetime', true );
+		register_graphql_fields(
+			'Show',
+			[
+				'datetime'   => [
+					'type'        => 'String',
+					'description' => __( 'The show date and time.', 'callboard' ),
+					'resolve'     => function ( $show ) {
+						$datetime = get_post_meta( $show->ID, 'datetime', true );
 
-					return esc_textarea( $datetime );
-				},
-			],
-			'attendance' => [
-				'type'        => 'String',
-				'description' => __( 'The serialized array of companyMemberIds and their respective attendance statuses.', 'callboard' ),
-				'resolve'     => function ( $show ) {
-					$attendance = maybe_unserialize( get_post_meta( $show->ID, 'attendance', true ) );
+						return esc_textarea( $datetime );
+					},
+				],
+				'attendance' => [
+					'type'        => 'String',
+					'description' => __( 'The serialized array of companyMemberIds and their respective attendance statuses.', 'callboard' ),
+					'resolve'     => function ( $show ) {
+						$attendance = maybe_unserialize( get_post_meta( $show->ID, 'attendance', true ) );
 
-					return json_encode( $attendance );
-				},
-			],
-		]
+						return wp_json_encode( $attendance );
+					},
+				],
+			]
 		);
 
 		/**
@@ -77,24 +85,32 @@ class Callboard_GraphQL extends Callboard {
 				'type'        => ['list_of' => 'CompanyMember'],
 				'description' => __( 'The public "role" to display on the frontend.', 'callboard' ),
 				'resolve'     => function () {
-					$users = get_users( [
-						'role__in' => 'company_member',
-					] );
+					$users = get_users(
+						[
+							'role__in' => 'company_member',
+						]
+					);
 
 					$company_members = [];
 					foreach ( $users as $user ) {
 						$company_members[] = [
 							'companyMemberId' => $user->ID,
 							'name'            => sprintf( '%1$s %2$s', $user->first_name, $user->last_name ),
-							'role'   => get_user_meta( $user->ID, 'callboard-role', true ),
+							'role'            => get_user_meta( $user->ID, 'callboard-role', true ),
 						];
 					}
 
 					return $company_members;
 				},
-			] );
+			],
+		);
 	}
 
+	/**
+	 * Register GraphQL mutations.
+	 *
+	 * @return void
+	 */
 	public function register_mutations() {
 		/**
 		 * Login mutation (HTTP Cookies).
@@ -201,13 +217,15 @@ class Callboard_GraphQL extends Callboard {
 					],
 				],
 				'mutateAndGetPayload' => function ( $input, $context, $info ) {
-					$newShowId = null;
+					$new_show_id = null;
 
-					$last_show = get_posts( [
-						'post_type'      => 'show',
-						'posts_per_page' => 1,
-						'post_status'    => 'publish',
-					] );
+					$last_show = get_posts(
+						[
+							'post_type'      => 'show',
+							'posts_per_page' => 1,
+							'post_status'    => 'publish',
+						]
+					);
 
 					/**
 					 * Increment the show count (title)
@@ -215,7 +233,8 @@ class Callboard_GraphQL extends Callboard {
 					// TODO `show_number` field that can be autofilled with this value, and also changed? Or just do this with `post_title` even?
 					$post_title = absint( $last_show[0]->post_title ) + 1;
 
-					$newShowId = wp_insert_post(
+					// FIXME Input datetime wrong format.
+					$new_show_id = wp_insert_post(
 						[
 							'post_type'   => 'show',
 							'post_status' => 'publish',
@@ -227,7 +246,7 @@ class Callboard_GraphQL extends Callboard {
 					);
 
 					return [
-						'newShowId' => $newShowId,
+						'newShowId' => $new_show_id,
 					];
 				},
 			]
@@ -279,7 +298,7 @@ class Callboard_GraphQL extends Callboard {
 	/**
 	 * Set CORS to allow frontend logins
 	 *
-	 * @param array $headers
+	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.
 	 */
 	public function response_headers_to_send( $headers ) {

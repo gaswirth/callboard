@@ -168,7 +168,7 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 							<TableRow key={row.name}>
 								<TableCell
 									sx={{
-										pt: 1,
+										pt: 1.5,
 										pr: 3,
 										pb: 1,
 										pl: 0,
@@ -182,16 +182,14 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 									<Typography variant="body1" sx={{ lineHeight: 1 }}>
 										{row.name}
 									</Typography>
-									<Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-										{row.role}
-									</Typography>
+									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>
 
 								{shows.map((show, i) => {
 									const { databaseId: id } = show;
 
 									return (
-										<TableCell key={id} scope="row" sx={{ pt: 2.1 }}>
+										<TableCell key={id} scope="row">
 											<StatusIcon
 												status={row.attendance[i] ? row.attendance[i] : ''}
 												companyMemberId={row.companyMemberId}

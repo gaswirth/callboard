@@ -4,7 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 
 /**
@@ -12,43 +12,63 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 class Callboard_Settings {
 	/**
-	 * The ID of this plugin.
+	 * The main plugin option group.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @access private
-	 * @var    string
+	 * @var string
 	 */
-	private $plugin_name;
+	private $option_group;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param string $plugin_name The name of the plugin.
 	 */
 	public function __construct( $plugin_name ) {
-		$this->plugin_name = $plugin_name;
+		$this->option_group = $plugin_name . '_options';
+	}
+
+	/**
+	 * Register a settings field.
+	 *
+	 * @param string $key The setting key.
+	 * @param string $type The data type.
+	 * @param string $sanitize_callback A sanitize function to run on the input value.
+	 * @param string $default The default field value. Defaults to ''.
+	 */
+	public function register_field( $key, $type, $sanitize_callback, $default = '' ) {
+		register_setting(
+			$this->option_group,
+			$key,
+			[
+				'type'              => $type,
+				'sanitize_callback' => $sanitize_callback,
+				'default'           => $default,
+				'show_in_graphql'   => true,
+			]
+		);
 	}
 
 	/**
 	 * Register settings fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_settings_fields() {
-		register_setting(
-			$this->plugin_name . '_options',
-			'company_name',
-			[
-				'type'              => 'string',
-				'sanitize_callback' => 'esc_textarea',
-				'default'           => null,
-				'show_in_graphql'   => true,
-			]
-		);
+		/**
+		 * Frontend URL.
+		 */
+		$this->register_field( 'callboard_frontend_url', 'string', 'esc_url' );
+
+		/**
+		 * Company Name.
+		 */
+		$this->register_field( 'callboard_company_name', 'string', 'esc_textarea' );
 	}
 }

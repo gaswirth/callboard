@@ -20,7 +20,7 @@ define( 'CALLBOARD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
  * The code that runs during plugin activation.
  * This action is documented in includes/class-plugin-name-activator.php
  *
- * @since 1.0.0
+ * @since 0.0.2
  */
 function activate_callboard() {
 	require_once CALLBOARD_PLUGIN_PATH . 'includes/class-plugin-name-activator.php';
@@ -31,7 +31,7 @@ function activate_callboard() {
  * The code that runs during plugin deactivation.
  * This action is documented in includes/class-plugin-name-deactivator.php
  *
- * @since 1.0.0
+ * @since 0.0.2
  */
 function deactivate_callboard() {
 	require_once CALLBOARD_PLUGIN_PATH . 'includes/class-plugin-name-deactivator.php';
@@ -53,7 +53,7 @@ require_once CALLBOARD_PLUGIN_PATH . 'class-callboard.php';
  * then kicking off the plugin from this point in the file does
  * not affect the page life cycle.
  *
- * @since 1.0.0
+ * @since 0.0.2
  */
 function run_callboard() {
 

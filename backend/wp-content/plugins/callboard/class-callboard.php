@@ -4,7 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 
 /**
@@ -12,13 +12,13 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 class Callboard {
 	/**
 	 * The loader that handles maintaining and registering all hooks.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @access protected
 	 * @var Callboard_Loader
 	 */
@@ -27,7 +27,7 @@ class Callboard {
 	/**
 	 * The plugin name.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @access protected
 	 * @var string
 	 */
@@ -36,7 +36,7 @@ class Callboard {
 	/**
 	 * The plugin version.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @access protected
 	 * @var string
 	 */
@@ -45,15 +45,15 @@ class Callboard {
 	/**
 	 * The headless frontend URL.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @var string
 	 */
-	public const FRONTEND_URL = 'http://localhost'; // TODO set this in options somewhere.
+	public $frontend_url;
 
 	/**
 	 * The datetime string format for use in sending to the backend.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @var string
 	 */
 	public const DATETIME_FORMAT = 'm/d/Y h:i A';
@@ -61,7 +61,7 @@ class Callboard {
 	/**
 	 * Constructor.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function __construct() {
 		$this->plugin_name = 'callboard';
@@ -71,6 +71,8 @@ class Callboard {
 		} else {
 			$this->version = '1.0.0';
 		}
+
+		$this->frontend_url = esc_url( get_option( 'callboard_frontend_url' ) );
 
 		$this->load_dependencies();
 		$this->register_settings();
@@ -82,7 +84,7 @@ class Callboard {
 	/**
 	 * Load plugin dependencies.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function load_dependencies() {
 		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-loader.php';
@@ -98,7 +100,7 @@ class Callboard {
 	/**
 	 * Register actions and filters.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_settings() {
 		$callboard_settings = new Callboard_Settings( $this->plugin_name );
@@ -109,7 +111,7 @@ class Callboard {
 	/**
 	 * Initialize User hooks.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_user_hooks() {
 		$users = new Callboard_Users( $this->plugin_name );
@@ -126,7 +128,7 @@ class Callboard {
 	/**
 	 * Initialize the `show` custom post type and related meta fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_show_hooks() {
 		$show = new Callboard_Show();
@@ -138,10 +140,10 @@ class Callboard {
 	/**
 	 * Initialize GraphQL hooks.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_graphql_hooks() {
-		$hooks = new Callboard_GraphQL( self::FRONTEND_URL );
+		$hooks = new Callboard_GraphQL( $this->frontend_url );
 
 		$this->loader->add_action( 'graphql_register_types', $hooks, 'register_types' );
 		$this->loader->add_filter( 'graphql_register_types', $hooks, 'register_mutations' );
@@ -151,7 +153,7 @@ class Callboard {
 	/**
 	 * Run the loader to execute all WordPress hooks.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function run() {
 		$this->loader->run();

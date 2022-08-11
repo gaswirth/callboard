@@ -4,7 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 
 /**
@@ -12,13 +12,13 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 class Callboard_Users {
 	/**
 	 * Create the custom Company Member role, cloning the `subscriber` role's capabilities.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public static function add_company_member_role() {
 		$subscriber = get_role( 'subscriber' );
@@ -28,7 +28,7 @@ class Callboard_Users {
 	/**
 	 * Add new fields above 'Update' button.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param WP_User $user User object.
 	 */
 	public function callboard_user_fields( $user ) {
@@ -57,7 +57,7 @@ class Callboard_Users {
 	/**
 	 * Save additional profile fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param int $user_id Current user ID.
 	 */
 	public function save_callboard_user_fields( $user_id ) {

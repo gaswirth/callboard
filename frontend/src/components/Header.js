@@ -31,7 +31,7 @@ export default function Header({ currentTab, handleTabChange }) {
 					) : null}
 
 					<Typography variant="h6" textTransform="uppercase">
-						{companyData?.callboardOptionsSettings.companyName}
+						{companyData?.callboardOptionsSettings.callboardCompanyName}
 					</Typography>
 				</Toolbar>
 			</AppBar>

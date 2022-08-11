@@ -4,7 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 
 /**
@@ -12,13 +12,20 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 class Callboard_Show {
 	/**
+	 * The allowed status codes for show attendance.
+	 *
+	 * @var array
+	 */
+	const ALLOWED_STATUSES = ['in', 'out', 'pd', 'vac'];
+
+	/**
 	 * Register Post Type: Shows.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_cpt_show() {
 		$labels = [
@@ -95,7 +102,7 @@ class Callboard_Show {
 	/**
 	 * Adds `show` CPT meta boxes.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_show_company_names() {
 		add_meta_box(
@@ -111,7 +118,7 @@ class Callboard_Show {
 	/**
 	 * Render the `show` meta fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function show_data_fields() {
 		global $post;
@@ -171,7 +178,7 @@ class Callboard_Show {
 	/**
 	 * Save the metabox data.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param int $post_id The post ID.
 	 */
 	public function save_show_meta( $post_id ) {
@@ -192,7 +199,7 @@ class Callboard_Show {
 	/**
 	 * Sanitize show meta values.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param int   $post_id The post ID.
 	 * @param array $show_data An array of meta values, keyed by field.
 	 */
@@ -205,7 +212,7 @@ class Callboard_Show {
 		}
 
 		if ( isset( $show_data['attendance'] ) ) {
-			$update_fields['attendance'] = $this->sanitize_attendance_string_to_array( $show_data['attendance'] );
+			$update_fields['attendance'] = $this->convert_attendance_string_to_array( $show_data['attendance'] );
 		}
 
 		return $update_fields;
@@ -214,7 +221,7 @@ class Callboard_Show {
 	/**
 	 * Update the show meta fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param int   $post_id The post ID.
 	 * @param array $fields The values to update, keyed by field.
 	 */
@@ -250,33 +257,50 @@ class Callboard_Show {
 	}
 
 	/**
+	 * Validate an attendance status.
+	 *
+	 * @param string $status The attendance code to validate.
+	 * @return boolean
+	 */
+	public function validate_attendance_status( $status ) {
+		if ( ! in_array( $status, self::ALLOWED_STATUSES, true ) ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Sanitizes the values in an `attendance` meta field array.
 	 *
 	 * @param string $arr_string A multiline input string of user_id:status pairs.
 	 * @return array The assembled array.
 	 */
-	public function sanitize_attendance_string_to_array( $arr_string ) {
-		// MAYBE Allow only valid status values (in/out/vac/pd).
-
-		// Serialize the data first.
+	public function convert_attendance_string_to_array( $arr_string ) {
+		// Convert the pairs to an array.
 		$array = preg_split( '/\r\n|\r|\n/', $arr_string );
 
-		$value = [];
+		$sanitized = [];
 		foreach ( $array as $item ) {
-			// loop through and sanitize each value, then `update_post_meta`.
-			$result = preg_match( '/(.*):(.*)$/', $item, $matches );
+			// loop through and extract each value.
 
 			/**
 			 * $matches[1]: key
 			 * $matches[2]: value
-			 *
-			 * Trim whitespace from beginning and end of both `key` and `value`.
 			 */
+			$result = preg_match( '/(.*):(.*)$/', $item, $matches );
+
 			if ( $result && isset( $matches[1] ) && isset( $matches[2] ) ) {
-				$value[esc_textarea( trim( $matches[1] ) )] = trim( $matches[2] );
+				$key   = esc_attr( trim( $matches[1] ) );
+				$value = trim( $matches[2] );
+
+				if ( $this->validate_attendance_status( $value ) ) {
+					// If a value is invalid, skip it.
+					$sanitized[$key] = $value;
+				}
 			}
 		}
 
-		return $value;
+		return $sanitized;
 	}
 }

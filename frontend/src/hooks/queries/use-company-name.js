@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client';
 export const QUERY_COMPANY_NAME = gql`
 	query GetCompanyName {
 		callboardOptionsSettings {
-			companyName
+			callboardCompanyName
 		}
 	}
 `;

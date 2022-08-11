@@ -20,7 +20,7 @@ class Callboard_Activator {
 	/**
 	 * Runs on plugin activation.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public static function activate() {
 		Callboard_Users::add_company_member_role();

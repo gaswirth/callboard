@@ -7,8 +7,6 @@ import HorizontalRule from '@mui/icons-material/HorizontalRule';
 
 import { useUpdateAttendance } from 'hooks/mutations/use-update-show-attendance';
 
-// TODO Only Admin can change in/out status.
-
 export default function StatusSelect({ status, children, companyMemberId, showId }) {
 	const {
 		updateAttendanceMutation,

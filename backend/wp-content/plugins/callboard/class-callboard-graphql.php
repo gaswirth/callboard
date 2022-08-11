@@ -4,7 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 
 /**
@@ -12,13 +12,13 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
- * @since 1.0.0
+ * @since 0.0.2
  */
 class Callboard_GraphQL {
 	/**
 	 * The frontend app URL.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @access protected
 	 * @var string
 	 */
@@ -27,7 +27,7 @@ class Callboard_GraphQL {
 	/**
 	 * Constructor.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param string $frontend_url The frontend app URL.
 	 */
 	public function __construct( $frontend_url ) {
@@ -37,7 +37,7 @@ class Callboard_GraphQL {
 	/**
 	 * Register GraphQL objects and fields.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_types() {
 		/**
@@ -125,7 +125,7 @@ class Callboard_GraphQL {
 	/**
 	 * Register GraphQL mutations.
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 */
 	public function register_mutations() {
 		/**
@@ -193,7 +193,7 @@ class Callboard_GraphQL {
 		/**
 		 * Logout mutation.
 		 *
-		 * @since 1.0.0
+		 * @since 0.0.2
 		 */
 		register_graphql_mutation(
 			'logout',
@@ -248,7 +248,6 @@ class Callboard_GraphQL {
 					/**
 					 * Increment the show count (title)
 					 */
-					// TODO `show_number` field that can be autofilled with this value, and also changed? Or just do this with `post_title` even?
 					$post_title = absint( $last_show[0]->post_title ) + 1;
 
 					$new_show_id = wp_insert_post(
@@ -315,7 +314,7 @@ class Callboard_GraphQL {
 	/**
 	 * Set CORS to allow frontend logins
 	 *
-	 * @since 1.0.0
+	 * @since 0.0.2
 	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.
 	 */
@@ -325,7 +324,7 @@ class Callboard_GraphQL {
 			$this->frontend_url,
 		];
 
-		// If the request is coming from an allowed origin (FRONTEND_URL), tell the browser it can accept the response.
+		// If the request is coming from an allowed origin, tell the browser it can accept the response.
 		if ( in_array( $http_origin, $allowed_origins, true ) ) {
 			$headers['Access-Control-Allow-Origin'] = $http_origin;
 		}

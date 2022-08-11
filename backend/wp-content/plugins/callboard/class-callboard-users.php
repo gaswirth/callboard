@@ -2,31 +2,25 @@
 /**
  * Registration of user meta fields.
  *
+ * @since 1.0.0
  * @package Callboard
+ * @subpackage Callboard/includes
  */
 
 /**
  * Sets up custom data for Users.
+ *
+ * @since 1.0.0
+ * @package Callboard
+ * @subpackage Callboard/includes
  */
-class Callboard_Users extends Callboard {
-	/**
-	 * Constructor.
-	 */
-	public function __construct() {
-		register_activation_hook( CALLBOARD_CORE, [$this, 'add_company_member_role'] );
-
-		add_action( 'user_new_form', [$this, 'callboard_user_fields'] );
-		add_action( 'show_user_profile', [$this, 'callboard_user_fields'] );
-		add_action( 'edit_user_profile', [$this, 'callboard_user_fields'] );
-		add_action( 'user_register', [$this, 'save_callboard_user_fields'] );
-		add_action( 'personal_options_update', [$this, 'save_callboard_user_fields'] );
-		add_action( 'edit_user_profile_update', [$this, 'save_callboard_user_fields'] );
-	}
-
+class Callboard_Users {
 	/**
 	 * Create the custom Company Member role, cloning the `subscriber` role's capabilities.
+	 *
+	 * @since 1.0.0
 	 */
-	public function add_company_member_role() {
+	public static function add_company_member_role() {
 		$subscriber = get_role( 'subscriber' );
 		add_role( 'company_member', __( 'Company Member', 'callboard' ), $subscriber->capabilities );
 	}
@@ -34,6 +28,7 @@ class Callboard_Users extends Callboard {
 	/**
 	 * Add new fields above 'Update' button.
 	 *
+	 * @since 1.0.0
 	 * @param WP_User $user User object.
 	 */
 	public function callboard_user_fields( $user ) {
@@ -62,6 +57,7 @@ class Callboard_Users extends Callboard {
 	/**
 	 * Save additional profile fields.
 	 *
+	 * @since 1.0.0
 	 * @param int $user_id Current user ID.
 	 */
 	public function save_callboard_user_fields( $user_id ) {
@@ -78,5 +74,3 @@ class Callboard_Users extends Callboard {
 		}
 	}
 }
-
-$graphql = new Callboard_Users();

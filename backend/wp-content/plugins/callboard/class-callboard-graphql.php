@@ -2,26 +2,42 @@
 /**
  * GraphQL.
  *
+ * @since 1.0.0
  * @package Callboard
+ * @subpackage Callboard/includes
  */
 
 /**
  * Callboard_GraphQL class.
+ *
+ * @since 1.0.0
+ * @package Callboard
+ * @subpackage Callboard/includes
  */
-class Callboard_GraphQL extends Callboard {
+class Callboard_GraphQL {
+	/**
+	 * The frontend app URL.
+	 *
+	 * @since 1.0.0
+	 * @access protected
+	 * @var string
+	 */
+	protected $headless_frontend_url;
+
 	/**
 	 * Constructor.
+	 *
+	 * @since 1.0.0
+	 * @param string $headless_frontend_url The frontend app URL.
 	 */
-	public function __construct() {
-		add_action( 'graphql_register_types', [$this, 'register_types'] );
-		add_filter( 'graphql_register_types', [$this, 'register_mutations'] );
-		add_filter( 'graphql_response_headers_to_send', [$this, 'response_headers_to_send'] );
+	public function __construct( $headless_frontend_url ) {
+		$this->headless_frontend_url = $headless_frontend_url;
 	}
 
 	/**
 	 * Register GraphQL objects and fields.
 	 *
-	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register_types() {
 		/**
@@ -50,6 +66,8 @@ class Callboard_GraphQL extends Callboard {
 
 		/**
 		 * Registers the `show` custom fields.
+		 *
+		 * @since 1.0.0
 		 */
 		register_graphql_fields(
 			'Show',
@@ -77,6 +95,8 @@ class Callboard_GraphQL extends Callboard {
 
 		/**
 		 * Create the `companyMembers` field on the RootQuery to return a list of users with the 'company_member' user role.
+		 *
+		 * @since 1.0.0
 		 */
 		register_graphql_field(
 			'RootQuery',
@@ -109,7 +129,7 @@ class Callboard_GraphQL extends Callboard {
 	/**
 	 * Register GraphQL mutations.
 	 *
-	 * @return void
+	 * @since 1.0.0
 	 */
 	public function register_mutations() {
 		/**
@@ -176,6 +196,8 @@ class Callboard_GraphQL extends Callboard {
 
 		/**
 		 * Logout mutation.
+		 *
+		 * @since 1.0.0
 		 */
 		register_graphql_mutation(
 			'logout',
@@ -297,13 +319,14 @@ class Callboard_GraphQL extends Callboard {
 	/**
 	 * Set CORS to allow frontend logins
 	 *
+	 * @since 1.0.0
 	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.
 	 */
 	public function response_headers_to_send( $headers ) {
 		$http_origin     = get_http_origin();
 		$allowed_origins = [
-			self::HEADLESS_FRONTEND_URL,
+			$this->headless_frontend_url,
 		];
 
 		// If the request is coming from an allowed origin (HEADLESS_FRONTEND_URL), tell the browser it can accept the response.
@@ -317,5 +340,3 @@ class Callboard_GraphQL extends Callboard {
 		return $headers;
 	}
 }
-
-$graphql = new Callboard_GraphQL();

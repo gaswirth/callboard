@@ -180,27 +180,46 @@ class Callboard_Show {
 		$is_revision        = wp_is_post_revision( $post_id );
 		$is_user_authorized = current_user_can( 'edit_post', $post_id ) ? true : false;
 		$is_valid_nonce     = isset( $_POST['show_data_nonce'] ) && wp_verify_nonce( $_POST['show_data_nonce'], basename( __FILE__ ) ) ? true : false;
-
-		if ( $is_autosave || $is_revision || ! $is_user_authorized || ! $is_valid_nonce ) {
+		$show_data          = isset( $_POST['show_data'] ) ? array_map( 'sanitize_textarea_field', wp_unslash( $_POST['show_data'] ) ) : null;
+		if ( $is_autosave || $is_revision || ! $is_user_authorized || ! $is_valid_nonce || ! $show_data ) {
 			return;
 		}
 
+		$update_fields = $this->sanitize_show_meta( $post_id, $show_data );
+		$this->update_show_meta( $post_id, $update_fields );
+	}
+
+	/**
+	 * Sanitize show meta values.
+	 *
+	 * @since 1.0.0
+	 * @param int   $post_id The post ID.
+	 * @param array $show_data An array of meta values, keyed by field.
+	 */
+	public function sanitize_show_meta( $post_id, $show_data ) {
 		$update_fields = [];
 
-		if ( isset( $_POST['show_data'] ) ) {
-			$show_data = array_map( 'sanitize_textarea_field', wp_unslash( $_POST['show_data'] ) );
-
-			if ( isset( $show_data['datetime'] ) && $show_data['datetime'] ) {
-				$datetime                  = $show_data['datetime'];
-				$update_fields['datetime'] = Callboard_Functions::validate_date_string( $datetime ) ? $datetime : get_post_meta( $post_id, 'datetime', true );
-			}
-
-			if ( isset( $show_data['attendance'] ) ) {
-				$update_fields['attendance'] = $this->sanitize_attendance_string_to_array( $show_data['attendance'] );
-			}
+		if ( isset( $show_data['datetime'] ) && $show_data['datetime'] ) {
+			$datetime                  = $show_data['datetime'];
+			$update_fields['datetime'] = Callboard_Functions::validate_date_string( $datetime ) ? $datetime : get_post_meta( $post_id, 'datetime', true );
 		}
 
-		foreach ( $update_fields as $field => $new_value ) {
+		if ( isset( $show_data['attendance'] ) ) {
+			$update_fields['attendance'] = $this->sanitize_attendance_string_to_array( $show_data['attendance'] );
+		}
+
+		return $update_fields;
+	}
+
+	/**
+	 * Update the show meta fields.
+	 *
+	 * @since 1.0.0
+	 * @param int   $post_id The post ID.
+	 * @param array $fields The values to update, keyed by field.
+	 */
+	public function update_show_meta( $post_id, $fields ) {
+		foreach ( $fields as $field => $new_value ) {
 			if ( $new_value ) {
 				// Add or update the post meta.
 				update_post_meta( $post_id, $field, $new_value );

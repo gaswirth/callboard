@@ -1,7 +1,7 @@
 {
 	"name": "gaswirth/callboard",
 	"type": "wordpress-plugin",
-	"description": "Callboard core.",
+	"description": "Callboard.",
 	"keywords": [
 		"WordPress",
 		"Plugins"

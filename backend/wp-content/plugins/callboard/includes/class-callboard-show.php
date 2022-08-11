@@ -4,6 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 
@@ -12,6 +13,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 class Callboard_Show {
@@ -179,6 +181,7 @@ class Callboard_Show {
 	 * Save the metabox data.
 	 *
 	 * @since 0.0.2
+	 *
 	 * @param int $post_id The post ID.
 	 */
 	public function save_show_meta( $post_id ) {
@@ -200,7 +203,8 @@ class Callboard_Show {
 	 * Sanitize show meta values.
 	 *
 	 * @since 0.0.2
-	 * @param int   $post_id The post ID.
+	 *
+	 * @param int   $post_id   The post ID.
 	 * @param array $show_data An array of meta values, keyed by field.
 	 */
 	public function sanitize_show_meta( $post_id, $show_data ) {
@@ -222,8 +226,9 @@ class Callboard_Show {
 	 * Update the show meta fields.
 	 *
 	 * @since 0.0.2
+	 *
 	 * @param int   $post_id The post ID.
-	 * @param array $fields The values to update, keyed by field.
+	 * @param array $fields  The values to update, keyed by field.
 	 */
 	public function update_show_meta( $post_id, $fields ) {
 		foreach ( $fields as $field => $new_value ) {
@@ -259,7 +264,7 @@ class Callboard_Show {
 	/**
 	 * Validate an attendance status.
 	 *
-	 * @param string $status The attendance code to validate.
+	 * @param  string    $status The attendance code to validate.
 	 * @return boolean
 	 */
 	public function validate_attendance_status( $status ) {
@@ -273,8 +278,8 @@ class Callboard_Show {
 	/**
 	 * Sanitizes the values in an `attendance` meta field array.
 	 *
-	 * @param string $arr_string A multiline input string of user_id:status pairs.
-	 * @return array The assembled array.
+	 * @param  string $arr_string A multiline input string of user_id:status pairs.
+	 * @return array  The assembled array.
 	 */
 	public function convert_attendance_string_to_array( $arr_string ) {
 		// Convert the pairs to an array.

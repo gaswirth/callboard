@@ -43,7 +43,7 @@
         <exclude name="PEAR.Functions.FunctionCallSignature.MultipleArguments" />
         <exclude name="PEAR.Functions.FunctionCallSignature.OpeningIndent" />
 
-        <!-- <exclude name="Squiz.Commenting" /> -->
+        <exclude name="Squiz.Commenting" />
         <exclude name="Squiz.WhiteSpace.SuperfluousWhitespace.EndLine" />
 
         <exclude name="Universal.Arrays.DisallowShortArraySyntax.Found" />

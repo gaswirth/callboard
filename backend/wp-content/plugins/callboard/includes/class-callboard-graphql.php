@@ -4,6 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 
@@ -12,15 +13,16 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 class Callboard_GraphQL {
 	/**
 	 * The frontend app URL.
 	 *
-	 * @since 0.0.2
 	 * @access protected
 	 * @var string
+	 * @since 0.0.2
 	 */
 	protected $frontend_url;
 
@@ -28,6 +30,7 @@ class Callboard_GraphQL {
 	 * Constructor.
 	 *
 	 * @since 0.0.2
+	 *
 	 * @param string $frontend_url The frontend app URL.
 	 */
 	public function __construct( $frontend_url ) {
@@ -315,6 +318,7 @@ class Callboard_GraphQL {
 	 * Set CORS to allow frontend logins
 	 *
 	 * @since 0.0.2
+	 *
 	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.
 	 */

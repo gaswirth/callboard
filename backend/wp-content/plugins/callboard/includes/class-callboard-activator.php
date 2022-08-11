@@ -2,9 +2,10 @@
 /**
  * Fired during plugin activation
  *
- * @since   1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ *
+ * @since   0.0.2
  */
 
 /**
@@ -12,9 +13,10 @@
  *
  * This class defines all code necessary to run during the plugin's activation.
  *
- * @since   1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ *
+ * @since   0.0.2
  */
 class Callboard_Activator {
 	/**

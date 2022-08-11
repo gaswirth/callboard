@@ -4,6 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 
@@ -12,49 +13,50 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 class Callboard {
 	/**
 	 * The loader that handles maintaining and registering all hooks.
 	 *
-	 * @since 0.0.2
 	 * @access protected
 	 * @var Callboard_Loader
+	 * @since 0.0.2
 	 */
 	protected $loader;
 
 	/**
 	 * The plugin name.
 	 *
-	 * @since 0.0.2
 	 * @access protected
 	 * @var string
+	 * @since 0.0.2
 	 */
 	protected $plugin_name;
 
 	/**
 	 * The plugin version.
 	 *
-	 * @since 0.0.2
 	 * @access protected
 	 * @var string
+	 * @since 0.0.2
 	 */
 	protected $version;
 
 	/**
 	 * The headless frontend URL.
 	 *
-	 * @since 0.0.2
 	 * @var string
+	 * @since 0.0.2
 	 */
 	public $frontend_url;
 
 	/**
 	 * The datetime string format for use in sending to the backend.
 	 *
-	 * @since 0.0.2
 	 * @var string
+	 * @since 0.0.2
 	 */
 	public const DATETIME_FORMAT = 'm/d/Y h:i A';
 

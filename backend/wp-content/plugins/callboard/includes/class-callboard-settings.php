@@ -4,6 +4,7 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 
@@ -12,15 +13,16 @@
  *
  * @package Callboard
  * @subpackage Callboard/includes
+ *
  * @since 0.0.2
  */
 class Callboard_Settings {
 	/**
 	 * The main plugin option group.
 	 *
-	 * @since 0.0.2
 	 * @access private
 	 * @var string
+	 * @since 0.0.2
 	 */
 	private $option_group;
 
@@ -28,6 +30,7 @@ class Callboard_Settings {
 	 * Initialize the class and set its properties.
 	 *
 	 * @since 0.0.2
+	 *
 	 * @param string $plugin_name The name of the plugin.
 	 */
 	public function __construct( $plugin_name ) {
@@ -37,10 +40,10 @@ class Callboard_Settings {
 	/**
 	 * Register a settings field.
 	 *
-	 * @param string $key The setting key.
-	 * @param string $type The data type.
+	 * @param string $key               The setting key.
+	 * @param string $type              The data type.
 	 * @param string $sanitize_callback A sanitize function to run on the input value.
-	 * @param string $default The default field value. Defaults to ''.
+	 * @param string $default           The default field value. Defaults to ''.
 	 */
 	public function register_field( $key, $type, $sanitize_callback, $default = '' ) {
 		register_setting(

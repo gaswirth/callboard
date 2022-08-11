@@ -120,7 +120,7 @@ class Callboard_Show {
 
 		$meta = get_post_meta( $post->ID );
 
-		$attendance = isset( $meta['attendance'] ) ? esc_textarea( Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) ) : '';
+		$attendance = isset( $meta['attendance'] ) ? esc_textarea( $this->format_attendance_array_for_textarea( $meta['attendance'][0] ) ) : '';
 
 		echo '<style>
 				.columns {
@@ -196,7 +196,7 @@ class Callboard_Show {
 			}
 
 			if ( isset( $show_data['attendance'] ) && $show_data['attendance'] ) {
-				$update_fields['attendance'] = Callboard_Functions::sanitize_attendance_string_to_array( $show_data['attendance'] );
+				$update_fields['attendance'] = $this->sanitize_attendance_string_to_array( $show_data['attendance'] );
 			}
 		}
 
@@ -209,5 +209,55 @@ class Callboard_Show {
 				delete_post_meta( $post_id, $field );
 			}
 		}
+	}
+
+	/**
+	 * Converts the $user_id => $status key/value pairs to a string (one per line) for backend use.
+	 *
+	 * @param  array|string $attendance The attendance array of $user_id => $status.
+	 * @return string       The formatted string of key : value pairs.
+	 */
+	public function format_attendance_array_for_textarea( $attendance ) {
+		if ( is_string( $attendance ) ) {
+			$attendance = maybe_unserialize( $attendance );
+		}
+
+		$lines = [];
+		foreach ( $attendance as $user_id => $status ) {
+			$lines[] = sprintf( '%1$s : %2$s', $user_id, $status );
+		}
+
+		return implode( "\n", $lines );
+	}
+
+	/**
+	 * Sanitizes the values in an `attendance` meta field array.
+	 *
+	 * @param string $arr_string A multiline input string of user_id:status pairs.
+	 * @return array The assembled array.
+	 */
+	public function sanitize_attendance_string_to_array( $arr_string ) {
+		// MAYBE Allow only valid status values (in/out/vac/pd).
+
+		// Serialize the data first.
+		$array = preg_split( '/\r\n|\r|\n/', $arr_string );
+
+		$value = [];
+		foreach ( $array as $item ) {
+			// loop through and sanitize each value, then `update_post_meta`.
+			$result = preg_match( '/(.*):(.*)$/', $item, $matches );
+
+			/**
+			 * $matches[1]: key
+			 * $matches[2]: value
+			 *
+			 * Trim whitespace from beginning and end of both `key` and `value`.
+			 */
+			if ( $result && isset( $matches[1] ) && isset( $matches[2] ) ) {
+				$value[esc_textarea( trim( $matches[1] ) )] = trim( $matches[2] );
+			}
+		}
+
+		return $value;
 	}
 }

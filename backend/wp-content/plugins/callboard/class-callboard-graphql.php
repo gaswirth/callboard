@@ -22,16 +22,16 @@ class Callboard_GraphQL {
 	 * @access protected
 	 * @var string
 	 */
-	protected $headless_frontend_url;
+	protected $frontend_url;
 
 	/**
 	 * Constructor.
 	 *
 	 * @since 1.0.0
-	 * @param string $headless_frontend_url The frontend app URL.
+	 * @param string $frontend_url The frontend app URL.
 	 */
-	public function __construct( $headless_frontend_url ) {
-		$this->headless_frontend_url = $headless_frontend_url;
+	public function __construct( $frontend_url ) {
+		$this->frontend_url = $frontend_url;
 	}
 
 	/**
@@ -326,10 +326,10 @@ class Callboard_GraphQL {
 	public function response_headers_to_send( $headers ) {
 		$http_origin     = get_http_origin();
 		$allowed_origins = [
-			$this->headless_frontend_url,
+			$this->frontend_url,
 		];
 
-		// If the request is coming from an allowed origin (HEADLESS_FRONTEND_URL), tell the browser it can accept the response.
+		// If the request is coming from an allowed origin (FRONTEND_URL), tell the browser it can accept the response.
 		if ( in_array( $http_origin, $allowed_origins, true ) ) {
 			$headers['Access-Control-Allow-Origin'] = $http_origin;
 		}

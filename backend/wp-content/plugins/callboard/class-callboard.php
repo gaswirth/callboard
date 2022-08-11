@@ -47,7 +47,7 @@ class Callboard {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public const HEADLESS_FRONTEND_URL = 'http://localhost'; // TODO set this in options somewhere.
+	public const FRONTEND_URL = 'http://localhost'; // TODO set this in options somewhere.
 
 	/**
 	 * The datetime string format for use in sending to the backend.
@@ -140,7 +140,7 @@ class Callboard {
 	 * @since 1.0.0
 	 */
 	public function register_graphql_hooks() {
-		$hooks = new Callboard_GraphQL( self::HEADLESS_FRONTEND_URL );
+		$hooks = new Callboard_GraphQL( self::FRONTEND_URL );
 
 		$this->loader->add_action( 'graphql_register_types', $hooks, 'register_types' );
 		$this->loader->add_filter( 'graphql_register_types', $hooks, 'register_mutations' );

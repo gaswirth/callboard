@@ -87,12 +87,12 @@ class Callboard {
 	 * @since 0.0.2
 	 */
 	public function load_dependencies() {
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-loader.php';
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-settings.php';
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-show.php';
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-users.php';
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-functions.php';
-		require_once CALLBOARD_PLUGIN_PATH . 'class-callboard-graphql.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-loader.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-settings.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-show.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-users.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-functions.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-graphql.php';
 
 		$this->loader = new Callboard_Loader();
 	}

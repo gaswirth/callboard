@@ -13,7 +13,6 @@
  * Constants.
  */
 define( 'CALLBOARD_VERSION', '0.0.2' );
-define( 'CALLBOARD_CORE', __FILE__ );
 define( 'CALLBOARD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 /**
@@ -44,7 +43,7 @@ register_deactivation_hook( __FILE__, 'deactivate_callboard' );
 /**
  * The core plugin class.
  */
-require_once CALLBOARD_PLUGIN_PATH . 'class-callboard.php';
+require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard.php';
 
 /**
  * Begins execution of the plugin.

@@ -1,3 +1,4 @@
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/b12a9e9bf450419a93b0ed6b775cf453)](https://app.codacy.com/gh/gaswirth/callboard?utm_source=github.com&utm_medium=referral&utm_content=gaswirth/callboard&utm_campaign=Badge_Grade_Settings)
 [![DeepScan grade](https://deepscan.io/api/teams/14424/projects/21921/branches/639584/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=14424&pid=21921&bid=639584)
 
 # Callboard

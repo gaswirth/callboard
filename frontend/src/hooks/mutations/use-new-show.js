@@ -13,7 +13,7 @@ export const MUTATE_NEW_SHOW = gql`
 export const useNewShow = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_NEW_SHOW);
 
-	// TODO make sure date time is unique?
+	// TODO make sure datetime is unique?
 	const newShowMutation = (datetime) => {
 		return mutation({
 			variables: {

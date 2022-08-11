@@ -31,12 +31,24 @@ class Callboard_Functions extends Callboard {
 	/**
 	 * Validates a date string against a format.
 	 *
-	 * @param  string $date   The datetime string.
-	 * @param  string $format The desired php Date format.
+	 * @param  string $datetime The datetime string.
+	 * @param  string $format   The desired php Date format.
 	 * @return boolean True if the date is properly formatted, false otherwise.
 	 */
-	public static function validate_date_string( $date, $format = CALLBOARD_DATETIME_FORMAT ) {
-		$d = DateTime::createFromFormat( $format, $date );
-		return $d && $d->format( $format ) === $date;
+	public static function validate_date_string( $datetime, $format = Callboard::CALLBOARD_DATETIME_FORMAT ) {
+		$date = DateTime::createFromFormat( $format, $datetime );
+		return $date && $date->format( $format ) === $datetime;
+	}
+
+	/**
+	 * Changes a date string to another format.
+	 *
+	 * @param string $datetime The datetime string to format.
+	 * @param string $format   The format to which to convert the string.
+	 * @return string The formatted datetime string.
+	 */
+	public static function format_date_string( $datetime, $format = Callboard::CALLBOARD_DATETIME_FORMAT ) {
+		$date = new DateTime( $datetime );
+		return $date->format( $format );
 	}
 }

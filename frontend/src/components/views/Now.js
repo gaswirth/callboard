@@ -1,5 +1,6 @@
 import React from 'react';
 import { Skeleton } from '@mui/material';
+
 import ShowTable from 'components/common/ShowTable';
 import { useLatestShow } from 'hooks/queries/use-latest-show';
 

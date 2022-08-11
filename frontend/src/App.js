@@ -5,7 +5,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import Main from './components/Main';
 
-// import ProductionContext, { productionReducer, initialProduction } from './context/ProductionContext';
 import { ProductionProvider } from './context/ProductionContext';
 import { AuthContextProvider } from './context/AuthContext';
 

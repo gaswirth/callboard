@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Grid, Stack, Button, TextField, Skeleton } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+
 import ViewHeading from 'components/common/ViewHeading';
 import ShowTable from 'components/common/ShowTable';
+
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
@@ -47,7 +49,7 @@ export default function Admin() {
 			</Grid>
 			<Grid item xs={4}>
 				<Stack spacing={2}>
-					<ViewHeading variant="h6">This Show</ViewHeading>
+					<ViewHeading variant="h6">Current Show</ViewHeading>
 					{showLoading ? (
 						<Skeleton>
 							<ShowTable />
@@ -69,6 +71,7 @@ export default function Admin() {
 									onChange={(newValue) => setNewShowDateTime(newValue)}
 									renderInput={(params) => <TextField {...params} />}
 								/>
+								{/* TODO Show ID text field with pre-filled incremented value */}
 								<Button
 									variant="contained"
 									size="large"

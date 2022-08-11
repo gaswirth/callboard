@@ -1,6 +1,7 @@
 import React, { useContext, useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
+import { visuallyHidden } from '@mui/utils';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
@@ -113,7 +114,7 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 									textTransform: 'uppercase',
 								}}
 							>
-								<Typography variant="button" sx={{ fontSize: '1.1em' }}>
+								<Typography variant="button" sx={{ fontSize: '1.1em', ...visuallyHidden }}>
 									Company Member
 								</Typography>
 							</TableCell>

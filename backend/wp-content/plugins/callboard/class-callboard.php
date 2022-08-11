@@ -31,6 +31,11 @@ class Callboard {
 	public const HEADLESS_FRONTEND_URL = 'http://localhost'; // TODO set this in options somewhere.
 
 	/**
+	 * The datetime string format for use in sending to the backend.
+	 */
+	public const CALLBOARD_DATETIME_FORMAT = 'm/d/Y h:i A';
+
+	/**
 	 * Data fields to handle for the `show` post type.
 	 */
 	private const SHOW_DATA_FIELDS = [
@@ -73,7 +78,7 @@ class Callboard {
 	public function define_public_hooks() {
 		add_action( 'init', [$this, 'register_cpt_show'] );
 		add_filter( 'init', [$this, 'register_settings_fields'] );
-		add_action( 'save_post', [$this, 'save_show_meta'], 1, 2 );
+		add_action( 'save_post', [$this, 'save_show_meta'], 10, 1 );
 	}
 
 	/**
@@ -229,7 +234,7 @@ class Callboard {
 					<label for="show_data[datetime]">
 						%2$s: <code><a href="https://www.php.net/manual/en/datetime.format.php" target="_blank">%3$s</a></code>
 					</label>
-					<input type="text" id="show_data[datetime]" name="show_data[datetime]" placeholder="10/12/2022 08:00 PM" value="%4$s>">
+					<input type="text" id="show_data[datetime]" name="show_data[datetime]" placeholder="10/12/2022 08:00 PM" value="%4$s">
 				</div>
 				<div class="column">
 					<label for="show_data[attendance]">Attendance</label>
@@ -240,7 +245,7 @@ class Callboard {
 			</div>',
 			esc_html__( 'WARNING: DO NOT EDIT THESE FIELDS MANUALLY.', 'callboard' ),
 			esc_html__( 'Date Format', 'callboard' ),
-			esc_textarea( CALLBOARD_DATETIME_FORMAT, 'callboard' ),
+			esc_textarea( self::CALLBOARD_DATETIME_FORMAT, 'callboard' ),
 			isset( $meta['datetime'] ) ? esc_textarea( $meta['datetime'][0] ) : '',
 			esc_html__( 'Format each pair on a separate line as', 'callboard' ),
 			implode( '</code><code>', ['in', 'out', 'vac', 'pd'] ),
@@ -251,10 +256,10 @@ class Callboard {
 	/**
 	 * Save the metabox data.
 	 *
-	 * @param int     $post_id The post ID.
-	 * @param WP_Post $post    The post object.
+	 * @param int $post_id The post ID.
+	 * @return void
 	 */
-	public function save_show_meta( $post_id, $post ) {
+	public function save_show_meta( $post_id ) {
 		// Abort conditions.
 		$is_autosave        = wp_is_post_autosave( $post_id );
 		$is_revision        = wp_is_post_revision( $post_id );

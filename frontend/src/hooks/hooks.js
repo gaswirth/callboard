@@ -1,5 +1,5 @@
 /**
- * Hooks.
+ *  Generally useful hooks.
  */
 
 import { useEffect, useRef, useState } from 'react';

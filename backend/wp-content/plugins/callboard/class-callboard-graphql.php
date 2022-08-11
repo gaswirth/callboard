@@ -216,7 +216,7 @@ class Callboard_GraphQL extends Callboard {
 						'description' => __( 'The newly created Show ID', 'callboard' ),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input, $context, $info ) {
+				'mutateAndGetPayload' => function ( $input ) {
 					$new_show_id = null;
 
 					$last_show = get_posts(
@@ -233,14 +233,13 @@ class Callboard_GraphQL extends Callboard {
 					// TODO `show_number` field that can be autofilled with this value, and also changed? Or just do this with `post_title` even?
 					$post_title = absint( $last_show[0]->post_title ) + 1;
 
-					// FIXME Input datetime wrong format.
 					$new_show_id = wp_insert_post(
 						[
 							'post_type'   => 'show',
 							'post_status' => 'publish',
 							'post_title'  => $post_title,
 							'meta_input'  => [
-								'datetime' => $input['datetime'],
+								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
 							],
 						]
 					);

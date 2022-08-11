@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Container } from '@mui/system';
 import { Box, Button, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
-import Header from './Header';
-import TabPanel from './common/TabPanel';
-import Login from './common/Login';
+
+import Header from 'components/Header';
+import TabPanel from 'components/common/TabPanel';
+import Login from 'components/common/Login';
 
 import { useLogoutMutation } from 'hooks/mutations/use-logout-mutation';
 import { useRoster } from 'hooks/queries/use-roster';

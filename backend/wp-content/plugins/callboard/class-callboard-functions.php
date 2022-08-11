@@ -3,10 +3,16 @@
  * Utilities and helper functions.
  *
  * @package Callboard
+ * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 
 /**
  * Callboard functions.
+ *
+ * @package Callboard
+ * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_Functions extends Callboard {
 	/**

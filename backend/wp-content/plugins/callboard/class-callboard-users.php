@@ -2,17 +2,17 @@
 /**
  * Registration of user meta fields.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 
 /**
  * Sets up custom data for Users.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_Users {
 	/**

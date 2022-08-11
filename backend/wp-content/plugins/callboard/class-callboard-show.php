@@ -2,17 +2,17 @@
 /**
  * `Shows` data type.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 
 /**
  * Callboard_Show class.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_Show {
 	/**
@@ -195,7 +195,7 @@ class Callboard_Show {
 				$update_fields['datetime'] = Callboard_Functions::validate_date_string( $datetime ) ? $datetime : get_post_meta( $post_id, 'datetime', true );
 			}
 
-			if ( isset( $show_data['attendance'] ) && $show_data['attendance'] ) {
+			if ( isset( $show_data['attendance'] ) ) {
 				$update_fields['attendance'] = $this->sanitize_attendance_string_to_array( $show_data['attendance'] );
 			}
 		}

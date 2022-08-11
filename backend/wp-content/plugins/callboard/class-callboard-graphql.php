@@ -2,17 +2,17 @@
 /**
  * GraphQL.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 
 /**
  * Callboard_GraphQL class.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_GraphQL {
 	/**
@@ -66,8 +66,6 @@ class Callboard_GraphQL {
 
 		/**
 		 * Registers the `show` custom fields.
-		 *
-		 * @since 1.0.0
 		 */
 		register_graphql_fields(
 			'Show',
@@ -95,8 +93,6 @@ class Callboard_GraphQL {
 
 		/**
 		 * Create the `companyMembers` field on the RootQuery to return a list of users with the 'company_member' user role.
-		 *
-		 * @since 1.0.0
 		 */
 		register_graphql_field(
 			'RootQuery',
@@ -300,7 +296,7 @@ class Callboard_GraphQL {
 						'description' => __( 'The updated status.', 'callboard' ),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input, $context, $info ) {
+				'mutateAndGetPayload' => function ( $input ) {
 					$attendance                                    = get_post_meta( $input['showId'], 'attendance', true );
 					$updated_attendance                            = $attendance ? $attendance : [];
 					$updated_attendance[$input['companyMemberId']] = $input['status'];

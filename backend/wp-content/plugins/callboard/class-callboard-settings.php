@@ -2,17 +2,17 @@
 /**
  * Registers all plugin settings.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 
 /**
  * Handles all global plugin settings and options.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_Settings {
 	/**

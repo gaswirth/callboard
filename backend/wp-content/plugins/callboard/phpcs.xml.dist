@@ -35,7 +35,7 @@
         <!-- <exclude name="Generic.Commenting" /> -->
         <exclude name="Generic.PHP.DisallowShortOpenTag.EchoFound" />
         <exclude name="Generic.Formatting.MultipleStatementAlignment.NotSameWarning" />
-        <!-- <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" /> -->
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent.SpacesUsed" />
 
         <exclude name="PEAR.Functions.FunctionCallSignature.CloseBracketLine" />
         <exclude name="PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket" />

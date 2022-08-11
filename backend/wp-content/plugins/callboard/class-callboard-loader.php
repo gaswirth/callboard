@@ -2,9 +2,9 @@
 /**
  * Register all actions and filters.
  *
- * @since   1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since   1.0.0
  */
 
 /**
@@ -14,9 +14,9 @@
  * the plugin, and register them with the WordPress API. Call the
  * run function to execute the list of actions and filters.
  *
- * @since 1.0.0
  * @package Callboard
  * @subpackage Callboard/includes
+ * @since 1.0.0
  */
 class Callboard_Loader {
 

@@ -131,11 +131,22 @@ class Callboard_GraphQL {
 	 * @since 0.0.2
 	 */
 	public function register_mutations() {
-		/**
-		 * Login mutation (HTTP Cookies).
-		 */
+		$this->register_login_mutation();
+		$this->register_logout_mutation();
+		$this->register_new_show_mutation();
+		$this->register_update_show_attendance_mutation();
+	}
+
+	/**
+	 * Login mutation with HTTP Cookies.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	protected function register_login_mutation() {
 		register_graphql_mutation(
-			'loginWithCookies',
+			'login',
 			[
 				'inputFields'         => [
 					'login'    => [
@@ -192,12 +203,16 @@ class Callboard_GraphQL {
 				},
 			]
 		);
+	}
 
-		/**
-		 * Logout mutation.
-		 *
-		 * @since 0.0.2
-		 */
+	/**
+	 * Logout mutation.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	protected function register_logout_mutation() {
 		register_graphql_mutation(
 			'logout',
 			[
@@ -217,10 +232,16 @@ class Callboard_GraphQL {
 				},
 			]
 		);
+	}
 
-		/**
-		 * Create a new show, and update the `current_show` setting.
-		 */
+	/**
+	 * Mutation for creating a new show.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	protected function register_new_show_mutation() {
 		register_graphql_mutation(
 			'newShow',
 			[
@@ -269,10 +290,16 @@ class Callboard_GraphQL {
 				},
 			]
 		);
+	}
 
-		/**
-		 * Update a show's attendance status array.
-		 */
+	/**
+	 * Mutation for updating a show's attendance status array.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	protected function register_update_show_attendance_mutation() {
 		register_graphql_mutation(
 			'updateShowAttendance',
 			[

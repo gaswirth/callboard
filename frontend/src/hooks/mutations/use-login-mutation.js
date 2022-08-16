@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client';
 
 const MUTATE_LOGIN = gql`
-	mutation LoginUser($input: LoginWithCookiesInput!) {
-		loginWithCookies(input: $input) {
+	mutation LoginUser($input: LoginInput!) {
+		login(input: $input) {
 			clientMutationId
 			userId
 			roles

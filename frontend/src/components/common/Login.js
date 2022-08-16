@@ -22,7 +22,7 @@ export default function Login() {
 
 	const onLogin = ({ data }) => {
 		const {
-			loginWithCookies: { status, userId, roles },
+			login: { status, userId, roles },
 		} = data;
 
 		if ('SUCCESS' === status) {

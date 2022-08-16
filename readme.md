@@ -3,7 +3,7 @@
 
 # Callboard
 
-## A web app for contactless employee sign-in with a management interface.
+## A web app for contactless cast/performer sign-in for performing arts companies.
 
 This monorepo holds the backend and frontend components for a complete installation.
 

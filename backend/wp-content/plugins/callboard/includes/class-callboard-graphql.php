@@ -242,21 +242,6 @@ class Callboard_GraphQL {
 					],
 				],
 				'mutateAndGetPayload' => function ( $input ) {
-					$new_show_id = null;
-
-					$last_show = get_posts(
-						[
-							'post_type'      => 'show',
-							'posts_per_page' => 1,
-							'post_status'    => 'publish',
-						]
-					);
-
-					/**
-					 * If no title specified, start or increment the show count (title).
-					 */
-					$post_title = $input['title'] ? $input['title'] : absint( $last_show[0]->post_title ) + 1;
-
 					/**
 					 * Create the new show.
 					 */
@@ -264,7 +249,7 @@ class Callboard_GraphQL {
 						[
 							'post_type'   => 'show',
 							'post_status' => 'publish',
-							'post_title'  => sanitize_text_field( $post_title ),
+							'post_title'  => $input['title'] ? sanitize_text_field( $input['title'] ) : '',
 							'meta_input'  => [
 								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
 							],

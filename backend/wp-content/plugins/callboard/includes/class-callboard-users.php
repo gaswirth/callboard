@@ -22,9 +22,18 @@ class Callboard_Users {
 	 *
 	 * @since 0.0.2
 	 */
-	public static function add_company_member_role() {
+	public function add_company_member_role() {
 		$subscriber = get_role( 'subscriber' );
 		add_role( 'company_member', __( 'Company Member', 'callboard' ), $subscriber->capabilities );
+	}
+
+	/**
+	 * Remove the Company Member role.
+	 *
+	 * @return void
+	 */
+	public static function remove_company_member_role() {
+		remove_role( 'company_member' );
 	}
 
 	/**

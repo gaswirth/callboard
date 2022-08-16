@@ -25,6 +25,9 @@ class Callboard_Deactivator {
 	 * @since 0.0.2
 	 */
 	public static function deactivate() {
-		// TODO Deactivation actions.
+		Callboard_Show::unregister_cpt_show();
+		Callboard_Users::remove_company_member_role();
+
+		flush_rewrite_rules();
 	}
 }

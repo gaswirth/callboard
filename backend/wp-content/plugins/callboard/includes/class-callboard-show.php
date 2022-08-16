@@ -102,6 +102,16 @@ class Callboard_Show {
 	}
 
 	/**
+	 * Unregister the post type to remove it from memory.
+	 *
+	 * @access static
+	 * @return void
+	 */
+	public static function unregister_cpt_show() {
+		unregister_post_type( 'show' );
+	}
+
+	/**
 	 * Adds `show` CPT meta boxes.
 	 *
 	 * @since 0.0.2

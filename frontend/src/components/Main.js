@@ -7,6 +7,7 @@ import Header from 'components/Header';
 import TabPanel from 'components/common/TabPanel';
 import Login from 'components/common/Login';
 
+import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useLogoutMutation } from 'hooks/mutations/use-logout-mutation';
 import { useRoster } from 'hooks/queries/use-roster';
 
@@ -24,6 +25,8 @@ export default function Main() {
 	const { user, setUser } = useContext(AuthContext);
 	const { logoutMutation } = useLogoutMutation();
 	const [logoutErrorCode, setLogoutErrorCode] = useState('');
+
+	const { error: backendError } = useCompanyName();
 
 	const [currentTab, setCurrentTab] = useState('now');
 
@@ -56,7 +59,11 @@ export default function Main() {
 		setCurrentTab(newValue);
 	};
 
-	return (
+	return backendError ? (
+		<Typography variant="h5" textAlign="center" sx={{ my: 2 }}>
+			Could not initialize Callboard. Please ensure the server is running and the Callboard plugin is active.
+		</Typography>
+	) : (
 		<>
 			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
 			{!user?.id ? (

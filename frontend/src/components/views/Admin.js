@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Stack, Button, TextField, Skeleton } from '@mui/material';
+import { Grid, Stack, Button, TextField, Skeleton, Typography } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import ViewHeading from 'components/common/ViewHeading';
@@ -12,27 +12,34 @@ export default function Admin() {
 	const { data: showData, loading: showLoading } = useRecentShows();
 	const { newShowMutation } = useNewShow();
 
-	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
 	const [newShowTitle, setNewShowTitle] = useState('');
+	const [newShowError, setNewShowError] = useState('');
 
 	/**
-	 * Store the number of shows retrieved.
+	 * Clear any error messages when trying a new date.
 	 */
 	useEffect(() => {
-		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
-	}, [showData?.shows.nodes]);
+		if (newShowDateTime && newShowError) setNewShowError('');
+	}, [newShowDateTime, newShowError]);
 
+	/**
+	 * Open the New Show dialog.
+	 */
 	const handleNewShowClick = () => {
 		setNewShowClicked(true);
+	};
+
+	const handleDateTimePickerChange = (value) => {
+		setNewShowDateTime(value);
 	};
 
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
 	const handleSubmitNewShow = () => {
-		newShowMutation(newShowDateTime, newShowTitle);
+		newShowMutation(newShowDateTime, newShowTitle).catch((errors) => setNewShowError(errors.message));
 
 		// Clear the new show fields.
 		setNewShowDateTime(null);
@@ -78,9 +85,14 @@ export default function Admin() {
 								<DateTimePicker
 									label="Show Date and Time"
 									value={newShowDateTime}
-									onChange={(newValue) => setNewShowDateTime(newValue)}
+									onChange={handleDateTimePickerChange}
 									renderInput={(params) => <TextField {...params} />}
 								/>
+								{newShowError ? (
+									<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
+										{newShowError}
+									</Typography>
+								) : null}
 								<TextField
 									label="Next Show Number/ID"
 									variant="outlined"

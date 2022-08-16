@@ -243,6 +243,13 @@ class Callboard_GraphQL {
 				],
 				'mutateAndGetPayload' => function ( $input ) {
 					/**
+					 * Make sure this datetime is unique.
+					 */
+					if ( self::check_unique_datetime( $input['datetime'] ) === false ) {
+						throw new \GraphQL\Error\Error( __( 'A show already exists with that date and time.', 'callboard' ) );
+					}
+
+					/**
 					 * Create the new show.
 					 */
 					$new_show_id = wp_insert_post(
@@ -304,6 +311,29 @@ class Callboard_GraphQL {
 				},
 			]
 		);
+	}
+
+	/**
+	 * Checks if a show exists with a certain `datetime` meta value.
+	 *
+	 * @param  string  $datetime The `datetime` meta value to query for.
+	 * @return boolean True if the datetime is unique, false otherwise.
+	 */
+	public function check_unique_datetime( $datetime ) {
+		$shows = get_posts( [
+			'post_type'  => 'show',
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => [
+				[
+					'key'            => 'datetime',
+					'value'          => Callboard_Functions::format_date_string( $datetime ),
+					'compare'        => '=',
+					'posts_per_page' => 1,
+				],
+			],
+		] );
+
+		return $shows ? false : true;
 	}
 
 	/**

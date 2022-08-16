@@ -2,9 +2,11 @@
 /**
  * Redirect theme requests to frontend.
  *
- * @author WebDevStudios
  * @package wds-headless-theme
+ *
+ * @author WebDevStudios
+ *
  * @since 1.0.0
  */
 
-header( 'Location:' . Callboard::HEADLESS_FRONTEND_URL, true, 303 );
+header( 'Location:' . get_option( 'callboard_frontend_url' ), true, 303 );

@@ -15,6 +15,7 @@ export default function Admin() {
 	const [showCount, setShowCount] = useState(0);
 	const [newShowClicked, setNewShowClicked] = useState(false);
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
+	const [newShowTitle, setNewShowTitle] = useState('');
 
 	/**
 	 * Store the number of shows retrieved.
@@ -23,42 +24,51 @@ export default function Admin() {
 		if (showData?.shows.nodes.length > 0) setShowCount(showData.shows.nodes.length);
 	}, [showData?.shows.nodes]);
 
+	const handleNewShowClick = () => {
+		setNewShowClicked(true);
+	};
+
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
 	const handleSubmitNewShow = () => {
-		newShowMutation(newShowDateTime);
+		newShowMutation(newShowDateTime, newShowTitle);
 
-		// Clear the dateTime field.
+		// Clear the new show fields.
 		setNewShowDateTime(null);
+		setNewShowTitle('');
 	};
 
-	return showCount > 0 ? (
+	return (
 		<Grid container spacing={5}>
-			<Grid item xs={4}>
-				<Stack spacing={2}>
-					<ViewHeading variant="h6">Last Show</ViewHeading>
-					{showLoading ? (
-						<Skeleton>
-							<ShowTable />
-						</Skeleton>
-					) : (
-						<ShowTable shows={[showData.shows.nodes[1]]} />
-					)}
-				</Stack>
-			</Grid>
-			<Grid item xs={4}>
-				<Stack spacing={2}>
-					<ViewHeading variant="h6">Current Show</ViewHeading>
-					{showLoading ? (
-						<Skeleton>
-							<ShowTable />
-						</Skeleton>
-					) : (
-						<ShowTable shows={[showData.shows.nodes[0]]} />
-					)}
-				</Stack>
-			</Grid>
+			{showData?.shows.nodes[1] ? (
+				<Grid item xs={4}>
+					<Stack spacing={2}>
+						<ViewHeading variant="h6">Last Show</ViewHeading>
+						{showLoading ? (
+							<Skeleton>
+								<ShowTable />
+							</Skeleton>
+						) : (
+							<ShowTable shows={[showData.shows.nodes[1]]} />
+						)}
+					</Stack>
+				</Grid>
+			) : null}
+			{showData?.shows.nodes[0] ? (
+				<Grid item xs={4}>
+					<Stack spacing={2}>
+						<ViewHeading variant="h6">Current Show</ViewHeading>
+						{showLoading ? (
+							<Skeleton>
+								<ShowTable />
+							</Skeleton>
+						) : (
+							<ShowTable shows={[showData.shows.nodes[0]]} />
+						)}
+					</Stack>
+				</Grid>
+			) : null}
 			<Grid item xs={4}>
 				<Stack spacing={2}>
 					<ViewHeading variant="h6">Actions</ViewHeading>
@@ -71,7 +81,12 @@ export default function Admin() {
 									onChange={(newValue) => setNewShowDateTime(newValue)}
 									renderInput={(params) => <TextField {...params} />}
 								/>
-								{/* TODO Show ID text field with pre-filled incremented value */}
+								<TextField
+									label="Next Show Number/ID"
+									variant="outlined"
+									value={newShowTitle}
+									onChange={(event) => setNewShowTitle(event.target.value)}
+								/>
 								<Button
 									variant="contained"
 									size="large"
@@ -82,7 +97,7 @@ export default function Admin() {
 								</Button>
 							</>
 						) : (
-							<Button variant="contained" size="large" onClick={() => setNewShowClicked(true)}>
+							<Button variant="contained" size="large" onClick={handleNewShowClick}>
 								Start New Show
 							</Button>
 						)}
@@ -99,7 +114,5 @@ export default function Admin() {
 				)}
 			</Grid>
 		</Grid>
-	) : (
-		''
 	);
 }

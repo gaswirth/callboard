@@ -91,7 +91,7 @@ class Callboard_Show {
 				'with_front' => true,
 			],
 			'query_var'             => true,
-			'supports'              => [''],
+			'supports'              => ['title'],
 			'show_in_graphql'       => true,
 			'graphql_single_name'   => 'Show',
 			'graphql_plural_name'   => 'Shows',

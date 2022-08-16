@@ -230,6 +230,10 @@ class Callboard_GraphQL {
 						'type'        => 'String',
 						'description' => __( 'Date and time string', 'callboard' ),
 					],
+					'title'       => [
+						'type'        => 'String',
+						'description' => __( 'Show Title/Number/ID. Can be left blank to use as a counter.', 'callboard' ),
+					],
 				],
 				'outputFields'        => [
 					'newShowId' => [
@@ -249,15 +253,18 @@ class Callboard_GraphQL {
 					);
 
 					/**
-					 * Increment the show count (title)
+					 * If no title specified, start or increment the show count (title).
 					 */
-					$post_title = absint( $last_show[0]->post_title ) + 1;
+					$post_title = $input['title'] ? $input['title'] : absint( $last_show[0]->post_title ) + 1;
 
+					/**
+					 * Create the new show.
+					 */
 					$new_show_id = wp_insert_post(
 						[
 							'post_type'   => 'show',
 							'post_status' => 'publish',
-							'post_title'  => $post_title,
+							'post_title'  => sanitize_text_field( $post_title ),
 							'meta_input'  => [
 								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
 							],

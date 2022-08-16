@@ -118,50 +118,48 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 									Company Member
 								</Typography>
 							</TableCell>
-							{!isEmpty(shows)
-								? shows.map((show) => {
-										const { databaseId: id, datetime, notes } = show;
+							{shows.map((show) => {
+								const { databaseId: id, datetime, notes } = show;
 
-										return (
-											<TableCell key={id}>
-												<Typography
-													variant="button"
-													id={id}
-													lineHeight={1.2}
-													sx={{
-														cursor: 'default',
-														display: 'block',
-														p: 1,
-														borderRadius: 1,
-														fontSize: '1.1em',
-													}}
-													aria-haspopup="true"
-													onMouseEnter={handlePopoverOpen}
-													onMouseLeave={handlePopoverClose}
-												>
-													{showLabel(datetime)}
-												</Typography>
-												<Popover
-													sx={{ pointerEvents: 'none' }}
-													open={!!anchorEl[id]}
-													anchorEl={anchorEl[id]}
-													anchorOrigin={{
-														vertical: 'bottom',
-														horizontal: 'left',
-													}}
-													onClose={handlePopoverClose}
-													disableRestoreFocus
-												>
-													{show.notes ? (
-														<Typography sx={{ p: 2 }}>{notes}</Typography>
-													) : (
-														<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
-													)}
-												</Popover>
-											</TableCell>
-										);
-								  })
-								: null}
+								return (
+									<TableCell key={id}>
+										<Typography
+											variant="button"
+											id={id}
+											lineHeight={1.2}
+											sx={{
+												cursor: 'default',
+												display: 'block',
+												p: 1,
+												borderRadius: 1,
+												fontSize: '1.1em',
+											}}
+											aria-haspopup="true"
+											onMouseEnter={handlePopoverOpen}
+											onMouseLeave={handlePopoverClose}
+										>
+											{showLabel(datetime)}
+										</Typography>
+										<Popover
+											sx={{ pointerEvents: 'none' }}
+											open={!!anchorEl[id]}
+											anchorEl={anchorEl[id]}
+											anchorOrigin={{
+												vertical: 'bottom',
+												horizontal: 'left',
+											}}
+											onClose={handlePopoverClose}
+											disableRestoreFocus
+										>
+											{show.notes ? (
+												<Typography sx={{ p: 2 }}>{notes}</Typography>
+											) : (
+												<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
+											)}
+										</Popover>
+									</TableCell>
+								);
+							})}
 						</TableRow>
 					</TableHead>
 					<TableBody>

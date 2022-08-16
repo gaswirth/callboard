@@ -14,12 +14,13 @@ export const useNewShow = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_NEW_SHOW);
 
 	// TODO make sure datetime is unique?
-	const newShowMutation = (datetime) => {
+	const newShowMutation = (datetime, title) => {
 		return mutation({
 			variables: {
 				input: {
 					clientMutationId: 'newShowMutation',
 					datetime: formatISO(datetime),
+					title: title ? title : '',
 				},
 			},
 		});

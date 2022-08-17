@@ -26,7 +26,8 @@ export default function Header({ currentTab, handleTabChange }) {
 							sx={{ flexGrow: 1 }}
 						>
 							<Tab value="now" label="Now" />
-							{user?.isAdmin ? <Tab value="admin" label="Admin" /> : null}
+							{user?.isAdmin ? <Tab value="roster" label="Roster" /> : null}
+							{user?.isAdmin ? <Tab value="showControl" label="Show Control" /> : null}
 						</Tabs>
 					) : null}
 

@@ -5,7 +5,6 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
 import Main from './components/Main';
 
-import { ProductionProvider } from './context/ProductionContext';
 import { AuthContextProvider } from './context/AuthContext';
 
 /**
@@ -15,7 +14,6 @@ const httpLink = createHttpLink({
 	uri: '/graphql',
 	credentials: 'include',
 });
-
 const client = new ApolloClient({
 	link: httpLink,
 	cache: new InMemoryCache(),
@@ -25,11 +23,9 @@ export default function App() {
 	return (
 		<AuthContextProvider>
 			<ApolloProvider client={client}>
-				<ProductionProvider>
-					<LocalizationProvider dateAdapter={AdapterDateFns}>
-						<Main />
-					</LocalizationProvider>
-				</ProductionProvider>
+				<LocalizationProvider dateAdapter={AdapterDateFns}>
+					<Main />
+				</LocalizationProvider>
 			</ApolloProvider>
 		</AuthContextProvider>
 	);

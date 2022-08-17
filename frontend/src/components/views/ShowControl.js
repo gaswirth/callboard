@@ -8,7 +8,7 @@ import ShowTable from 'components/common/ShowTable';
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
-export default function Admin() {
+export default function ShowControl() {
 	const { data: showData, loading: showLoading } = useRecentShows();
 	const { newShowMutation } = useNewShow();
 
@@ -113,9 +113,6 @@ export default function Admin() {
 										Cancel
 									</Button>
 								</ButtonGroup>
-								{/**
-								 * // TODO Roster edit button
-								 */}
 							</>
 						) : (
 							<Button variant="contained" size="large" onClick={handleNewShowClick}>

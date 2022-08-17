@@ -44,7 +44,10 @@ class Callboard_Users {
 	 * @param WP_User $user User object.
 	 */
 	public function callboard_user_fields( $user ) {
-		$callboard_role = 'object' === gettype( $user ) ? get_the_author_meta( 'callboard-role', $user->ID ) : '';
+		if ( 'object' === gettype( $user ) ) {
+			$role        = get_the_author_meta( 'callboard-role', $user->ID );
+			$user_active = get_the_author_meta( 'callboard-active', $user->ID );
+		}
 
 		wp_nonce_field( 'custom_user_fields', 'custom_user_fields_nonce', false );
 
@@ -58,11 +61,19 @@ class Callboard_Users {
 						<input type="text" id="callboard-role" name="callboard-role" value="%4$s" />
 					</td>
 				</tr>
+				<tr>
+					<th><label for="callboard-active">%5$s</label></th>
+					<td>
+						<input type="text" id="callboard-active" name="callboard-active" value="%6$s" />
+					</td>
+				</tr>
 			</table>',
 			esc_html__( 'Callboard Data', 'callboard' ),
 			esc_html__( 'Please do not edit this directly.', 'callboard' ),
 			esc_html__( 'Role', 'callboard' ),
-			esc_textarea( $callboard_role )
+			esc_textarea( $role ),
+			esc_html__( 'Active', 'callboard' ),
+			esc_attr( $user_active )
 		);
 	}
 
@@ -78,12 +89,21 @@ class Callboard_Users {
 			return false;
 		}
 
+		// TODO Combine update_user_meta calls to one wp_update_post.
 		if ( isset( $_POST['callboard-role'] ) ) {
 			if ( empty( $_POST['callboard-role'] ) ) {
 				delete_user_meta( $user_id, 'callboard-role' );
 			}
 
 			update_user_meta( $user_id, 'callboard-role', wp_strip_all_tags( wp_unslash( $_POST['callboard-role'] ) ) );
+		}
+
+		if ( isset( $_POST['callboard-active'] ) ) {
+			if ( empty( $_POST['callboard-active'] ) ) {
+				delete_user_meta( $user_id, 'callboard-active' );
+			}
+
+			update_user_meta( $user_id, 'callboard-active', wp_strip_all_tags( wp_unslash( $_POST['callboard-active'] ) ) );
 		}
 	}
 }

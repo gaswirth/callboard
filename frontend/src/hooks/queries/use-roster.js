@@ -3,6 +3,8 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
+import { prepareRoster } from 'lib/functions';
+import { useMemo } from 'react';
 
 export const QUERY_ROSTER = gql`
 	query Roster {
@@ -15,5 +17,17 @@ export const QUERY_ROSTER = gql`
 `;
 
 export const useRoster = () => {
-	return useQuery(QUERY_ROSTER);
+	const result = useQuery(QUERY_ROSTER);
+
+	const roster = useMemo(() => {
+		if (!result.data) return;
+
+		const {
+			data: { companyMembers },
+		} = result;
+
+		return prepareRoster(companyMembers);
+	}, [result]);
+
+	return { ...result, preparedData: roster };
 };

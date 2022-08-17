@@ -1,3 +1,7 @@
+/**
+ * useLastestShow hook. Queries the show with the most recent `datetime`.
+ */
+
 import { useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { gql, useQuery } from '@apollo/client';

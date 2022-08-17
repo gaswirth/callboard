@@ -1,3 +1,7 @@
+/**
+ * useLogin hook. Mutation to provide credentials and set an HTTP cookie.
+ */
+
 import { gql, useMutation } from '@apollo/client';
 
 const MUTATE_LOGIN = gql`

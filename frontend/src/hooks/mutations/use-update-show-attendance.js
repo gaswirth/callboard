@@ -1,3 +1,7 @@
+/**
+ * useUpdateShowAttendance hook. GraphQL mutation to update a the attendance status(es) of
+ * a performance's Company Members.
+ */
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_RECENT_SHOWS } from 'hooks/queries/use-recent-shows';
 
@@ -10,7 +14,7 @@ export const MUTATE_UPDATE_SHOW_ATTENDANCE = gql`
 	}
 `;
 
-export const useUpdateAttendance = () => {
+export const useUpdateShowAttendance = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_UPDATE_SHOW_ATTENDANCE);
 
 	const updateAttendanceMutation = ({ showId, companyMemberId, status }) => {

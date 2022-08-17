@@ -1,3 +1,7 @@
+/**
+ * useLogout hook. GraphQL mutation clears User cookies.
+ */
+
 import { gql, useMutation, useApolloClient } from '@apollo/client';
 
 export const MUTATE_LOGOUT = gql`

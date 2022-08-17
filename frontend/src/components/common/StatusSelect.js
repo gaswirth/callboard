@@ -5,13 +5,13 @@ import Close from '@mui/icons-material/Close';
 import Flight from '@mui/icons-material/Flight';
 import HorizontalRule from '@mui/icons-material/HorizontalRule';
 
-import { useUpdateAttendance } from 'hooks/mutations/use-update-show-attendance';
+import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
 export default function StatusSelect({ status, children, companyMemberId, showId }) {
 	const {
 		updateAttendanceMutation,
 		results: { loading: updateAttendanceLoading, error: updateAttendanceError },
-	} = useUpdateAttendance();
+	} = useUpdateShowAttendance();
 
 	const [anchorEl, setAnchorEl] = useState(null);
 

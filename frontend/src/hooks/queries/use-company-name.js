@@ -1,3 +1,7 @@
+/**
+ * useCompanyName hook. Queries the Company Name setting.
+ */
+
 import { gql, useQuery } from '@apollo/client';
 
 export const QUERY_COMPANY_NAME = gql`

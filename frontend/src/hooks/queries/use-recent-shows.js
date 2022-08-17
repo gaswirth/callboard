@@ -1,7 +1,12 @@
+/**
+ * useRecentShows hook. Queries the most recent show.
+ */
+
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
+// TODO query sort by `datetime`
 export const QUERY_RECENT_SHOWS = gql`
 	query RecentShows($last: Int = 8) {
 		shows(first: $last) {
@@ -17,6 +22,7 @@ export const QUERY_RECENT_SHOWS = gql`
 
 export const useRecentShows = () => {
 	const result = useQuery(QUERY_RECENT_SHOWS);
+	const { data, startPolling, stopPolling } = result;
 
 	/**
 	 * Manually run startPolling.
@@ -24,14 +30,12 @@ export const useRecentShows = () => {
 	 * @see {@link https://github.com/apollographql/apollo-client/issues/9819}
 	 */
 	useEffect(() => {
-		const { data, startPolling, stopPolling } = result;
-
 		if (isEmpty(data)) return;
 
 		startPolling(500);
 
 		return () => stopPolling();
-	}, [result]);
+	}, [data, startPolling, stopPolling]);
 
 	return result;
 };

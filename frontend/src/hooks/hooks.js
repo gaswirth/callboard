@@ -3,6 +3,7 @@
  */
 
 import { useEffect, useRef, useState } from 'react';
+import { isAfter, isBefore } from 'date-fns';
 
 /**
  * Format a login error message.
@@ -74,4 +75,16 @@ export const useLocalStorage = (
 	}, [key, state, serialize]);
 
 	return [state, setState];
+};
+
+/**
+ * Sorts an array of shows by the `datetime` field, descending.
+ *
+ * @param {Array} shows A collection of shows.
+ * @returns The sorted collection of shows.
+ */
+export const sortShowsByDatetime = (shows) => {
+	if (!shows) return;
+
+	return shows.sort((a, b) => (isAfter(a.datetime > b.datetime) ? 1 : isBefore(a.datetime, b.datetime) ? -1 : 0));
 };

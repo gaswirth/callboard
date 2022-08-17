@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Stack, Button, TextField, Skeleton, Typography } from '@mui/material';
+import { Grid, Stack, Button, TextField, Skeleton, Typography, ButtonGroup } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import ViewHeading from 'components/common/ViewHeading';
@@ -85,6 +85,7 @@ export default function Admin() {
 								<DateTimePicker
 									label="Show Date and Time"
 									value={newShowDateTime}
+									disablePast={true}
 									onChange={handleDateTimePickerChange}
 									renderInput={(params) => <TextField {...params} />}
 								/>
@@ -99,14 +100,22 @@ export default function Admin() {
 									value={newShowTitle}
 									onChange={(event) => setNewShowTitle(event.target.value)}
 								/>
-								<Button
-									variant="contained"
-									size="large"
-									onClick={handleSubmitNewShow}
-									disabled={newShowDateTime ? false : true}
-								>
-									Confirm
-								</Button>
+								<ButtonGroup disableElevation={false}>
+									<Button
+										size="large"
+										onClick={handleSubmitNewShow}
+										variant="contained"
+										disabled={newShowDateTime ? false : true}
+									>
+										Confirm
+									</Button>
+									<Button variant="text" size="large" onClick={() => setNewShowClicked(false)}>
+										Cancel
+									</Button>
+								</ButtonGroup>
+								{/**
+								 * // TODO Roster edit button
+								 */}
 							</>
 						) : (
 							<Button variant="contained" size="large" onClick={handleNewShowClick}>

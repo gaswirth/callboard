@@ -1,3 +1,7 @@
+/**
+ * useNewShow hook. GraphQL mutation to create a new Show.
+ */
+
 import { gql, useMutation } from '@apollo/client';
 import { formatISO } from 'date-fns';
 

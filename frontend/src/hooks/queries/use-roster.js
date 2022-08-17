@@ -1,3 +1,7 @@
+/**
+ * useRoster hook. Query to retrieve Company Members.
+ */
+
 import { gql, useQuery } from '@apollo/client';
 
 export const QUERY_ROSTER = gql`

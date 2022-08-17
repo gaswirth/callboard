@@ -1,3 +1,6 @@
+/**
+ * Classes for standardized data types.
+ */
 import { showLabel } from './functions';
 import { adminRoles } from 'context/AuthContext';
 

@@ -1,7 +1,6 @@
 /**
  * Common functions.
  */
-
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
 import { CompanyMember } from './classes';

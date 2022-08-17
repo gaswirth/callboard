@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
 
-// TODO query sort by `datetime`
 export const QUERY_RECENT_SHOWS = gql`
 	query RecentShows($last: Int = 8) {
 		shows(first: $last) {

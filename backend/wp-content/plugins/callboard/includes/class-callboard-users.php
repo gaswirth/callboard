@@ -89,7 +89,6 @@ class Callboard_Users {
 			return false;
 		}
 
-		// TODO Combine update_user_meta calls to one wp_update_post.
 		if ( isset( $_POST['callboard-role'] ) ) {
 			if ( empty( $_POST['callboard-role'] ) ) {
 				delete_user_meta( $user_id, 'callboard-role' );

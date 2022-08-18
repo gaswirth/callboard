@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
-import Check from '@mui/icons-material/Check';
-import Close from '@mui/icons-material/Close';
-import Flight from '@mui/icons-material/Flight';
-import HorizontalRule from '@mui/icons-material/HorizontalRule';
+import { attendanceStatus } from 'lib/globals';
 
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
@@ -14,29 +11,6 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 	} = useUpdateShowAttendance();
 
 	const [anchorEl, setAnchorEl] = useState(null);
-
-	const buttons = [
-		{
-			text: 'In',
-			value: 'in',
-			icon: <Check />,
-		},
-		{
-			text: 'Out',
-			value: 'out',
-			icon: <Close />,
-		},
-		{
-			text: 'PD',
-			value: 'pd',
-			icon: <HorizontalRule />,
-		},
-		{
-			text: 'Vac',
-			value: 'vac',
-			icon: <Flight />,
-		},
-	];
 
 	/**
 	 * Sets the anchor element for the popover.
@@ -87,22 +61,27 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 					aria-label="Attendance status choices"
 					exclusive
 				>
-					{buttons.map((button, i) => (
-						<ToggleButton
-							key={i}
-							value={button.value}
-							variant="contained"
-							sx={{ textAlign: 'center', borderRadius: 0 }}
-							aria-label={button.text}
-						>
-							<Stack>
-								{button.icon}
-								<Typography variant="caption" component="p" display="block" sx={{ display: 'block' }}>
-									{button.text}
-								</Typography>
-							</Stack>
-						</ToggleButton>
-					))}
+					{Object.keys(attendanceStatus).map((status, i) => {
+						const button = attendanceStatus[status];
+						const Icon = attendanceStatus[status].icon;
+
+						return (
+							<ToggleButton
+								key={i}
+								value={status}
+								variant="contained"
+								sx={{ textAlign: 'center', borderRadius: 0 }}
+								aria-label={button.text}
+							>
+								<Stack>
+									<Icon />
+									<Typography variant="caption" component="p" display="block" sx={{ display: 'block' }}>
+										{button.text}
+									</Typography>
+								</Stack>
+							</ToggleButton>
+						);
+					})}
 				</ToggleButtonGroup>
 			</Popover>
 		</>

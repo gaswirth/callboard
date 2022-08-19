@@ -95,6 +95,8 @@ class Callboard {
 		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-users.php';
 		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-functions.php';
 		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-graphql.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-graphql-queries.php';
+		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-graphql-mutations.php';
 
 		$this->loader = new Callboard_Loader();
 	}
@@ -145,11 +147,12 @@ class Callboard {
 	 * @since 0.0.2
 	 */
 	public function register_graphql_hooks() {
-		$hooks = new Callboard_GraphQL( $this->frontend_url );
+		$queries   = new Callboard_GraphQL_Queries();
+		$mutations = new Callboard_GraphQL_Mutations( $this->frontend_url );
 
-		$this->loader->add_action( 'graphql_register_types', $hooks, 'register_types' );
-		$this->loader->add_filter( 'graphql_register_types', $hooks, 'register_mutations' );
-		$this->loader->add_filter( 'graphql_response_headers_to_send', $hooks, 'response_headers_to_send' );
+		$this->loader->add_action( 'graphql_register_types', $queries, 'register_types' );
+		$this->loader->add_filter( 'graphql_response_headers_to_send', $mutations, 'response_headers_to_send' );
+		$this->loader->add_filter( 'graphql_register_types', $mutations, 'register_mutations' );
 	}
 
 	/**

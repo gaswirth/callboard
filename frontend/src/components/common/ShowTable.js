@@ -81,13 +81,14 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 		var rows = [];
 
 		for (let companyMember of roster) {
-			const { name, role, companyMemberId } = companyMember;
+			const { firstName, lastName, role, id } = companyMember;
 
 			rows.push({
-				companyMemberId,
-				name,
+				companyMemberId: id,
+				firstName,
+				lastName,
 				role,
-				attendance: shows.map((show, index) => attendance[index][companyMemberId]),
+				attendance: shows.map((show, index) => attendance[index][id]),
 			});
 		}
 
@@ -160,8 +161,8 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 						</TableRow>
 					</TableHead>
 					<TableBody>
-						{rows.map((row) => (
-							<TableRow key={row.name}>
+						{rows.map((row, index) => (
+							<TableRow key={index}>
 								<TableCell
 									sx={{
 										pt: 1.5,
@@ -176,7 +177,7 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 									scope="row"
 								>
 									<Typography variant="body1" sx={{ lineHeight: 1 }}>
-										{row.name}
+										{`${row.firstName} ${row.lastName}`}
 									</Typography>
 									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>

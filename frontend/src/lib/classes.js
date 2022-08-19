@@ -9,7 +9,7 @@ import { adminRoles } from 'context/AuthContext';
  *
  * @param {String} id Unique.
  * @param {String} datetime Performance date and time.
- * @param {Object} attendance A collection of status strings, keyed by companyMemberId.
+ * @param {Object} attendance A collection of status strings, keyed by CompanyMember ID.
  * @param {String} notes Show notes to display.
  */
 export const Show = class {
@@ -26,13 +26,15 @@ export const Show = class {
  * @module CompanyMember
  *
  * @param {String} id Unique.
- * @param {String} name CompanyMember's name.
- * @param {String} role CompanyMember's role.
+ * @param {String} firstName
+ * @param {String} lastName
+ * @param {String} role Public/visible role.
  */
 export const CompanyMember = class {
-	constructor(companyMemberId = '', name = '', role = '') {
-		this.companyMemberId = companyMemberId;
-		this.name = name;
+	constructor(id = '', firstName = '', lastName = '', role = '') {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
 		this.role = role;
 	}
 };

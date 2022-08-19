@@ -51,15 +51,19 @@ class Callboard_GraphQL {
 			[
 				'description' => __( 'Company Member', 'callboard' ),
 				'fields'      => [
-					'companyMemberId' => [
-						'type'        => 'String',
+					'id'        => [
+						'type'        => 'ID',
 						'description' => __( 'User ID', 'callboard' ),
 					],
-					'name'            => [
+					'firstName' => [
 						'type'        => 'String',
-						'description' => __( 'Name', 'callboard' ),
+						'description' => __( 'First name', 'callboard' ),
 					],
-					'role'            => [
+					'lastName'  => [
+						'type'        => 'String',
+						'description' => __( 'Last name', 'callboard' ),
+					],
+					'role'      => [
 						'type'        => 'String',
 						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
@@ -84,7 +88,7 @@ class Callboard_GraphQL {
 				],
 				'attendance' => [
 					'type'        => 'String',
-					'description' => __( 'The serialized array of companyMemberIds and their respective attendance statuses.', 'callboard' ),
+					'description' => __( 'The serialized array of IDs and their respective attendance statuses.', 'callboard' ),
 					'resolve'     => function ( $show ) {
 						$attendance = maybe_unserialize( get_post_meta( $show->ID, 'attendance', true ) );
 
@@ -112,10 +116,13 @@ class Callboard_GraphQL {
 
 					$company_members = [];
 					foreach ( $users as $user ) {
+						$first_name        = get_user_meta( $user->ID, 'first_name', true );
+						$last_name         = get_user_meta( $user->ID, 'last_name', true );
 						$company_members[] = [
-							'companyMemberId' => $user->ID,
-							'name'            => sprintf( '%1$s %2$s', $user->first_name, $user->last_name ),
-							'role'            => get_user_meta( $user->ID, 'callboard-role', true ),
+							'id'        => $user->ID,
+							'firstName' => $first_name,
+							'lastName'  => $last_name,
+							'role'      => get_user_meta( $user->ID, 'callboard-role', true ),
 						];
 					}
 
@@ -135,6 +142,7 @@ class Callboard_GraphQL {
 		$this->register_logout_mutation();
 		$this->register_new_show_mutation();
 		$this->register_update_show_attendance_mutation();
+		$this->register_update_company_member_mutation();
 	}
 
 	/**
@@ -192,7 +200,7 @@ class Callboard_GraphQL {
 					);
 
 					if ( is_wp_error( $user ) ) {
-						throw new \GraphQL\Error\UserError( ! empty( $user->get_error_code() ) ? $user->get_error_code() : 'invalid login' );
+						throw new \GraphQL\Error\UserError( ! empty( $user->get_error_code() ) ? $user->get_error_code() : __( 'Invalid login', 'callboard' ) );
 					}
 
 					return [
@@ -267,7 +275,7 @@ class Callboard_GraphQL {
 					 * Make sure this datetime is unique.
 					 */
 					if ( self::check_unique_datetime( $input['datetime'] ) === false ) {
-						throw new \GraphQL\Error\Error( __( 'A show already exists with that date and time.', 'callboard' ) );
+						throw new \GraphQL\Error\Error( __( 'A show already exists with that date and time', 'callboard' ) );
 					}
 
 					/**
@@ -334,6 +342,57 @@ class Callboard_GraphQL {
 					// If `update_post_meta` returns false, there was either an error, or the submitted value was identical.
 					return [
 						'newStatus' => $result ? $input['status'] : $attendance[$input['companyMemberId']],
+					];
+				},
+			]
+		);
+	}
+
+	public function register_update_company_member_mutation() {
+		register_graphql_mutation(
+			'updateCompanyMember',
+			[
+				'inputFields'         => [
+					'description' => 'The user fields update.',
+					'id'          => [
+						'type'        => 'ID',
+						'description' => __( 'User ID', 'callboard' ),
+					],
+					'firstName'   => [
+						'type'        => 'String',
+						'description' => __( 'First name', 'callboard' ),
+					],
+					'lastName'    => [
+						'type'        => 'String',
+						'description' => __( 'Last name', 'callboard' ),
+					],
+					'role'        => [
+						'type'        => 'String',
+						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
+					],
+				],
+				'outputFields'        => [
+					'updatedCompanyMember' => [
+						'type'        => 'ID',
+						'description' => __( 'The updated user ID.', 'callboard' ),
+					],
+				],
+				'mutateAndGetPayload' => function ( $input ) {
+					$result = wp_update_user( [
+						'ID'         => absint( $input['id'] ),
+						'first_name' => sanitize_text_field( $input['firstName'] ),
+						'last_name'  => sanitize_text_field( $input['lastName'] ),
+						'meta_input' => [
+							'callboard-role' => sanitize_text_field( $input['role'] ),
+						],
+					] );
+
+					if ( is_wp_error( $result ) ) {
+						throw new \GraphQL\Error\UserError( ! empty( $result->get_error_code() ) ? $result->get_error_code() : __( 'Error updating user', 'callboard' ) );
+					}
+
+					return [
+						'updatedCompanyMember' => $result,
 					];
 				},
 			]

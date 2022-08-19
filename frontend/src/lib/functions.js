@@ -23,7 +23,7 @@ export function showLabel(datetime) {
  * @returns Array An array of CompanyMembers.
  */
 export function prepareRoster(rosterData) {
-	return rosterData.map((item) => new CompanyMember(item.companyMemberId, item.name, item.role));
+	return rosterData.map((item) => new CompanyMember(item.id, item.firstName, item.lastName, item.role));
 }
 
 /**

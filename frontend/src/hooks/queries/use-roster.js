@@ -9,9 +9,10 @@ import { useMemo } from 'react';
 export const QUERY_ROSTER = gql`
 	query Roster {
 		companyMembers {
+			id
+			firstName
+			lastName
 			role
-			name
-			companyMemberId
 		}
 	}
 `;

@@ -91,7 +91,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 					$users = get_users(
 						[
 							'role__in'   => 'company_member',
-							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+							// phpcs:disable WordPress.DB.SlowDBQuery
 							'meta_query' => [
 								[
 									'key'      => 'callboard-active',
@@ -100,6 +100,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 									'orderby'  => 'meta_value',
 									'meta_key' => 'last_name',
 								],
+								// phpcs:enable WordPress.DB.SlowDBQuery
 							],
 						]
 					);

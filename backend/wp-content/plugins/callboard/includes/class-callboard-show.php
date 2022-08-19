@@ -318,4 +318,27 @@ class Callboard_Show {
 
 		return $sanitized;
 	}
+
+	/**
+	 * Checks if a show exists with a certain `datetime` meta value.
+	 *
+	 * @param  string  $datetime The `datetime` meta value to query for.
+	 * @return boolean True if the datetime is unique, false otherwise.
+	 */
+	public static function check_unique_datetime( $datetime ) {
+		$shows = get_posts( [
+			'post_type'  => 'show',
+			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+			'meta_query' => [
+				[
+					'key'            => 'datetime',
+					'value'          => Callboard_Functions::format_date_string( $datetime ),
+					'compare'        => '=',
+					'posts_per_page' => 1,
+				],
+			],
+		] );
+
+		return $shows ? false : true;
+	}
 }

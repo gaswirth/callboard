@@ -8,6 +8,8 @@
  * @since 0.0.2
  */
 
+// TODO refactor some of the utility methods to a subclass.
+
 /**
  * Callboard_Show class.
  *
@@ -95,7 +97,7 @@ class Callboard_Show {
 			'show_in_graphql'       => true,
 			'graphql_single_name'   => 'Show',
 			'graphql_plural_name'   => 'Shows',
-			'register_meta_box_cb'  => [$this, 'register_show_company_names'],
+			'register_meta_box_cb'  => [$this, 'register_show_meta_boxes'],
 		];
 
 		register_post_type( 'show', $args );
@@ -116,7 +118,7 @@ class Callboard_Show {
 	 *
 	 * @since 0.0.2
 	 */
-	public function register_show_company_names() {
+	public function register_show_meta_boxes() {
 		add_meta_box(
 			'show_data',
 			__( 'Show Details', 'callboard' ),

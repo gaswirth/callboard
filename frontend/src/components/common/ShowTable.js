@@ -2,7 +2,7 @@ import React, { useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography, Box } from '@mui/material';
 
 import { useActiveRoster } from 'hooks/queries/use-active-roster';
 import { prepareShowAttendance, showLabel } from 'lib/functions';
@@ -121,23 +121,38 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 
 								return (
 									<TableCell key={id}>
-										<Typography
-											variant="button"
+										<Box
 											id={id}
-											lineHeight={1.2}
-											sx={{
-												cursor: 'default',
-												display: 'block',
-												p: 1,
-												borderRadius: 1,
-												fontSize: '1.1em',
-											}}
 											aria-haspopup="true"
+											sx={{ p: 1 }}
 											onMouseEnter={handlePopoverOpen}
 											onMouseLeave={handlePopoverClose}
 										>
-											{showLabel(datetime)}
-										</Typography>
+											<Typography
+												variant="button"
+												lineHeight={1.2}
+												sx={{
+													cursor: 'default',
+													display: 'block',
+													borderRadius: 1,
+													fontSize: '1.1em',
+												}}
+											>
+												{showLabel(datetime).date}
+											</Typography>
+											<Typography
+												variant="button"
+												lineHeight={1.2}
+												sx={{
+													cursor: 'default',
+													display: 'block',
+													borderRadius: 1,
+													fontSize: '1.1em',
+												}}
+											>
+												{showLabel(datetime).time}
+											</Typography>
+										</Box>
 										<Popover
 											sx={{ pointerEvents: 'none' }}
 											open={!!anchorEl[id]}
@@ -149,6 +164,7 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 											onClose={handlePopoverClose}
 											disableRestoreFocus
 										>
+											{/* TODO Implement show notes (globally) */}
 											{show.notes ? (
 												<Typography sx={{ p: 2 }}>{notes}</Typography>
 											) : (

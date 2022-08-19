@@ -31,9 +31,11 @@ export default function ShowControl() {
 		setNewShowClicked(true);
 	};
 
-	const handleDateTimePickerChange = (value) => {
-		setNewShowDateTime(value);
-	};
+	// FIXME Slow text input
+	const handleDateTimePickerChange = (value) => setNewShowDateTime(value);
+
+	// FIXME Slow text input
+	const handleNextShowTitleChange = (event) => setNewShowTitle(event.target.value);
 
 	/**
 	 * Fire the mutation to create a new Show.
@@ -95,10 +97,10 @@ export default function ShowControl() {
 									</Typography>
 								) : null}
 								<TextField
-									label="Next Show Number/ID"
+									label="Next Show Title/Number/ID"
 									variant="outlined"
 									value={newShowTitle}
-									onChange={(event) => setNewShowTitle(event.target.value)}
+									onChange={handleNextShowTitleChange}
 								/>
 								<ButtonGroup disableElevation={false}>
 									<Button

@@ -2,7 +2,6 @@
  * useNewCompanyMember hook. GraphQL mutation to create a new Company Member.
  */
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_ACTIVE_ROSTER } from 'hooks/queries/use-active-roster';
 import { QUERY_ROSTER } from 'hooks/queries/use-roster';
 
 export const MUTATE_UPDATE_COMPANY_MEMBER = gql`
@@ -29,8 +28,7 @@ export const useNewCompanyMember = () => {
 					active,
 				},
 			},
-			// XXX Maybe both queries not necessary
-			refetchQueries: [{ query: QUERY_ROSTER }, { query: QUERY_ACTIVE_ROSTER }],
+			refetchQueries: [{ query: QUERY_ROSTER }],
 		});
 	};
 

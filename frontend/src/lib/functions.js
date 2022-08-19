@@ -6,14 +6,17 @@ import { isEmpty } from 'lodash';
 import { CompanyMember } from './classes';
 
 /**
- * Generate a show's label from it's date and time.
+ * Generate a show's date and time labels.
  *
  * @param {Date|String} datetime Theshow's date and time string, or a Date object.
- * @return {String} The formatted date string.
+ * @return {Object} The formatted date and time strings.
  */
 export function showLabel(datetime) {
 	const date = datetime instanceof Date ? datetime : new Date(datetime);
-	return format(date, 'M/d (ha)');
+	return {
+		date: format(date, 'iii M/d'),
+		time: format(date, 'h:mm a'),
+	};
 }
 
 /**

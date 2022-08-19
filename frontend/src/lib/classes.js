@@ -1,7 +1,6 @@
 /**
  * Classes for standardized data types.
  */
-import { showLabel } from './functions';
 import { adminRoles } from 'context/AuthContext';
 
 /**
@@ -18,7 +17,6 @@ export const Show = class {
 		this.datetime = datetime;
 		this.attendance = attendance;
 		this.notes = notes;
-		this.label = showLabel(datetime);
 	}
 };
 

@@ -30,7 +30,6 @@ export const useUpdateCompanyMember = () => {
 					active,
 				},
 			},
-			// XXX Maybe both queries not necessary
 			refetchQueries: [{ query: QUERY_ROSTER }, { query: QUERY_ACTIVE_ROSTER }],
 		});
 	};

@@ -89,9 +89,9 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 				'description' => __( 'Company Members on the active roster.', 'callboard' ),
 				'resolve'     => function () {
 					$users = get_users(
+						// phpcs:disable WordPress.DB.SlowDBQuery
 						[
 							'role__in'   => 'company_member',
-							// phpcs:disable WordPress.DB.SlowDBQuery
 							'meta_query' => [
 								[
 									'key'      => 'callboard-active',
@@ -100,9 +100,9 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 									'orderby'  => 'meta_value',
 									'meta_key' => 'last_name',
 								],
-								// phpcs:enable WordPress.DB.SlowDBQuery
 							],
 						]
+						// phpcs:enable WordPress.DB.SlowDBQuery
 					);
 
 					$company_members = [];

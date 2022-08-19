@@ -43,9 +43,133 @@ class Callboard_GraphQL {
 	 * @since 0.0.2
 	 */
 	public function register_types() {
-		/**
-		 * Create the `CompanyMember` object type for handling Users.
-		 */
+		$this->register_company_member_object_type();
+		$this->register_active_company_members_field();
+		$this->register_company_members_field();
+		$this->register_show_fields();
+	}
+
+	/**
+	 * Register GraphQL mutations.
+	 *
+	 * @since 0.0.2
+	 */
+	public function register_mutations() {
+		$this->register_login_mutation();
+		$this->register_logout_mutation();
+		$this->register_new_show_mutation();
+		$this->register_update_show_attendance_mutation();
+		$this->register_update_company_member_mutation();
+		$this->register_new_company_member_mutation();
+	}
+
+	/**
+	 * Register the `companyMembers` field on the RootQuery to return a list of users with the 'company_member' user role.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	public function register_company_members_field() {
+		register_graphql_field(
+			'RootQuery',
+			'companyMembers',
+			[
+				'type'        => ['list_of' => 'CompanyMember'],
+				'description' => __( 'The public "role" to display on the frontend.', 'callboard' ),
+				'resolve'     => function () {
+					$users = get_users(
+						[
+							'role__in' => 'company_member',
+							'orderby'  => 'meta_value',
+							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_key
+							'meta_key' => 'last_name',
+						]
+					);
+
+					$company_members = [];
+					foreach ( $users as $user ) {
+						$user_id    = $user->get( 'ID' );
+						$first_name = get_user_meta( $user_id, 'first_name', true );
+						$last_name  = get_user_meta( $user_id, 'last_name', true );
+
+						$company_members[] = [
+							'id'        => $user_id,
+							'firstName' => $first_name,
+							'lastName'  => $last_name,
+							'email'     => $user->get( 'user_email' ),
+							'role'      => get_user_meta( $user_id, 'callboard-role', true ),
+							'active'    => get_user_meta( $user_id, 'callboard-active', true ),
+						];
+					}
+
+					return $company_members;
+				},
+			],
+		);
+	}
+
+	/**
+	 * Register the `activeCompanyMembers` field on the RootQuery to return a list of users on the active roster.
+	 *
+	 * @return void
+	 */
+	public function register_active_company_members_field() {
+		register_graphql_field(
+			'RootQuery',
+			'activeCompanyMembers',
+			[
+				'type'        => ['list_of' => 'CompanyMember'],
+				'description' => __( 'Company Members on the active roster.', 'callboard' ),
+				'resolve'     => function () {
+					$users = get_users(
+						[
+							'role__in'   => 'company_member',
+							// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
+							'meta_query' => [
+								[
+									'key'      => 'callboard-active',
+									'value'    => 1,
+									'compare'  => '=',
+									'orderby'  => 'meta_value',
+									'meta_key' => 'last_name',
+								],
+							],
+						]
+					);
+
+					$company_members = [];
+					foreach ( $users as $user ) {
+						$user_id    = $user->get( 'ID' );
+						$first_name = get_user_meta( $user->ID, 'first_name', true );
+						$last_name  = get_user_meta( $user->ID, 'last_name', true );
+
+						// TODO set up a class for this and instantiate them here.
+						$company_members[] = [
+							'id'        => $user_id,
+							'firstName' => $first_name,
+							'lastName'  => $last_name,
+							'email'     => $user->get( 'user_email' ),
+							'role'      => get_user_meta( $user->ID, 'callboard-role', true ),
+							'active'    => true,
+						];
+
+					}
+
+					return $company_members;
+				},
+			],
+		);
+	}
+
+	/**
+	 * Create the `CompanyMember` object type for handling Users.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	public function register_company_member_object_type() {
 		register_graphql_object_type(
 			'CompanyMember',
 			[
@@ -63,17 +187,31 @@ class Callboard_GraphQL {
 						'type'        => 'String',
 						'description' => __( 'Last name', 'callboard' ),
 					],
+					'email'     => [
+						'type'        => 'String',
+						'description' => __( 'Email address', 'callboard' ),
+					],
 					'role'      => [
 						'type'        => 'String',
 						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
+					'active'    => [
+						'type'        => 'Boolean',
+						'description' => __( 'Whether or not the Company Member is on the active roster.', 'callboard' ),
+					],
 				],
 			]
 		);
+	}
 
-		/**
-		 * Registers the `show` custom fields.
-		 */
+	/**
+	 * Registers the `show` custom fields.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	public function register_show_fields() {
 		register_graphql_fields(
 			'Show',
 			[
@@ -97,52 +235,6 @@ class Callboard_GraphQL {
 				],
 			]
 		);
-
-		/**
-		 * Create the `companyMembers` field on the RootQuery to return a list of users with the 'company_member' user role.
-		 */
-		register_graphql_field(
-			'RootQuery',
-			'companyMembers',
-			[
-				'type'        => ['list_of' => 'CompanyMember'],
-				'description' => __( 'The public "role" to display on the frontend.', 'callboard' ),
-				'resolve'     => function () {
-					$users = get_users(
-						[
-							'role__in' => 'company_member',
-						]
-					);
-
-					$company_members = [];
-					foreach ( $users as $user ) {
-						$first_name        = get_user_meta( $user->ID, 'first_name', true );
-						$last_name         = get_user_meta( $user->ID, 'last_name', true );
-						$company_members[] = [
-							'id'        => $user->ID,
-							'firstName' => $first_name,
-							'lastName'  => $last_name,
-							'role'      => get_user_meta( $user->ID, 'callboard-role', true ),
-						];
-					}
-
-					return $company_members;
-				},
-			],
-		);
-	}
-
-	/**
-	 * Register GraphQL mutations.
-	 *
-	 * @since 0.0.2
-	 */
-	public function register_mutations() {
-		$this->register_login_mutation();
-		$this->register_logout_mutation();
-		$this->register_new_show_mutation();
-		$this->register_update_show_attendance_mutation();
-		$this->register_update_company_member_mutation();
 	}
 
 	/**
@@ -348,12 +440,19 @@ class Callboard_GraphQL {
 		);
 	}
 
+	/**
+	 * Mutation for updating a Company Member's data.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
 	public function register_update_company_member_mutation() {
 		register_graphql_mutation(
 			'updateCompanyMember',
 			[
 				'inputFields'         => [
-					'description' => 'The user fields update.',
+					'description' => 'The user fields to update.',
 					'id'          => [
 						'type'        => 'ID',
 						'description' => __( 'User ID', 'callboard' ),
@@ -366,10 +465,19 @@ class Callboard_GraphQL {
 						'type'        => 'String',
 						'description' => __( 'Last name', 'callboard' ),
 					],
+					'email'       => [
+						'type'        => 'String',
+						'description' => __( 'Email address', 'callboard' ),
+					],
 					'role'        => [
 						'type'        => 'String',
 						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
 					],
+					'active'      => [
+						'type'        => 'Boolean',
+						'description' => __( 'Whether or not the Company Member is on the active roster.', 'callboard' ),
+					],
+
 				],
 				'outputFields'        => [
 					'updatedCompanyMember' => [
@@ -382,8 +490,10 @@ class Callboard_GraphQL {
 						'ID'         => absint( $input['id'] ),
 						'first_name' => sanitize_text_field( $input['firstName'] ),
 						'last_name'  => sanitize_text_field( $input['lastName'] ),
+						'user_email' => sanitize_email( $input['email'] ),
 						'meta_input' => [
-							'callboard-role' => sanitize_text_field( $input['role'] ),
+							'callboard-role'   => sanitize_text_field( $input['role'] ),
+							'callboard-active' => boolval( $input['active'] ),
 						],
 					] );
 
@@ -393,6 +503,72 @@ class Callboard_GraphQL {
 
 					return [
 						'updatedCompanyMember' => $result,
+					];
+				},
+			]
+		);
+	}
+
+	/**
+	 * Mutation for creating a new Company Member.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	public function register_new_company_member_mutation() {
+		register_graphql_mutation(
+			'newCompanyMember',
+			[
+				'inputFields'         => [
+					'description' => 'The user fields.',
+					'firstName'   => [
+						'type'        => 'String',
+						'description' => __( 'First name', 'callboard' ),
+					],
+					'lastName'    => [
+						'type'        => 'String',
+						'description' => __( 'Last name', 'callboard' ),
+					],
+					'email'       => [
+						'type'        => 'String',
+						'description' => __( 'Email address', 'callboard' ),
+					],
+					'role'        => [
+						'type'        => 'String',
+						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
+					],
+					'active'      => [
+						'type'        => 'Boolean',
+						'description' => __( 'Whether or not the Company Member is on the active roster.', 'callboard' ),
+					],
+				],
+				'outputFields'        => [
+					'newCompanyMemberID' => [
+						'type'        => 'ID',
+						'description' => __( 'The updated user ID.', 'callboard' ),
+					],
+				],
+				'mutateAndGetPayload' => function ( $input ) {
+					$result = wp_insert_user( [
+						'role'       => 'company_member',
+						'first_name' => sanitize_text_field( $input['firstName'] ),
+						'last_name'  => sanitize_text_field( $input['lastName'] ),
+						'user_login' => sanitize_email( $input['email'] ),
+						'user_pass'  => wp_generate_password(),
+						'user_email' => sanitize_email( $input['email'] ),
+						'meta_input' => [
+							'callboard-role'   => sanitize_text_field( $input['role'] ),
+							'callboard-active' => boolval( $input['active'] ),
+						],
+					] );
+
+					if ( is_wp_error( $result ) ) {
+						throw new \GraphQL\Error\UserError( ! empty( $result->get_error_code() ) ? $result->get_error_code() : __( 'Error creating user', 'callboard' ) );
+					}
+
+					return [
+						'newCompanyMemberID' => $result,
 					];
 				},
 			]

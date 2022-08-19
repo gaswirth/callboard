@@ -2,9 +2,10 @@
  * useRoster hook. Query to retrieve Company Members.
  */
 
-import { gql, useQuery } from '@apollo/client';
-import { prepareRoster } from 'lib/functions';
 import { useMemo } from 'react';
+import { gql, useQuery } from '@apollo/client';
+
+import { prepareRoster } from 'lib/functions';
 
 export const QUERY_ROSTER = gql`
 	query Roster {
@@ -12,7 +13,9 @@ export const QUERY_ROSTER = gql`
 			id
 			firstName
 			lastName
+			email
 			role
+			active
 		}
 	}
 `;

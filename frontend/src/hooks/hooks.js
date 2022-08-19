@@ -84,7 +84,28 @@ export const useLocalStorage = (
  * @returns The sorted collection of shows.
  */
 export const sortShowsByDatetime = (shows) => {
+	// XXX necessary check?
 	if (!shows) return;
 
 	return shows.sort((a, b) => (isAfter(a.datetime > b.datetime) ? 1 : isBefore(a.datetime, b.datetime) ? -1 : 0));
 };
+
+/**
+ * Splits the roster into active and inactive collections.
+ *
+ * @param {Array} roster A collection of CompanyMembers.
+ * @return {Object} The active and inactive collections.
+ */
+// export const useActiveInactiveRoster = (roster) => {
+// 	let splitRoster = {
+// 		active: [],
+// 		inactive: [],
+// 	};
+
+// 	roster.forEach((item) => {
+// 		const status = item.active ? 'active' : 'inactive';
+// 		splitRoster[status].push(item);
+// 	});
+
+// 	return splitRoster;
+// };

@@ -19,11 +19,13 @@ export function showLabel(datetime) {
 /**
  * Creates a collection of CompanyMember objects out of
  *
- * @param Array rosterData A collection of `company_member` data.
- * @returns Array An array of CompanyMembers.
+ * @param {Array} rosterData A collection of `company_member` data.
+ * @returns {Array} An array of CompanyMembers.
  */
 export function prepareRoster(rosterData) {
-	return rosterData.map((item) => new CompanyMember(item.id, item.firstName, item.lastName, item.role));
+	return rosterData.map(
+		(item) => new CompanyMember(item.id, item.firstName, item.lastName, item.email, item.role, item.active)
+	);
 }
 
 /**

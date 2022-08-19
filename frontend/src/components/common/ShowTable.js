@@ -4,8 +4,8 @@ import { Popover } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 
+import { useActiveRoster } from 'hooks/queries/use-active-roster';
 import { prepareShowAttendance, showLabel } from 'lib/functions';
-import { useRoster } from 'hooks/queries/use-roster';
 import StatusIcon from './StatusIcon';
 
 function anchorElReducer(state, action) {
@@ -39,7 +39,7 @@ function anchorElReducer(state, action) {
 }
 
 export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
-	const { preparedData: roster } = useRoster();
+	const { preparedData: roster } = useActiveRoster();
 	const [rows, setRows] = useState([]);
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});

@@ -1,28 +1,27 @@
 /**
- * useUpdateCompanyMember hook. GraphQL mutation to update a Company Member's data.
+ * useNewCompanyMember hook. GraphQL mutation to create a new Company Member.
  */
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_ACTIVE_ROSTER } from 'hooks/queries/use-active-roster';
 import { QUERY_ROSTER } from 'hooks/queries/use-roster';
 
 export const MUTATE_UPDATE_COMPANY_MEMBER = gql`
-	mutation UpdateCompanyMember($input: UpdateCompanyMemberInput!) {
-		updateCompanyMember(input: $input) {
+	mutation newCompanyMember($input: NewCompanyMemberInput!) {
+		newCompanyMember(input: $input) {
 			clientMutationId
-			updatedCompanyMember
+			newCompanyMemberID
 		}
 	}
 `;
 
-export const useUpdateCompanyMember = () => {
+export const useNewCompanyMember = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_UPDATE_COMPANY_MEMBER);
 
-	const updateCompanyMemberMutation = ({ id, firstName, lastName, email, role, active }) => {
+	const newCompanyMemberMutation = ({ firstName, lastName, email, role, active }) => {
 		return mutation({
 			variables: {
 				input: {
-					clientMutationId: 'updateCompanyMemberMutation',
-					id,
+					clientMutationId: 'newCompanyMemberMutation',
 					firstName,
 					lastName,
 					email,
@@ -35,5 +34,5 @@ export const useUpdateCompanyMember = () => {
 		});
 	};
 
-	return { updateCompanyMemberMutation, results: mutationResults };
+	return { newCompanyMemberMutation, results: mutationResults };
 };

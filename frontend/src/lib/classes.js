@@ -28,14 +28,18 @@ export const Show = class {
  * @param {String} id Unique.
  * @param {String} firstName
  * @param {String} lastName
+ * @param {String} email
  * @param {String} role Public/visible role.
+ * @param {Boolean} active Whether or not the Company Member is on the active roster.
  */
 export const CompanyMember = class {
-	constructor(id = '', firstName = '', lastName = '', role = '') {
+	constructor(id = '', firstName = '', lastName = '', email = '', role = '', active = null) {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.email = email;
 		this.role = role;
+		this.active = active;
 	}
 };
 

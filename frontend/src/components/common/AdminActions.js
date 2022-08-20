@@ -27,14 +27,15 @@ export default function AdminActions() {
 		setNewShowClicked(true);
 	};
 
+	/**
+	 * Cancel creating a new show.
+	 */
 	const handleNewShowCancel = () => {
 		setNewShowClicked(false);
 	};
 
-	// FIXME Slow text input
 	const handleDateTimePickerChange = (value) => setNewShowDateTime(value);
 
-	// FIXME Slow text input
 	const handleNextShowTitleChange = (event) => setNewShowTitle(event.target.value);
 
 	/**

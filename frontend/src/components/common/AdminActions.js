@@ -8,7 +8,6 @@ import { useNewShow } from 'hooks/mutations/use-new-show';
 export default function AdminActions() {
 	const { newShowMutation } = useNewShow();
 
-	const [newShowClicked, setNewShowClicked] = useState(false);
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
 	const [newShowTitle, setNewShowTitle] = useState('');
 	const [newShowError, setNewShowError] = useState('');
@@ -19,20 +18,6 @@ export default function AdminActions() {
 	useEffect(() => {
 		if (newShowDateTime && newShowError) setNewShowError('');
 	}, [newShowDateTime, newShowError]);
-
-	/**
-	 * Open the New Show dialog.
-	 */
-	const handleNewShowClick = () => {
-		setNewShowClicked(true);
-	};
-
-	/**
-	 * Cancel creating a new show.
-	 */
-	const handleNewShowCancel = () => {
-		setNewShowClicked(false);
-	};
 
 	const handleDateTimePickerChange = (value) => setNewShowDateTime(value);
 
@@ -53,45 +38,36 @@ export default function AdminActions() {
 		<Stack spacing={2}>
 			<ViewHeading variant="h6">Actions</ViewHeading>
 			<Stack spacing={2}>
-				{newShowClicked ? (
-					<>
-						<DateTimePicker
-							label="Show Date and Time"
-							value={newShowDateTime}
-							disablePast={true}
-							onChange={handleDateTimePickerChange}
-							renderInput={(params) => <TextField {...params} />}
-						/>
-						{newShowError ? (
-							<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
-								{newShowError}
-							</Typography>
-						) : null}
-						<TextField
-							label="Next Show Title/Number/ID"
-							variant="outlined"
-							value={newShowTitle}
-							onChange={handleNextShowTitleChange}
-						/>
-						<ButtonGroup disableElevation={false}>
-							<Button
-								size="large"
-								onClick={handleSubmitNewShow}
-								variant="contained"
-								disabled={newShowDateTime ? false : true}
-							>
-								Confirm
-							</Button>
-							<Button variant="text" size="large" onClick={handleNewShowCancel}>
-								Cancel
-							</Button>
-						</ButtonGroup>
-					</>
-				) : (
-					<Button variant="contained" size="large" onClick={handleNewShowClick}>
-						Start New Show
-					</Button>
-				)}
+				<>
+					<DateTimePicker
+						label="Show Date and Time"
+						value={newShowDateTime}
+						disablePast={true}
+						onChange={handleDateTimePickerChange}
+						renderInput={(params) => <TextField {...params} required={true} />}
+					/>
+					{newShowError ? (
+						<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
+							{newShowError}
+						</Typography>
+					) : null}
+					<TextField
+						label="Next Show Title/ID"
+						variant="outlined"
+						value={newShowTitle}
+						onChange={handleNextShowTitleChange}
+					/>
+					<ButtonGroup disableElevation={false}>
+						<Button
+							size="large"
+							onClick={handleSubmitNewShow}
+							variant="contained"
+							disabled={newShowDateTime ? false : true}
+						>
+							Confirm
+						</Button>
+					</ButtonGroup>
+				</>
 			</Stack>
 		</Stack>
 	);

@@ -141,7 +141,7 @@ class Callboard_Show {
 
 		$meta = get_post_meta( $post->ID );
 
-		$attendance = isset( $meta['attendance'] ) ? esc_textarea( $this->format_attendance_array_for_textarea( $meta['attendance'][0] ) ) : '';
+		$attendance = isset( $meta['attendance'] ) ? esc_textarea( Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) ) : '';
 
 		echo '<style>
 				.columns {
@@ -252,25 +252,6 @@ class Callboard_Show {
 				delete_post_meta( $post_id, $field );
 			}
 		}
-	}
-
-	/**
-	 * Converts the $user_id => $status key/value pairs to a string (one per line) for backend use.
-	 *
-	 * @param  array|string $attendance The attendance array of $user_id => $status.
-	 * @return string       The formatted string of key : value pairs.
-	 */
-	public function format_attendance_array_for_textarea( $attendance ) {
-		if ( is_string( $attendance ) ) {
-			$attendance = maybe_unserialize( $attendance );
-		}
-
-		$lines = [];
-		foreach ( $attendance as $user_id => $status ) {
-			$lines[] = sprintf( '%1$s : %2$s', $user_id, $status );
-		}
-
-		return implode( "\n", $lines );
 	}
 
 	/**

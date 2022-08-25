@@ -14,6 +14,7 @@ export const QUERY_RECENT_SHOWS = gql`
 				databaseId
 				datetime
 				attendance
+				notes
 			}
 		}
 	}

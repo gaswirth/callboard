@@ -190,6 +190,15 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 						return esc_textarea( $datetime );
 					},
 				],
+				'notes'      => [
+					'type'        => 'String',
+					'description' => __( 'Show notes.', 'callboard' ),
+					'resolve'     => function ( $show ) {
+						$notes = get_post_meta( $show->ID, 'notes', true );
+
+						return esc_textarea( $notes );
+					},
+				],
 				'attendance' => [
 					'type'        => 'String',
 					'description' => __( 'The serialized array of IDs and their respective attendance statuses.', 'callboard' ),

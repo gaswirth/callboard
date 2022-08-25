@@ -14,6 +14,7 @@ export const QUERY_LATEST_SHOW = gql`
 				databaseId
 				datetime
 				attendance
+				notes
 			}
 		}
 	}

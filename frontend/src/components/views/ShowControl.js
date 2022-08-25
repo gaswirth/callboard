@@ -35,6 +35,7 @@ export default function ShowControl() {
 								<ShowTable />
 							</Skeleton>
 						) : (
+							// TODO: add "edit Notes" field
 							<ShowTable shows={[showData.shows.nodes[0]]} />
 						)}
 					</Stack>

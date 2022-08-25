@@ -141,52 +141,12 @@ class Callboard_Show {
 
 		$meta = get_post_meta( $post->ID );
 
-		$attendance = isset( $meta['attendance'] ) ? esc_textarea( Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) ) : '';
+		// Set variables for the template.
+		$datetime   = isset( $meta['datetime'] ) ? $meta['datetime'][0] : '';
+		$notes      = isset( $meta['notes'] ) ? $meta['notes'][0] : '';
+		$attendance = isset( $meta['attendance'][0] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : '';
 
-		echo '<style>
-				.columns {
-					display: flex;
-					justify-content: flex-start;
-					flex-wrap: wrap;
-				}
-				.column {
-					flex: 1 1 33%;
-					padding: 0 1%;
-				}
-				label {
-					display: inline-block;
-					font-weight: bold;
-				}
-				.warning {
-					font-size: 1.2em;
-					font-weight: bold;
-				}
-			</style>';
-
-		printf(
-			'<p class="warning">%1$s</p>
-			<div class="columns">
-				<div class="column">
-					<label for="show_data[datetime]">
-						%2$s: <code><a href="https://www.php.net/manual/en/datetime.format.php" target="_blank">%3$s</a></code>
-					</label>
-					<input type="text" id="show_data[datetime]" name="show_data[datetime]" placeholder="10/12/2022 08:00 PM" value="%4$s">
-				</div>
-				<div class="column">
-					<label for="show_data[attendance]">Attendance</label>
-					<p>%5$s <code>user_id : status</code></p>
-					<p>Allowed status values: <code>%6$s</code></p>
-					<textarea id="show_data[attendance]" name="show_data[attendance]" class="widefat">%7$s</textarea>
-				</div>
-			</div>',
-			esc_html__( 'WARNING: DO NOT EDIT THESE FIELDS MANUALLY.', 'callboard' ),
-			esc_html__( 'Date Format', 'callboard' ),
-			esc_textarea( Callboard::DATETIME_FORMAT, 'callboard' ),
-			isset( $meta['datetime'] ) ? esc_textarea( $meta['datetime'][0] ) : '',
-			esc_html__( 'Format each pair on a separate line as', 'callboard' ),
-			implode( '</code><code>', ['in', 'out', 'vac', 'pd'] ),
-			esc_html__( $attendance ),
-		);
+		require CALLBOARD_PLUGIN_PATH . 'includes/show-meta-template.php';
 	}
 
 	/**
@@ -220,11 +180,19 @@ class Callboard_Show {
 	 * @param array $show_data An array of meta values, keyed by field.
 	 */
 	public function sanitize_show_meta( $post_id, $show_data ) {
-		$update_fields = [];
+		$update_fields = [
+			'datetime'   => '',
+			'notes'      => '',
+			'attendance' => '',
+		];
 
 		if ( isset( $show_data['datetime'] ) && $show_data['datetime'] ) {
 			$datetime                  = $show_data['datetime'];
 			$update_fields['datetime'] = Callboard_Functions::validate_date_string( $datetime ) ? $datetime : get_post_meta( $post_id, 'datetime', true );
+		}
+
+		if ( isset( $show_data['notes'] ) && $show_data['notes'] ) {
+			$update_fields['notes'] = sanitize_textarea_field( $show_data['notes'] );
 		}
 
 		if ( isset( $show_data['attendance'] ) ) {

@@ -164,7 +164,6 @@ export default function ShowTable({ shows, buttonsDisabled, addlProps }) {
 											onClose={handlePopoverClose}
 											disableRestoreFocus
 										>
-											{/* TODO Implement show notes (globally) */}
 											{show.notes ? (
 												<Typography sx={{ p: 2 }}>{notes}</Typography>
 											) : (

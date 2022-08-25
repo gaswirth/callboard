@@ -10,6 +10,7 @@ export default function AdminActions() {
 
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
 	const [newShowTitle, setNewShowTitle] = useState('');
+	const [newShowNotes, setNewShowNotes] = useState('');
 	const [newShowError, setNewShowError] = useState('');
 
 	/**
@@ -23,15 +24,18 @@ export default function AdminActions() {
 
 	const handleNextShowTitleChange = (event) => setNewShowTitle(event.target.value);
 
+	const handleNextShowNotesChange = (event) => setNewShowNotes(event.target.value);
+
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
 	const handleSubmitNewShow = () => {
-		newShowMutation(newShowDateTime, newShowTitle).catch((errors) => setNewShowError(errors.message));
+		newShowMutation(newShowDateTime, newShowTitle, newShowNotes).catch((errors) => setNewShowError(errors.message));
 
 		// Clear the new show fields.
 		setNewShowDateTime(null);
 		setNewShowTitle('');
+		setNewShowNotes('');
 	};
 
 	return (
@@ -56,6 +60,14 @@ export default function AdminActions() {
 						variant="outlined"
 						value={newShowTitle}
 						onChange={handleNextShowTitleChange}
+					/>
+					<TextField
+						label="Show Notes"
+						multiline={true}
+						minRows={3}
+						variant="outlined"
+						value={newShowNotes}
+						onChange={handleNextShowNotesChange}
 					/>
 					<ButtonGroup disableElevation={false}>
 						<Button

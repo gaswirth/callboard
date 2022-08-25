@@ -147,7 +147,11 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					],
 					'title'       => [
 						'type'        => 'String',
-						'description' => __( 'Show Title/Number/ID. Can be left blank to use as a counter.', 'callboard' ),
+						'description' => __( 'Show Title/Number/ID.', 'callboard' ),
+					],
+					'notes'       => [
+						'type'        => 'String',
+						'description' => __( 'Show Notes.', 'callboard' ),
 					],
 				],
 				'outputFields'        => [
@@ -174,6 +178,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 							'post_title'  => $input['title'] ? sanitize_text_field( $input['title'] ) : '',
 							'meta_input'  => [
 								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
+								'notes'    => $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '',
 							],
 						]
 					);

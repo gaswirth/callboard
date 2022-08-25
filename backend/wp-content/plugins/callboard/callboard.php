@@ -4,7 +4,7 @@
  * Description: Callboard core.
  * Author: Nick Gaswirth
  * Author URI: https://roundhouse-designs.com
- * Version: 0.0.3
+ * Version: 0.0.4
  *
  * @package callboard
  */
@@ -12,7 +12,7 @@
 /**
  * Constants.
  */
-define( 'CALLBOARD_VERSION', '0.0.3' );
+define( 'CALLBOARD_VERSION', '0.0.4' );
 define( 'CALLBOARD_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
 
 /**

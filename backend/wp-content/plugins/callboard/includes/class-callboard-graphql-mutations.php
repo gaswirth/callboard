@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -14,13 +14,13 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Register GraphQL mutations.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function register_mutations() {
 		$this->register_login_mutation();
@@ -34,7 +34,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Login mutation with HTTP Cookies.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -102,7 +102,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Logout mutation.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -131,7 +131,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Mutation for creating a new show.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -194,7 +194,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Mutation for updating a show's attendance status array.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -242,7 +242,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Mutation for updating a Company Member's data.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -311,7 +311,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Mutation for creating a new Company Member.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -377,7 +377,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	/**
 	 * Set CORS to allow frontend logins
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.

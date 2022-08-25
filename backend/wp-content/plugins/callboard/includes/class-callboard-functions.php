@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -14,7 +14,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_Functions extends Callboard {
 	/**

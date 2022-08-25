@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -14,7 +14,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_GraphQL {
 	/**
@@ -22,14 +22,14 @@ class Callboard_GraphQL {
 	 *
 	 * @access protected
 	 * @var string
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	protected $frontend_url;
 
 	/**
 	 * Constructor.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param string $frontend_url The frontend app URL.
 	 */

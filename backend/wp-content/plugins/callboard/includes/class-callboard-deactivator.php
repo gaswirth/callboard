@@ -22,7 +22,7 @@ class Callboard_Deactivator {
 	/**
 	 * Runs on plugin activation.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public static function deactivate() {
 		Callboard_Show::unregister_cpt_show();

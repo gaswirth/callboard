@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -14,7 +14,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_Settings {
 	/**
@@ -22,14 +22,14 @@ class Callboard_Settings {
 	 *
 	 * @access private
 	 * @var string
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	private $option_group;
 
 	/**
 	 * Initialize the class and set its properties.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param string $plugin_name The name of the plugin.
 	 */
@@ -61,7 +61,7 @@ class Callboard_Settings {
 	/**
 	 * Register settings fields.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function register_settings_fields() {
 		/**

@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -14,13 +14,13 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 	/**
 	 * Register GraphQL objects and fields.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function register_types() {
 		$this->register_company_member_object_type();
@@ -32,7 +32,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 	/**
 	 * Register the `companyMembers` field on the RootQuery to return a list of users with the 'company_member' user role.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -131,7 +131,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 	/**
 	 * Create the `CompanyMember` object type for handling Users.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */
@@ -173,7 +173,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 	/**
 	 * Registers the `show` custom fields.
 	 *
-	 * @since 0.0.3
+	 * @since 0.0.1
 	 *
 	 * @return void
 	 */

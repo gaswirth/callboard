@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 /**
@@ -18,7 +18,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_Loader {
 
@@ -27,7 +27,7 @@ class Callboard_Loader {
 	 *
 	 * @access protected
 	 * @var array $actions The actions registered with WordPress to fire when the plugin loads.
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	protected $actions;
 
@@ -36,14 +36,14 @@ class Callboard_Loader {
 	 *
 	 * @access protected
 	 * @var array $filters The filters registered with WordPress to fire when the plugin loads.
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	protected $filters;
 
 	/**
 	 * Initialize the collections used to maintain the actions and filters.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function __construct() {
 		$this->actions = [];
@@ -112,7 +112,7 @@ class Callboard_Loader {
 	/**
 	 * Register the filters and actions with WordPress.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function run() {
 		foreach ( $this->filters as $hook ) {

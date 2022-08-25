@@ -5,7 +5,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 
 // TODO refactor some of the utility methods to a subclass.
@@ -16,7 +16,7 @@
  * @package Callboard
  * @subpackage Callboard/includes
  *
- * @since 0.0.2
+ * @since 0.0.1
  */
 class Callboard_Show {
 	/**
@@ -29,7 +29,7 @@ class Callboard_Show {
 	/**
 	 * Register Post Type: Shows.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function register_cpt_show() {
 		$labels = [
@@ -116,7 +116,7 @@ class Callboard_Show {
 	/**
 	 * Adds `show` CPT meta boxes.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function register_show_meta_boxes() {
 		add_meta_box(
@@ -132,7 +132,7 @@ class Callboard_Show {
 	/**
 	 * Render the `show` meta fields.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 */
 	public function show_data_fields() {
 		global $post;
@@ -152,7 +152,7 @@ class Callboard_Show {
 	/**
 	 * Save the metabox data.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param int $post_id The post ID.
 	 */
@@ -174,7 +174,7 @@ class Callboard_Show {
 	/**
 	 * Sanitize show meta values.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param int   $post_id   The post ID.
 	 * @param array $show_data An array of meta values, keyed by field.
@@ -205,7 +205,7 @@ class Callboard_Show {
 	/**
 	 * Update the show meta fields.
 	 *
-	 * @since 0.0.2
+	 * @since 0.0.1
 	 *
 	 * @param int   $post_id The post ID.
 	 * @param array $fields  The values to update, keyed by field.

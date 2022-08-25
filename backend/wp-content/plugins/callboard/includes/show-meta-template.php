@@ -8,7 +8,7 @@
  * @uses $notes from the meta box callback function
  * @uses $attendance from the meta box callback function.
  * 
- * @since 0.0.4
+ * @since 0.0.1
  */
 
 ?>

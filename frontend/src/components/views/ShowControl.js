@@ -1,11 +1,13 @@
 import React from 'react';
-import { Grid, Stack, Skeleton } from '@mui/material';
+import { Paper, Grid, Stack, Skeleton } from '@mui/material';
 
 import ViewHeading from 'components/common/ViewHeading';
 import ShowTable from 'components/common/ShowTable';
 import AdminActions from 'components/common/AdminActions';
 
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
+import QRCode from 'components/common/QRCode';
+import ShowNotes from 'components/common/ShowNotes';
 
 export default function ShowControl() {
 	const { data: showData, loading: showLoading } = useRecentShows();
@@ -15,14 +17,10 @@ export default function ShowControl() {
 			{showData?.shows.nodes[1] ? (
 				<Grid item xs={4}>
 					<Stack spacing={2}>
-						<ViewHeading variant="h6">Last Show</ViewHeading>
-						{showLoading ? (
-							<Skeleton>
-								<ShowTable />
-							</Skeleton>
-						) : (
-							<ShowTable shows={[showData.shows.nodes[1]]} />
-						)}
+						<ViewHeading variant="h6">Sign-in QR</ViewHeading>
+						<Paper>
+							<QRCode />
+						</Paper>
 					</Stack>
 				</Grid>
 			) : null}
@@ -35,8 +33,11 @@ export default function ShowControl() {
 								<ShowTable />
 							</Skeleton>
 						) : (
-							// TODO: add "edit Notes" field
-							<ShowTable shows={[showData.shows.nodes[0]]} />
+							// TODO: add "edit Notes" field'
+							<>
+								<ShowTable shows={[showData.shows.nodes[0]]} />
+								<ShowNotes show={showData.shows.nodes[0]} editable={true} />
+							</>
 						)}
 					</Stack>
 				</Grid>
@@ -50,7 +51,7 @@ export default function ShowControl() {
 						<ShowTable />
 					</Skeleton>
 				) : (
-					<ShowTable shows={showData.shows.nodes.slice(2)} />
+					<ShowTable shows={showData.shows.nodes.slice(1)} />
 				)}
 			</Grid>
 		</Grid>

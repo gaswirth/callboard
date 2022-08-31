@@ -1,19 +1,42 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+
 import App from './App';
 import theme from './theme';
+import { AuthContextProvider } from 'context/AuthContext';
 
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+/**
+ * Apollo client.
+ */
+const httpLink = createHttpLink({
+	uri: '/graphql',
+	credentials: 'include',
+});
+const client = new ApolloClient({
+	link: httpLink,
+	cache: new InMemoryCache(),
+});
+
 root.render(
 	<React.StrictMode>
-		<CssBaseline />
-		<ThemeProvider theme={theme}>
-			<App />
-		</ThemeProvider>
+		<BrowserRouter>
+			<CssBaseline />
+			<ThemeProvider theme={theme}>
+				<ApolloProvider client={client}>
+					<AuthContextProvider>
+						<App />
+					</AuthContextProvider>
+				</ApolloProvider>
+			</ThemeProvider>
+		</BrowserRouter>
 	</React.StrictMode>
 );
 

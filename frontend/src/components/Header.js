@@ -1,8 +1,5 @@
 import React, { useContext } from 'react';
-import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
-import { Tab, Tabs, Typography } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
+import { Tab, Tabs, Typography, Box, AppBar, Toolbar } from '@mui/material';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
@@ -14,9 +11,9 @@ export default function Header({ currentTab, handleTabChange }) {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
-				<Toolbar>
-					{user?.id ? (
+			{user?.isAdmin ? (
+				<AppBar position="static">
+					<Toolbar>
 						<Tabs
 							value={currentTab}
 							onChange={handleTabChange}
@@ -25,17 +22,18 @@ export default function Header({ currentTab, handleTabChange }) {
 							textColor="inherit"
 							sx={{ flexGrow: 1 }}
 						>
-							<Tab value="now" label="Now" />
-							{user?.isAdmin ? <Tab value="roster" label="Roster" /> : null}
-							{user?.isAdmin ? <Tab value="showControl" label="Show Control" /> : null}
+							<Tab value="showControl" label="Show Control" />
+							<Tab value="roster" label="Roster" />
 						</Tabs>
-					) : null}
 
-					<Typography variant="h6" textTransform="uppercase">
-						{companyData?.callboardOptionsSettings.callboardCompanyName}
-					</Typography>
-				</Toolbar>
-			</AppBar>
+						<Typography variant="h6" textTransform="uppercase">
+							{companyData?.callboardOptionsSettings.callboardCompanyName}
+						</Typography>
+					</Toolbar>
+				</AppBar>
+			) : (
+				<Typography>You're not supposed to be here...</Typography>
+			)}
 		</Box>
 	);
 }

@@ -1,17 +1,29 @@
 import React from 'react';
-import { Skeleton } from '@mui/material';
+import { Container, Skeleton } from '@mui/material';
 
 import ShowTable from 'components/common/ShowTable';
+import ViewHeading from 'components/common/ViewHeading';
+import ShowNotes from 'components/common/ShowNotes';
+
 import { useLatestShow } from 'hooks/queries/use-latest-show';
+import { useCompanyName } from 'hooks/queries/use-company-name';
 
 export default function Now() {
-	const { data, loading } = useLatestShow();
+	const { data: showData, loading: showLoading } = useLatestShow();
+	const { data: companyData } = useCompanyName();
 
-	return loading ? (
+	const companyName = companyData?.callboardOptionsSettings.callboardCompanyName;
+	const show = showData?.shows.nodes[0];
+
+	return showLoading ? (
 		<Skeleton animation="wave">
 			<ShowTable />
 		</Skeleton>
 	) : (
-		<ShowTable shows={data?.shows.nodes} buttonsDisabled={true} />
+		<Container>
+			<ViewHeading>{companyName}</ViewHeading>
+			<ShowTable shows={[show]} buttonsDisabled={true} />
+			<ShowNotes show={show} />
+		</Container>
 	);
 }

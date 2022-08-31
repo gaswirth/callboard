@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Stack, Typography, ButtonGroup, Button, TextField } from '@mui/material';
-import ViewHeading from 'components/common/ViewHeading';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
+import ViewHeading from 'components/common/ViewHeading';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
 export default function AdminActions() {
@@ -40,7 +40,7 @@ export default function AdminActions() {
 
 	return (
 		<Stack spacing={2}>
-			<ViewHeading variant="h6">Actions</ViewHeading>
+			<ViewHeading variant="h6">Next Show</ViewHeading>
 			<Stack spacing={2}>
 				<>
 					<DateTimePicker

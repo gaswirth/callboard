@@ -27,6 +27,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 		$this->register_logout_mutation();
 		$this->register_new_show_mutation();
 		$this->register_update_show_attendance_mutation();
+		$this->register_update_show_notes_mutation();
 		$this->register_update_company_member_mutation();
 		$this->register_new_company_member_mutation();
 	}
@@ -233,6 +234,54 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					// If `update_post_meta` returns false, there was either an error, or the submitted value was identical.
 					return [
 						'newStatus' => $result ? $input['status'] : $attendance[$input['companyMemberId']],
+					];
+				},
+			]
+		);
+	}
+
+	/**
+	 * Mutation for updating a Company Member's data.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @return void
+	 */
+	public function register_update_show_notes_mutation() {
+		register_graphql_mutation(
+			'updateShowNotes',
+			[
+				'inputFields'         => [
+					'description' => 'The show fields to update.',
+					'id'          => [
+						'type'        => 'ID',
+						'description' => __( 'Show ID', 'callboard' ),
+					],
+					'notes'       => [
+						'type'        => 'String',
+						'description' => __( 'Show notes', 'callboard' ),
+					],
+				],
+				'outputFields'        => [
+					'updatedShowNotes' => [
+						'type'        => 'String',
+						'description' => __( 'The updated (sanitized) show notes.', 'callboard' ),
+					],
+				],
+				'mutateAndGetPayload' => function ( $input ) {
+					$id = absint( $input['id'] );
+
+					$notes = $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '';
+
+					// TODO Error handling
+					if ( $notes ) {
+						update_post_meta( $id, 'notes', $notes );
+					} else {
+						delete_post_meta( $id, 'notes' );
+					}
+
+					return [
+						'newNotes' => $notes,
 					];
 				},
 			]

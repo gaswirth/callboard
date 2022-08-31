@@ -1,10 +1,9 @@
 import React, { useReducer, useEffect } from 'react';
-import { FormControlLabel, FormGroup, IconButton, Paper, Switch, TextField, Typography } from '@mui/material';
+import { Stack, FormControlLabel, FormGroup, IconButton, Paper, Switch, TextField, Typography } from '@mui/material';
+import { Check, Clear } from '@mui/icons-material';
 
 import { CompanyMember } from 'lib/classes';
 import { useNewCompanyMember } from 'hooks/mutations/use-new-company-member';
-import { Stack } from '@mui/system';
-import { Check, Clear } from '@mui/icons-material';
 
 const emptyCompanyMember = new CompanyMember('', '', '', '', true);
 const initialCompanyMember = { ...emptyCompanyMember, email: '' };

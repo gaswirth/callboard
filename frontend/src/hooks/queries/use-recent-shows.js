@@ -10,7 +10,6 @@ export const QUERY_RECENT_SHOWS = gql`
 	query RecentShows($last: Int = 8) {
 		shows(first: $last) {
 			nodes {
-				id
 				databaseId
 				datetime
 				attendance

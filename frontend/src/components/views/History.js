@@ -8,6 +8,8 @@ import { useRecentShows } from 'hooks/queries/use-recent-shows';
 export default function History() {
 	const { data: showData, loading: showLoading } = useRecentShows();
 
+	// TODO Date control
+
 	return (
 		<Grid item xs={12}>
 			{showLoading ? (

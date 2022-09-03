@@ -22,7 +22,7 @@ export default function Now() {
 	) : (
 		<Container>
 			<ViewHeading>{companyName}</ViewHeading>
-			<ShowTable shows={[show]} buttonsDisabled={true} />
+			<ShowTable shows={[show]} iconButtonsDisabled={true} />
 			<ShowNotes show={show} />
 		</Container>
 	);

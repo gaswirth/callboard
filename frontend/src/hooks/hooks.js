@@ -84,9 +84,6 @@ export const useLocalStorage = (
  * @returns The sorted collection of shows.
  */
 export const sortShowsByDatetime = (shows) => {
-	// XXX necessary check?
-	if (!shows) return;
-
 	return shows.sort((a, b) => (isAfter(a.datetime > b.datetime) ? 1 : isBefore(a.datetime, b.datetime) ? -1 : 0));
 };
 

@@ -4,6 +4,7 @@ import { Container, Typography } from '@mui/material';
 import Header from 'components/Header';
 import TabPanel from 'components/common/TabPanel';
 import Roster from './views/Roster';
+import History from './views/History';
 import ShowControl from './views/ShowControl';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
@@ -31,6 +32,9 @@ export default function Admin() {
 				</TabPanel>
 				<TabPanel currentTab={currentTab} id="roster" title="Roster">
 					<Roster />
+				</TabPanel>
+				<TabPanel currentTab={currentTab} id="history" title="History">
+					<History />
 				</TabPanel>
 			</Container>
 		</>

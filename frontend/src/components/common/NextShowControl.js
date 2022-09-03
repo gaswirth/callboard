@@ -5,7 +5,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import ViewHeading from 'components/common/ViewHeading';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
-export default function AdminActions() {
+export default function NextShowControl() {
 	const { newShowMutation } = useNewShow();
 
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
@@ -39,7 +39,7 @@ export default function AdminActions() {
 	};
 
 	return (
-		<Stack spacing={2}>
+		<>
 			<ViewHeading variant="h6">Next Show</ViewHeading>
 			<Stack spacing={2}>
 				<>
@@ -81,6 +81,6 @@ export default function AdminActions() {
 					</ButtonGroup>
 				</>
 			</Stack>
-		</Stack>
+		</>
 	);
 }

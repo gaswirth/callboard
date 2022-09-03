@@ -23,6 +23,7 @@ export default function Header({ currentTab, handleTabChange }) {
 							sx={{ flexGrow: 1 }}
 						>
 							<Tab value="showControl" label="Show Control" />
+							<Tab value="history" label="History" />
 							<Tab value="roster" label="Roster" />
 						</Tabs>
 

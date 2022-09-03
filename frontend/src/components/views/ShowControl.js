@@ -3,7 +3,7 @@ import { Paper, Grid, Stack, Skeleton } from '@mui/material';
 
 import ViewHeading from 'components/common/ViewHeading';
 import ShowTable from 'components/common/ShowTable';
-import AdminActions from 'components/common/AdminActions';
+import NextShowControl from 'components/common/NextShowControl';
 
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 import QRCode from 'components/common/QRCode';
@@ -14,18 +14,8 @@ export default function ShowControl() {
 
 	return (
 		<Grid container spacing={5}>
-			{showData?.shows.nodes[1] ? (
-				<Grid item xs={4}>
-					<Stack spacing={2}>
-						<ViewHeading variant="h6">Sign-in QR</ViewHeading>
-						<Paper>
-							<QRCode />
-						</Paper>
-					</Stack>
-				</Grid>
-			) : null}
 			{showData?.shows.nodes[0] ? (
-				<Grid item xs={4}>
+				<Grid item xs={8}>
 					<Stack spacing={2}>
 						<ViewHeading variant="h6">Current Show</ViewHeading>
 						{showLoading ? (
@@ -33,9 +23,8 @@ export default function ShowControl() {
 								<ShowTable />
 							</Skeleton>
 						) : (
-							// TODO: add "edit Notes" field'
 							<>
-								<ShowTable shows={[showData.shows.nodes[0]]} />
+								<ShowTable shows={[showData.shows.nodes[0]]} qrcode={true} />
 								<ShowNotes show={showData.shows.nodes[0]} editable={true} />
 							</>
 						)}
@@ -43,16 +32,13 @@ export default function ShowControl() {
 				</Grid>
 			) : null}
 			<Grid item xs={4}>
-				<AdminActions />
-			</Grid>
-			<Grid item xs={12}>
-				{showLoading ? (
-					<Skeleton>
-						<ShowTable />
-					</Skeleton>
-				) : (
-					<ShowTable shows={showData.shows.nodes.slice(1)} />
-				)}
+				<Stack spacing={2}>
+					<ViewHeading variant="h6">QR Sign-in</ViewHeading>
+					<Paper sx={{ py: 3, px: 1, mb: 4 }}>
+						<QRCode />
+					</Paper>
+					<NextShowControl />
+				</Stack>
 			</Grid>
 		</Grid>
 	);

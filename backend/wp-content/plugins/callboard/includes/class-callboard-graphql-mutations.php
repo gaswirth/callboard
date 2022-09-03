@@ -269,15 +269,15 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					],
 				],
 				'mutateAndGetPayload' => function ( $input ) {
-					$id = absint( $input['id'] );
+					$showId = absint( $input['id'] );
 
 					$notes = $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '';
 
 					// TODO Error handling
 					if ( $notes ) {
-						update_post_meta( $id, 'notes', $notes );
+						update_post_meta( $showId, 'notes', $notes );
 					} else {
-						delete_post_meta( $id, 'notes' );
+						delete_post_meta( $showId, 'notes' );
 					}
 
 					return [

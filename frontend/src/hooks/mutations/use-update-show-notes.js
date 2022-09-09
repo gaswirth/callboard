@@ -16,7 +16,6 @@ export const useUpdateShowNotes = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_UPDATE_SHOW_NOTES);
 
 	const updateShowNotesMutation = (id, notes) => {
-		console.debug(id, notes);
 		return mutation({
 			variables: {
 				input: {

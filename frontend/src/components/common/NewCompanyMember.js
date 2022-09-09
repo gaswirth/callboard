@@ -5,7 +5,7 @@ import { Check, Clear } from '@mui/icons-material';
 import { CompanyMember } from 'lib/classes';
 import { useNewCompanyMember } from 'hooks/mutations/use-new-company-member';
 
-const emptyCompanyMember = new CompanyMember('', '', '', '', true);
+const emptyCompanyMember = new CompanyMember('', '', '', '', '', true);
 const initialCompanyMember = { ...emptyCompanyMember, email: '' };
 
 function newCompanyMemberReducer(state, action) {

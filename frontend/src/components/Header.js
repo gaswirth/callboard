@@ -11,9 +11,9 @@ export default function Header({ currentTab, handleTabChange }) {
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			{user?.isAdmin ? (
-				<AppBar position="static">
-					<Toolbar>
+			<AppBar position="static">
+				<Toolbar>
+					{user?.isAdmin ? (
 						<Tabs
 							value={currentTab}
 							onChange={handleTabChange}
@@ -26,15 +26,12 @@ export default function Header({ currentTab, handleTabChange }) {
 							<Tab value="history" label="History" />
 							<Tab value="roster" label="Roster" />
 						</Tabs>
-
-						<Typography variant="h6" textTransform="uppercase">
-							{companyData?.callboardOptionsSettings.callboardCompanyName}
-						</Typography>
-					</Toolbar>
-				</AppBar>
-			) : (
-				<Typography>You're not supposed to be here...</Typography>
-			)}
+					) : null}
+					<Typography variant="h6" textTransform="uppercase">
+						{companyData?.callboardOptionsSettings.callboardCompanyName}
+					</Typography>
+				</Toolbar>
+			</AppBar>
 		</Box>
 	);
 }

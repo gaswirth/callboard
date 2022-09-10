@@ -59,4 +59,18 @@ class Callboard_Functions extends Callboard {
 
 		return implode( "\n", $lines );
 	}
+
+	/**
+	 * Generates a random alphanumeric string with a specified length.
+	 *
+	 * @since 0.0.1
+	 *
+	 * @param  int    $length The desired resulting string length.
+	 * @return string The random string.
+	 */
+	public static function generate_random_string( $length ) {
+		$chars = '0123456789abcdefghijklmnopqrstuvwxyz-_';
+
+		return substr( str_shuffle( $chars ), 0, $length );
+	}
 }

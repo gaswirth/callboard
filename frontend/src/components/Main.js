@@ -1,14 +1,16 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Admin from './Admin';
 import Cast from './Cast';
 
-import { AuthContext } from 'context/AuthContext';
-
 export default function Main() {
-	const {
-		user: { isAdmin },
-	} = useContext(AuthContext);
-
-	return isAdmin ? <Admin /> : <Cast />;
+	return (
+		<Router>
+			<Routes>
+				<Route path="/" element={<Admin />} />
+				<Route path="/signin/:slug" element={<Cast />} />
+			</Routes>
+		</Router>
+	);
 }

@@ -2,7 +2,7 @@ import React, { useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { Popover } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography, Box } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
 import { prepareShowAttendance, showLabel } from 'lib/functions';
@@ -13,21 +13,22 @@ function anchorElReducer(state, action) {
 	switch (action.type) {
 		case 'INIT': {
 			var anchorEls = {};
-			Object.keys(action.payload).forEach((id) => {
+			Object.values(action.payload).forEach((value) => {
+				const { databaseId: id } = value;
 				anchorEls[id] = null;
 			});
 
 			return anchorEls;
 		}
 
-		case 'MOUSEENTER': {
+		case 'OPEN': {
 			return {
 				...state,
 				[action.id]: action.payload,
 			};
 		}
 
-		case 'MOUSEOUT': {
+		case 'CLOSE': {
 			return {
 				...state,
 				[action.id]: null,
@@ -39,7 +40,7 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, iconButtonsDisabled, addlProps }) {
+export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps }) {
 	const { preparedData: roster } = useActiveRoster();
 	const [rows, setRows] = useState([]);
 
@@ -57,16 +58,20 @@ export default function ShowTable({ shows, iconButtonsDisabled, addlProps }) {
 	}, [anchorEls]);
 
 	const handlePopoverOpen = (event) => {
+		if (popoverDisabled) return;
+
 		anchorElDispatch({
-			type: 'MOUSEENTER',
+			type: 'OPEN',
 			id: event.target.getAttribute('id'),
-			payload: event.currentTarget,
+			payload: event.target,
 		});
 	};
 
 	const handlePopoverClose = (event) => {
+		if (popoverDisabled) return;
+
 		anchorElDispatch({
-			type: 'MOUSEOUT',
+			type: 'CLOSE',
 			id: event.target.getAttribute('id'),
 		});
 	};
@@ -121,41 +126,32 @@ export default function ShowTable({ shows, iconButtonsDisabled, addlProps }) {
 								const { databaseId: id, datetime, notes } = show;
 
 								return (
-									<TableCell key={id}>
-										<Box
-											id={id}
-											aria-haspopup="true"
-											sx={{ p: 1 }}
-											onMouseEnter={handlePopoverOpen}
-											onMouseLeave={handlePopoverClose}
+									<TableCell key={id} id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+										<Typography
+											variant="button"
+											lineHeight={1.2}
+											sx={{
+												cursor: 'default',
+												display: 'block',
+												borderRadius: 1,
+												fontSize: '1.1em',
+											}}
 										>
-											<Typography
-												variant="button"
-												lineHeight={1.2}
-												sx={{
-													cursor: 'default',
-													display: 'block',
-													borderRadius: 1,
-													fontSize: '1.1em',
-												}}
-											>
-												{showLabel(datetime).date}
-											</Typography>
-											<Typography
-												variant="button"
-												lineHeight={1.2}
-												sx={{
-													cursor: 'default',
-													display: 'block',
-													borderRadius: 1,
-													fontSize: '1.1em',
-												}}
-											>
-												{showLabel(datetime).time}
-											</Typography>
-										</Box>
+											{showLabel(datetime).date}
+										</Typography>
+										<Typography
+											variant="button"
+											lineHeight={1.2}
+											sx={{
+												cursor: 'default',
+												display: 'block',
+												borderRadius: 1,
+												fontSize: '1.1em',
+											}}
+										>
+											{showLabel(datetime).time}
+										</Typography>
 										<Popover
-											sx={{ pointerEvents: 'none' }}
 											open={!!anchorEl[id]}
 											anchorEl={anchorEl[id]}
 											anchorOrigin={{
@@ -164,6 +160,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, addlProps }) {
 											}}
 											onClose={handlePopoverClose}
 											disableRestoreFocus
+											sx={{ pointerEvents: 'none' }}
 										>
 											{show.notes ? (
 												<Typography sx={{ p: 2 }}>{notes}</Typography>

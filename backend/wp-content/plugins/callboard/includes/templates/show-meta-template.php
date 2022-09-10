@@ -20,7 +20,7 @@
 		flex-wrap: wrap;
 	}
 	.column {
-		flex: 1 1 33%;
+		flex: 1 1 50%;
 		padding: 0 1%;
 	}
 	label {
@@ -50,5 +50,10 @@
 		<p><?php esc_html_e( 'Format each pair on a separate line as', 'callboard' ); ?> <code>user_id : status</code></p>
 		<p><?php esc_html_e( 'Allowed status values:', 'callboard' ); ?> <code>in, out, pd, vac</code></p>
 		<textarea id="show_data[attendance]" name="show_data[attendance]" class="widefat"><?php esc_html_e( $attendance ); ?></textarea>
+	</div>
+	<div class="column">
+		<label for="show_data[route]">Attendance</label>
+		<p><?php esc_html_e( 'URL route', 'callboard' ); ?> <code>in, out, pd, vac</code></p>
+		<input type="text" id="show_data[route]" name="show_data[route]" class="widefat" value="<?php esc_html_e( $route ); ?>" />
 	</div>
 </div>

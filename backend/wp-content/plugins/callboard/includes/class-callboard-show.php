@@ -146,7 +146,7 @@ class Callboard_Show {
 		$notes      = isset( $meta['notes'] ) ? $meta['notes'][0] : '';
 		$attendance = isset( $meta['attendance'][0] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : '';
 
-		require CALLBOARD_PLUGIN_PATH . 'includes/show-meta-template.php';
+		require CALLBOARD_PLUGIN_PATH . 'includes/templates/show-meta-template.php';
 	}
 
 	/**
@@ -278,16 +278,16 @@ class Callboard_Show {
 	 */
 	public static function check_unique_datetime( $datetime ) {
 		$shows = get_posts( [
-			'post_type'  => 'show',
+			'post_type'      => 'show',
 			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-			'meta_query' => [
+			'meta_query'     => [
 				[
-					'key'            => 'datetime',
-					'value'          => Callboard_Functions::format_date_string( $datetime ),
-					'compare'        => '=',
-					'posts_per_page' => 1,
+					'key'     => 'datetime',
+					'value'   => Callboard_Functions::format_date_string( $datetime ),
+					'compare' => '=',
 				],
 			],
+			'posts_per_page' => 1,
 		] );
 
 		return $shows ? false : true;

@@ -5,12 +5,15 @@ import ViewHeading from 'components/common/ViewHeading';
 import ShowTable from 'components/common/ShowTable';
 import NextShowControl from 'components/common/NextShowControl';
 
-import { useRecentShows } from 'hooks/queries/use-recent-shows';
 import QRCode from 'components/common/QRCode';
 import ShowNotes from 'components/common/ShowNotes';
 
+import { useLatestShow } from 'hooks/queries/use-latest-show';
+
 export default function ShowControl() {
-	const { data: showData, loading: showLoading } = useRecentShows();
+	const { data: showData, loading: showLoading } = useLatestShow();
+
+	const show = showData?.shows.nodes[0];
 
 	return (
 		<Grid container spacing={5}>
@@ -24,8 +27,8 @@ export default function ShowControl() {
 							</Skeleton>
 						) : (
 							<>
-								<ShowTable shows={[showData.shows.nodes[0]]} qrcode={true} />
-								<ShowNotes show={showData.shows.nodes[0]} editable={true} />
+								<ShowTable shows={[show]} popoverDisabled />
+								<ShowNotes show={show} editable={true} />
 							</>
 						)}
 					</Stack>
@@ -33,10 +36,16 @@ export default function ShowControl() {
 			) : null}
 			<Grid item xs={4}>
 				<Stack spacing={2}>
-					<ViewHeading variant="h6">QR Sign-in</ViewHeading>
-					<Paper sx={{ py: 3, px: 1, mb: 4 }}>
-						<QRCode />
-					</Paper>
+					{showData?.shows.nodes.length ? (
+						<>
+							<ViewHeading variant="h6">QR Sign-in</ViewHeading>
+							{show ? (
+								<Paper sx={{ py: 3, px: 1, mb: 4 }}>
+									<QRCode string={show.slug} />
+								</Paper>
+							) : null}
+						</>
+					) : null}
 					<NextShowControl />
 				</Stack>
 			</Grid>

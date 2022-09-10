@@ -4,7 +4,12 @@ import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
 
 export default function ShowNotes({ show, editable }) {
 	const [notes, setNotes] = useState(show?.notes);
+	const [notesIsEditing, setNotesIsEditing] = useState(false);
 	const { updateShowNotesMutation } = useUpdateShowNotes();
+
+	const handleEditNotes = () => {
+		setNotesIsEditing(true);
+	};
 
 	const handleShowNotesChange = (event) => {
 		setNotes(event.target.value);
@@ -12,10 +17,12 @@ export default function ShowNotes({ show, editable }) {
 
 	const handleSubmitNotes = () => {
 		updateShowNotesMutation(show.databaseId, notes);
+		setNotesIsEditing(false);
 	};
 
 	const handleCancelNotes = () => {
 		setNotes(show?.notes);
+		setNotesIsEditing(false);
 	};
 
 	return show ? (
@@ -32,15 +39,24 @@ export default function ShowNotes({ show, editable }) {
 						variant="outlined"
 						value={notes}
 						onChange={handleShowNotesChange}
+						disabled={!notesIsEditing}
 						sx={{ width: '100%', mb: 1 }}
 					/>
 					<ButtonGroup disableElevation={false}>
-						<Button size="large" onClick={handleSubmitNotes} variant="contained">
-							Save
-						</Button>
-						<Button size="large" onClick={handleCancelNotes} variant="contained">
-							Cancel
-						</Button>
+						{notesIsEditing ? (
+							<>
+								<Button onClick={handleSubmitNotes} variant="contained">
+									Save
+								</Button>
+								<Button onClick={handleCancelNotes} variant="contained">
+									Cancel
+								</Button>
+							</>
+						) : (
+							<Button onClick={handleEditNotes} variant="contained">
+								Edit Notes
+							</Button>
+						)}
 					</ButtonGroup>
 				</>
 			) : (

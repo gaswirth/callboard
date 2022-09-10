@@ -22,7 +22,7 @@ export const useUpdateShowAttendance = () => {
 			variables: {
 				input: {
 					clientMutationId: 'updateShowAttendanceMutation',
-					showId,
+					show_id: showId,
 					companyMemberId,
 					status: status,
 				},

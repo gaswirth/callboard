@@ -9,7 +9,7 @@ export const MUTATE_NEW_SHOW = gql`
 	mutation newShow($input: NewShowInput!) {
 		newShow(input: $input) {
 			clientMutationId
-			newShowId
+			showId
 		}
 	}
 `;

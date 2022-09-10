@@ -6,23 +6,24 @@ import { useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
 
-export const QUERY_LATEST_SHOW = gql`
-	query LatestShow {
-		shows(first: 1) {
-			nodes {
-				id
-				databaseId
-				datetime
-				attendance
-				notes
-				slug
-			}
+export const QUERY_SHOW_BY_SLUG = gql`
+	query ShowBySlug($slug: String!) {
+		showBy(slug: $slug) {
+			id
+			databaseId
+			datetime
+			attendance
+			notes
 		}
 	}
 `;
 
-export const useLatestShow = () => {
-	const result = useQuery(QUERY_LATEST_SHOW);
+export const useShowBySlug = (slug) => {
+	const result = useQuery(QUERY_SHOW_BY_SLUG, {
+		variables: {
+			slug,
+		},
+	});
 
 	/**
 	 * Manually run startPolling.

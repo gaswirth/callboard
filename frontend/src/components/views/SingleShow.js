@@ -5,15 +5,15 @@ import ShowTable from 'components/common/ShowTable';
 import ViewHeading from 'components/common/ViewHeading';
 import ShowNotes from 'components/common/ShowNotes';
 
-import { useLatestShow } from 'hooks/queries/use-latest-show';
+import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
-export default function Now() {
-	const { data: showData, loading: showLoading } = useLatestShow();
+export default function SingleShow({ slug }) {
+	const { data: showData, loading: showLoading } = useShowBySlug(slug);
 	const { data: companyData } = useCompanyName();
 
 	const companyName = companyData?.callboardOptionsSettings.callboardCompanyName;
-	const show = showData?.shows.nodes[0];
+	const show = showData?.showBy;
 
 	return showLoading ? (
 		<Skeleton animation="wave">
@@ -22,7 +22,7 @@ export default function Now() {
 	) : (
 		<Container>
 			<ViewHeading>{companyName}</ViewHeading>
-			<ShowTable shows={[show]} iconButtonsDisabled={true} />
+			<ShowTable shows={[show]} iconButtonsDisabled={true} popoverDisabled={true} />
 			<ShowNotes show={show} />
 		</Container>
 	);

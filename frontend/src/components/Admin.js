@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Container, Typography } from '@mui/material';
 
 import Header from 'components/Header';
@@ -7,11 +7,11 @@ import Roster from './views/Roster';
 import History from './views/History';
 import ShowControl from './views/ShowControl';
 
+import { AuthContext } from 'context/AuthContext';
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
-// TODO setup React Router
-
 export default function Admin() {
+	const { user } = useContext(AuthContext);
 	const { error: backendError } = useCompanyName();
 	const [currentTab, setCurrentTab] = useState('showControl');
 
@@ -26,17 +26,21 @@ export default function Admin() {
 	) : (
 		<>
 			<Header currentTab={currentTab} handleTabChange={handleTabChange} />
-			<Container sx={{ p: 3 }} maxWidth="xl">
-				<TabPanel currentTab={currentTab} id="showControl" title="SM/CM">
-					<ShowControl />
-				</TabPanel>
-				<TabPanel currentTab={currentTab} id="roster" title="Roster">
-					<Roster />
-				</TabPanel>
-				<TabPanel currentTab={currentTab} id="history" title="History">
-					<History />
-				</TabPanel>
-			</Container>
+			{user?.isAdmin ? (
+				<Container sx={{ p: 3 }} maxWidth="xl">
+					<TabPanel currentTab={currentTab} id="showControl" title="SM/CM">
+						<ShowControl />
+					</TabPanel>
+					<TabPanel currentTab={currentTab} id="roster" title="Roster">
+						<Roster />
+					</TabPanel>
+					<TabPanel currentTab={currentTab} id="history" title="History">
+						<History />
+					</TabPanel>
+				</Container>
+			) : (
+				'Nothing to see here...'
+			)}
 		</>
 	);
 }

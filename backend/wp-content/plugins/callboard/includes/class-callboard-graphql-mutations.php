@@ -156,7 +156,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					],
 				],
 				'outputFields'        => [
-					'newShowId' => [
+					'showId' => [
 						'type'        => 'ID',
 						'description' => __( 'The newly created Show ID', 'callboard' ),
 					],
@@ -177,6 +177,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 							'post_type'   => 'show',
 							'post_status' => 'publish',
 							'post_title'  => $input['title'] ? sanitize_text_field( $input['title'] ) : '',
+							'post_name'   => Callboard_Functions::generate_random_string( 8 ),
 							'meta_input'  => [
 								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
 								'notes'    => $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '',
@@ -185,7 +186,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					);
 
 					return [
-						'newShowId' => $new_show_id,
+						'showId' => $new_show_id,
 					];
 				},
 			]
@@ -205,7 +206,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 			[
 				'inputFields'         => [
 					'description'     => "A company member's status for a specific show.",
-					'showId'          => [
+					'show_id'         => [
 						'type'        => 'ID',
 						'description' => __( 'The show databaseId', 'callboard' ),
 					],
@@ -225,11 +226,11 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					],
 				],
 				'mutateAndGetPayload' => function ( $input ) {
-					$attendance                                    = get_post_meta( $input['showId'], 'attendance', true );
+					$attendance                                    = get_post_meta( $input['show_id'], 'attendance', true );
 					$updated_attendance                            = $attendance ? $attendance : [];
 					$updated_attendance[$input['companyMemberId']] = $input['status'];
 
-					$result = update_post_meta( $input['showId'], 'attendance', $updated_attendance );
+					$result = update_post_meta( $input['show_id'], 'attendance', $updated_attendance );
 
 					// If `update_post_meta` returns false, there was either an error, or the submitted value was identical.
 					return [
@@ -269,15 +270,15 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					],
 				],
 				'mutateAndGetPayload' => function ( $input ) {
-					$showId = absint( $input['id'] );
+					$show_id = absint( $input['id'] );
 
 					$notes = $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '';
 
 					// TODO Error handling
 					if ( $notes ) {
-						update_post_meta( $showId, 'notes', $notes );
+						update_post_meta( $show_id, 'notes', $notes );
 					} else {
-						delete_post_meta( $showId, 'notes' );
+						delete_post_meta( $show_id, 'notes' );
 					}
 
 					return [

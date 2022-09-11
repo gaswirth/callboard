@@ -1,16 +1,19 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Typography } from '@mui/material';
+import { Container, Skeleton, Typography } from '@mui/material';
 
 import SingleShow from './views/SingleShow';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
+import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
+import ShowTable from './common/ShowTable';
 
 // TODO sign current user in on first visit, unless status has already been set.
 
 export default function Cast() {
 	const { error: backendError } = useCompanyName();
 	const { slug } = useParams();
+	const [{ loading: showLoading }, show] = useShowBySlug(slug);
 
 	return backendError ? (
 		<Typography variant="h5" textAlign="center" sx={{ my: 2 }}>
@@ -18,7 +21,13 @@ export default function Cast() {
 		</Typography>
 	) : (
 		<Container sx={{ p: 3, width: 600 }} maxWidth="xl">
-			<SingleShow slug={slug} />
+			{showLoading ? (
+				<Skeleton animation="wave">
+					<ShowTable />
+				</Skeleton>
+			) : (
+				<SingleShow show={show} />
+			)}
 		</Container>
 	);
 }

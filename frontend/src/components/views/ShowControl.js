@@ -11,13 +11,11 @@ import ShowNotes from 'components/common/ShowNotes';
 import { useLatestShow } from 'hooks/queries/use-latest-show';
 
 export default function ShowControl() {
-	const { data: showData, loading: showLoading } = useLatestShow();
-
-	const show = showData?.shows.nodes[0];
+	const [{ loading: showLoading }, show] = useLatestShow();
 
 	return (
 		<Grid container spacing={5}>
-			{showData?.shows.nodes[0] ? (
+			{show ? (
 				<Grid item xs={8}>
 					<Stack spacing={2}>
 						<ViewHeading variant="h6">Current Show</ViewHeading>
@@ -36,7 +34,7 @@ export default function ShowControl() {
 			) : null}
 			<Grid item xs={4}>
 				<Stack spacing={2}>
-					{showData?.shows.nodes.length ? (
+					{show ? (
 						<>
 							<ViewHeading variant="h6">QR Sign-in</ViewHeading>
 							{show ? (

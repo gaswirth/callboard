@@ -5,6 +5,7 @@
 import { useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
+import { prepareShow } from 'lib/functions';
 
 export const QUERY_SHOW_BY_SLUG = gql`
 	query ShowBySlug($slug: String!) {
@@ -40,5 +41,8 @@ export const useShowBySlug = (slug) => {
 		return () => stopPolling();
 	}, [result]);
 
-	return result;
+	// Prepare show data.
+	const show = result.data ? prepareShow(result.data?.showBy) : null;
+
+	return [result, show];
 };

@@ -5,6 +5,8 @@
 import { gql, useMutation } from '@apollo/client';
 import { QUERY_RECENT_SHOWS } from 'hooks/queries/use-recent-shows';
 
+// FIXME This has stopped working likely due to changes in Show processing.
+
 export const MUTATE_UPDATE_SHOW_ATTENDANCE = gql`
 	mutation UpdateShowAttendance($input: UpdateShowAttendanceInput!) {
 		updateShowAttendance(input: $input) {

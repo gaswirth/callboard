@@ -5,6 +5,7 @@
 import { useEffect } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { isEmpty } from 'lodash';
+import { prepareShow } from 'lib/functions';
 
 export const QUERY_RECENT_SHOWS = gql`
 	query RecentShows($last: Int = 8) {
@@ -37,5 +38,8 @@ export const useRecentShows = () => {
 		return () => stopPolling();
 	}, [data, startPolling, stopPolling]);
 
-	return result;
+	// Prepare show data.
+	const shows = result.data ? result.data.shows.nodes.map((item) => prepareShow(item)) : null;
+
+	return [result, shows];
 };

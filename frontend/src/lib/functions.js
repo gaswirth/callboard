@@ -3,7 +3,7 @@
  */
 import { format } from 'date-fns';
 import { isEmpty } from 'lodash';
-import { CompanyMember } from './classes';
+import { CompanyMember, Show } from './classes';
 
 /**
  * Generate a show's date and time labels.
@@ -29,6 +29,18 @@ export function prepareRoster(rosterData) {
 	return rosterData.map(
 		(item) => new CompanyMember(item.id, item.firstName, item.lastName, item.email, item.role, item.active)
 	);
+}
+
+/**
+ * Prepares a Show from a GraphQL response.
+ *
+ * @param {Object} showData A GraphQL node of the `show` type.
+ * @returns {Show} The prepared Show.
+ */
+export function prepareShow(showData) {
+	const { databaseId, datetime, attendance, notes, slug } = showData;
+
+	return new Show(databaseId, datetime, attendance, notes, slug);
 }
 
 /**

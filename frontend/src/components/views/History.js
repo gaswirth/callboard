@@ -6,7 +6,7 @@ import ShowTable from 'components/common/ShowTable';
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 
 export default function History() {
-	const { data: showData, loading: showLoading } = useRecentShows();
+	const [{ loading: showLoading }, shows] = useRecentShows();
 
 	// TODO Date control
 
@@ -17,7 +17,7 @@ export default function History() {
 					<ShowTable />
 				</Skeleton>
 			) : (
-				<ShowTable shows={showData.shows.nodes.slice(1)} />
+				<ShowTable shows={shows.slice(1)} />
 			)}
 		</Grid>
 	);

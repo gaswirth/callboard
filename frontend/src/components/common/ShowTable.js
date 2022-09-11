@@ -5,7 +5,7 @@ import { visuallyHidden } from '@mui/utils';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
-import { prepareShowAttendance, showLabel } from 'lib/functions';
+import { showLabel } from 'lib/functions';
 
 import { useActiveRoster } from 'hooks/queries/use-active-roster';
 
@@ -82,7 +82,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 	useEffect(() => {
 		if (isEmpty(roster) || isEmpty(shows)) return;
 
-		const attendance = shows.map((show) => prepareShowAttendance(show.attendance));
+		const attendance = shows.map((show) => show.attendance);
 
 		var rows = [];
 
@@ -122,11 +122,11 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 									Company Member
 								</Typography>
 							</TableCell>
-							{shows.map((show) => {
+							{shows.map((show, index) => {
 								const { databaseId: id, datetime, notes } = show;
 
 								return (
-									<TableCell key={id} id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+									<TableCell key={index} id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
 										<Typography
 											variant="button"
 											lineHeight={1.2}
@@ -195,13 +195,13 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>
 
-								{shows.map((show, i) => {
+								{shows.map((show, index) => {
 									const { databaseId: id } = show;
 
 									return (
-										<TableCell key={id} scope="row">
+										<TableCell key={index} scope="row">
 											<StatusIcon
-												status={row.attendance[i] ? row.attendance[i] : ''}
+												status={row.attendance[index] ? row.attendance[index] : ''}
 												companyMemberId={row.companyMemberId}
 												showId={id}
 												buttonDisabled={iconButtonsDisabled}

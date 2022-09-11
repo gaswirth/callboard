@@ -2,21 +2,26 @@
  * Classes for standardized data types.
  */
 import { adminRoles } from 'context/AuthContext';
+import { prepareShowAttendance } from './functions';
 
 /**
  * @module Show
  *
  * @param {String} id Unique.
  * @param {String} datetime Performance date and time.
- * @param {Object} attendance A collection of status strings, keyed by CompanyMember ID.
+ * @param {Object|String} attendance A collection of status strings, keyed by CompanyMember ID.
  * @param {String} notes Show notes to display.
+ * @param {String} slug The show's slug (route).
  */
 export const Show = class {
-	constructor(id = '', datetime = '', attendance = {}, notes = '') {
+	constructor(id = '', datetime = '', attendance = {}, notes = '', slug = '') {
+		const attendanceObject = typeof attendance === 'string' ? prepareShowAttendance(attendance) : attendance;
+
 		this.id = id;
 		this.datetime = datetime;
-		this.attendance = attendance;
+		this.attendance = attendanceObject;
 		this.notes = notes;
+		this.slug = slug;
 	}
 };
 

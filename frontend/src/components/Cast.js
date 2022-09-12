@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Skeleton, Typography } from '@mui/material';
 
-import SingleShow from './views/SingleShow';
+import Now from './views/Now';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
@@ -26,7 +26,7 @@ export default function Cast() {
 					<ShowTable />
 				</Skeleton>
 			) : (
-				<SingleShow show={show} />
+				<Now show={show} />
 			)}
 		</Container>
 	);

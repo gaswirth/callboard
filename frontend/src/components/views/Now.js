@@ -10,10 +10,8 @@ import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useCurrentShowId } from 'hooks/queries/use-current-show-id';
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
-// TODO Accept a show as a param, separate retrieval
-
-export default function SingleShow({ show }) {
-	const { databaseId: showId, attendance } = show;
+export default function Now({ show }) {
+	const { id: showId, attendance } = show;
 	const currentShowId = useCurrentShowId();
 	const { data: companyData } = useCompanyName();
 	const {
@@ -29,13 +27,12 @@ export default function SingleShow({ show }) {
 	// Check current user attendance
 	useEffect(() => {
 		if (!showId) return;
+		console.log(currentShowId);
 
 		if (!attendance[companyMemberId] && showId === currentShowId) {
 			updateAttendanceMutation({ showId, companyMemberId, status: 'in' });
 		}
 	}, [showId, attendance, currentShowId, companyMemberId, updateAttendanceMutation]);
-
-	// TODO highlight current user's row
 
 	const signInAlert = () => {
 		let alert;
@@ -64,17 +61,14 @@ export default function SingleShow({ show }) {
 				break;
 
 			default:
-				alert = {
-					severity: '',
-					message: '',
-				};
+				alert = null;
 		}
 
-		return (
+		return alert ? (
 			<Alert severity={alert.severity} sx={{ mb: 2 }}>
 				{alert.message}
 			</Alert>
-		);
+		) : null;
 	};
 
 	return (

@@ -15,5 +15,7 @@ export const QUERY_CURRENT_SHOW_ID = gql`
 `;
 
 export const useCurrentShowId = () => {
-	return useQuery(QUERY_CURRENT_SHOW_ID);
+	const result = useQuery(QUERY_CURRENT_SHOW_ID);
+
+	return result.data?.shows.nodes[0].databaseId;
 };

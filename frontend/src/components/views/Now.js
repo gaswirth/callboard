@@ -27,7 +27,6 @@ export default function Now({ show }) {
 	// Check current user attendance
 	useEffect(() => {
 		if (!showId) return;
-		console.log(currentShowId);
 
 		if (!attendance[companyMemberId] && showId === currentShowId) {
 			updateAttendanceMutation({ showId, companyMemberId, status: 'in' });

@@ -8,8 +8,6 @@ import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
 import ShowTable from './common/ShowTable';
 
-// TODO sign current user in on first visit, unless status has already been set.
-
 export default function Cast() {
 	const { error: backendError } = useCompanyName();
 	const { slug } = useParams();

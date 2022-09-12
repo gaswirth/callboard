@@ -37,11 +37,9 @@ export default function ShowControl() {
 					{show ? (
 						<>
 							<ViewHeading variant="h6">QR Sign-in</ViewHeading>
-							{show ? (
-								<Paper sx={{ py: 3, px: 1, mb: 4 }}>
-									<QRCode string={show.slug} />
-								</Paper>
-							) : null}
+							<Paper sx={{ py: 3, px: 1, mb: 4 }}>
+								<QRCode string={show.slug} />
+							</Paper>
 						</>
 					) : null}
 					<NextShowControl />

@@ -42,7 +42,7 @@ export const useShowBySlug = (slug) => {
 	}, [result]);
 
 	// Prepare show data.
-	const show = result.data ? prepareShow(result.data?.showBy) : null;
+	const show = result.data ? prepareShow(result.data.showBy) : null;
 
 	return [result, show];
 };

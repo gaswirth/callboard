@@ -138,17 +138,6 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 											}}
 										>
 											{showLabel(datetime).date}
-										</Typography>
-										<Typography
-											variant="button"
-											lineHeight={1.2}
-											sx={{
-												cursor: 'default',
-												display: 'block',
-												borderRadius: 1,
-												fontSize: '1.1em',
-											}}
-										>
 											{showLabel(datetime).time}
 										</Typography>
 										<Popover

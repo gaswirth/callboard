@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Typography, ButtonGroup, Button, TextField } from '@mui/material';
+import { Stack, Typography, ButtonGroup, Button, TextField, Paper } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import ViewHeading from 'components/common/ViewHeading';
+import ViewHeading from 'components/ViewHeading';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
 export default function NextShowControl() {
@@ -39,7 +39,7 @@ export default function NextShowControl() {
 	};
 
 	return (
-		<>
+		<Paper variant='elevation' sx={{ p: 2 }}>
 			<ViewHeading variant="h6">Next Show</ViewHeading>
 			<Stack spacing={2}>
 				<>
@@ -81,6 +81,6 @@ export default function NextShowControl() {
 					</ButtonGroup>
 				</>
 			</Stack>
-		</>
+		</Paper>
 	);
 }

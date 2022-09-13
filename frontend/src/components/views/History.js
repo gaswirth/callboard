@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Skeleton } from '@mui/material';
 
-import ShowTable from 'components/common/ShowTable';
+import ShowTable from 'components/ShowTable';
 
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 

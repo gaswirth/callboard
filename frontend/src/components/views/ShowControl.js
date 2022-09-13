@@ -1,12 +1,12 @@
 import React from 'react';
 import { Paper, Grid, Stack, Skeleton } from '@mui/material';
 
-import ViewHeading from 'components/common/ViewHeading';
-import ShowTable from 'components/common/ShowTable';
-import NextShowControl from 'components/common/NextShowControl';
+import ViewHeading from 'components/ViewHeading';
+import ShowTable from 'components/ShowTable';
+import NextShowControl from 'components/NextShowControl';
 
-import QRCode from 'components/common/QRCode';
-import ShowNotes from 'components/common/ShowNotes';
+import QRCode from 'components/QRCode';
+import ShowNotes from 'components/ShowNotes';
 
 import { useLatestShow } from 'hooks/queries/use-latest-show';
 

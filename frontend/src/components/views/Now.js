@@ -1,9 +1,9 @@
 import React, { useContext, useEffect } from 'react';
 import { Alert, Container } from '@mui/material';
 
-import ShowTable from 'components/common/ShowTable';
-import ViewHeading from 'components/common/ViewHeading';
-import ShowNotes from 'components/common/ShowNotes';
+import ShowTable from 'components/ShowTable';
+import ViewHeading from 'components/ViewHeading';
+import ShowNotes from 'components/ShowNotes';
 
 import { AuthContext } from 'context/AuthContext';
 import { useCompanyName } from 'hooks/queries/use-company-name';

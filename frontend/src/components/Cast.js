@@ -6,7 +6,7 @@ import Now from './views/Now';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
-import ShowTable from './common/ShowTable';
+import ShowTable from './ShowTable';
 
 export default function Cast() {
 	const { error: backendError } = useCompanyName();

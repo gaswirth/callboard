@@ -138,6 +138,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 											}}
 										>
 											{showLabel(datetime).date}
+											<br />
 											{showLabel(datetime).time}
 										</Typography>
 										<Popover

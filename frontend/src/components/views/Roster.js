@@ -3,12 +3,12 @@ import React, { useContext, useState, useMemo } from 'react';
 import { useRoster } from 'hooks/queries/use-roster';
 
 import { AuthContext } from 'context/AuthContext';
-import RosterTable from 'components/common/RosterTable';
+import RosterTable from 'components/RosterTable';
 import { Box } from '@mui/system';
 import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
-import NewCompanyMember from 'components/common/NewCompanyMember';
+import NewCompanyMember from 'components/NewCompanyMember';
 
 export default function Roster() {
 	const {

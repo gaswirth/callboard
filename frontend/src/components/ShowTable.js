@@ -40,7 +40,7 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps }) {
+export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps, showQRButton }) {
 	const { preparedData: roster } = useActiveRoster();
 	const [rows, setRows] = useState([]);
 
@@ -113,12 +113,12 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 									flexGrow: 1,
 									textAlign: 'right',
 									borderRightWidth: 1,
-									borderRightColor: 'primary.gray',
+									borderRightColor: 'neutral.gray',
 									borderRightStyle: 'solid',
 									textTransform: 'uppercase',
 								}}
 							>
-								<Typography variant="button" sx={{ fontSize: '1.1em', ...visuallyHidden }}>
+								<Typography variant="button" sx={visuallyHidden}>
 									Company Member
 								</Typography>
 							</TableCell>
@@ -155,7 +155,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 											{show.notes ? (
 												<Typography sx={{ p: 2 }}>{notes}</Typography>
 											) : (
-												<Typography sx={{ p: 2, color: 'primary.gray' }}>No notes.</Typography>
+												<Typography sx={{ p: 2, color: 'neutral.gray' }}>No notes.</Typography>
 											)}
 										</Popover>
 									</TableCell>
@@ -173,7 +173,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 										pb: 1,
 										pl: 0,
 										borderRightWidth: 1,
-										borderRightColor: 'primary.gray',
+										borderRightColor: 'neutral.gray',
 										borderRightStyle: 'solid',
 										textAlign: 'right',
 									}}
@@ -186,7 +186,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 								</TableCell>
 
 								{shows.map((show, index) => {
-									const { databaseId: id } = show;
+									const { id } = show;
 
 									return (
 										<TableCell key={index} scope="row">

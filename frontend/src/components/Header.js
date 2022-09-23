@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import { Tab, Tabs, Typography, Box, AppBar, Toolbar } from '@mui/material';
 
+import Logout from 'components/Logout';
+
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
 import { AuthContext } from 'context/AuthContext';
@@ -27,9 +29,10 @@ export default function Header({ currentTab, handleTabChange }) {
 							<Tab value="roster" label="Roster" />
 						</Tabs>
 					) : null}
-					<Typography variant="h6" textTransform="uppercase">
+					<Typography variant="h6" textTransform="uppercase" sx={{ mr: 2 }}>
 						{companyData?.callboardOptionsSettings.callboardCompanyName}
 					</Typography>
+					<Logout />
 				</Toolbar>
 			</AppBar>
 		</Box>

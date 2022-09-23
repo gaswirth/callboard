@@ -1,5 +1,17 @@
-import React from 'react';
-import { Paper, Grid, Stack, Skeleton } from '@mui/material';
+import React, { useState } from 'react';
+import { useTheme } from '@emotion/react';
+import {
+	Grid,
+	Stack,
+	Skeleton,
+	Button,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogContentText,
+	useMediaQuery,
+	DialogActions,
+} from '@mui/material';
 
 import ViewHeading from 'components/ViewHeading';
 import ShowTable from 'components/ShowTable';
@@ -9,39 +21,64 @@ import QRCode from 'components/QRCode';
 import ShowNotes from 'components/ShowNotes';
 
 import { useLatestShow } from 'hooks/queries/use-latest-show';
+import { Print } from '@mui/icons-material';
 
 export default function ShowControl() {
 	const [{ loading: showLoading }, show] = useLatestShow();
+	const [QROpen, setQROpen] = useState(false);
+	const theme = useTheme();
+	const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
+
+	const handleQROpen = () => setQROpen(true);
+	const handleQRClose = () => setQROpen(false);
+
+	const handlePrint = () => {
+		alert('Boop!');
+	};
 
 	return (
 		<Grid container spacing={5}>
 			{show ? (
-				<Grid item xs={8}>
+				<Grid item xs={6}>
 					<Stack spacing={2}>
 						<ViewHeading variant="h6">Current Show</ViewHeading>
+						{show ? (
+							<>
+								<Button onClick={handleQROpen} variant="contained">
+									Sign-In Code
+								</Button>
+								<Dialog onClose={handleQRClose} open={QROpen} fullScreen={fullScreen}>
+									<DialogTitle textAlign="center">Sign In</DialogTitle>
+									<DialogContent>
+										<DialogContentText>{show.datetime}</DialogContentText>
+										<QRCode string={show.slug} />
+									</DialogContent>
+									<DialogActions>
+										<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
+											Print
+										</Button>
+										<Button autoFocus variant="contained" onClick={handleQRClose}>
+											Close
+										</Button>
+									</DialogActions>
+								</Dialog>
+							</>
+						) : null}
 						{showLoading ? (
 							<Skeleton>
 								<ShowTable />
 							</Skeleton>
 						) : (
 							<>
-								<ShowTable shows={[show]} popoverDisabled />
+								<ShowTable shows={[show]} popoverDisabled showQRButton />
 								<ShowNotes show={show} editable={true} />
 							</>
 						)}
 					</Stack>
 				</Grid>
 			) : null}
-			<Grid item xs={4}>
+			<Grid item xs={6}>
 				<Stack spacing={2}>
-					{show ? (
-						<>
-							<ViewHeading variant="h6">QR Sign-in</ViewHeading>
-							<Paper sx={{ py: 3, px: 1, mb: 4 }}>
-								<QRCode string={show.slug} />
-							</Paper>
-						</>
-					) : null}
 					<NextShowControl />
 				</Stack>
 			</Grid>

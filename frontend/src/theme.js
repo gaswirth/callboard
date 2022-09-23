@@ -9,16 +9,20 @@ const theme = createTheme({
 		},
 		primary: {
 			main: '#344cd4',
-			light: '#fff',
-			lightgray: 'rgb(235, 235, 235)',
-			gray: '#aaa',
 			dark: '#333',
 		},
 		secondary: {
 			main: '#ff9100',
 		},
+		neutral: {
+			lightgray: 'rgb(235, 235, 235)',
+			gray: '#aaa',
+		},
 		warning: {
 			main: '#d32f2f',
+		},
+		light: {
+			main: '#fff',
 		},
 	},
 	spacing: 8,

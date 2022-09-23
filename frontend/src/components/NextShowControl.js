@@ -39,48 +39,50 @@ export default function NextShowControl() {
 	};
 
 	return (
-		<Paper variant='elevation' sx={{ p: 2 }}>
+		<>
 			<ViewHeading variant="h6">Next Show</ViewHeading>
-			<Stack spacing={2}>
-				<>
-					<DateTimePicker
-						label="Show Date and Time"
-						value={newShowDateTime}
-						disablePast={true}
-						onChange={handleDateTimePickerChange}
-						renderInput={(params) => <TextField {...params} required={true} />}
-					/>
-					{newShowError ? (
-						<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
-							{newShowError}
-						</Typography>
-					) : null}
-					<TextField
-						label="Next Show Title/ID"
-						variant="outlined"
-						value={newShowTitle}
-						onChange={handleNextShowTitleChange}
-					/>
-					<TextField
-						label="Show Notes"
-						multiline={true}
-						minRows={3}
-						variant="outlined"
-						value={newShowNotes}
-						onChange={handleNextShowNotesChange}
-					/>
-					<ButtonGroup disableElevation={false}>
-						<Button
-							size="large"
-							onClick={handleSubmitNewShow}
-							variant="contained"
-							disabled={newShowDateTime ? false : true}
-						>
-							Confirm
-						</Button>
-					</ButtonGroup>
-				</>
-			</Stack>
-		</Paper>
+			<Paper variant="elevation" sx={{ p: 2 }}>
+				<Stack spacing={2}>
+					<>
+						<DateTimePicker
+							label="Show Date and Time"
+							value={newShowDateTime}
+							disablePast={true}
+							onChange={handleDateTimePickerChange}
+							renderInput={(params) => <TextField {...params} required={true} />}
+						/>
+						{newShowError ? (
+							<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
+								{newShowError}
+							</Typography>
+						) : null}
+						<TextField
+							label="Next Show Title/ID"
+							variant="outlined"
+							value={newShowTitle}
+							onChange={handleNextShowTitleChange}
+						/>
+						<TextField
+							label="Show Notes"
+							multiline={true}
+							minRows={3}
+							variant="outlined"
+							value={newShowNotes}
+							onChange={handleNextShowNotesChange}
+						/>
+						<ButtonGroup disableElevation={false}>
+							<Button
+								size="large"
+								onClick={handleSubmitNewShow}
+								variant="contained"
+								disabled={newShowDateTime ? false : true}
+							>
+								Confirm
+							</Button>
+						</ButtonGroup>
+					</>
+				</Stack>
+			</Paper>
+		</>
 	);
 }

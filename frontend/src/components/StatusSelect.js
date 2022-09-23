@@ -40,7 +40,7 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 					width: '40px',
 					borderRadius: 1,
 					cursor: 'pointer',
-					backgroundColor: children ? 'none' : 'primary.lightgray',
+					backgroundColor: children ? 'none' : 'neutral.lightgray',
 					p: 1,
 				}}
 				onClick={handleOpenIcons}

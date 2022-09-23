@@ -4,7 +4,7 @@ import { useRoster } from 'hooks/queries/use-roster';
 
 import { AuthContext } from 'context/AuthContext';
 import RosterTable from 'components/RosterTable';
-import { Box } from '@mui/system';
+import { Box, Container } from '@mui/system';
 import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
@@ -32,13 +32,6 @@ export default function Roster() {
 
 	return isAdmin ? (
 		<>
-			{newCompanyMember ? (
-				<NewCompanyMember setIsOpen={setNewCompanyMember} />
-			) : (
-				<Fab color="primary" aria-label="Add new Company Member" onClick={handleNewCompanyMember}>
-					<Add />
-				</Fab>
-			)}
 			{!isEmpty(activeCompanyMembers) ? (
 				<Box>
 					<Typography variant="h5" align="center" textTransform="uppercase">
@@ -55,6 +48,15 @@ export default function Roster() {
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>
 			) : null}
+			{newCompanyMember ? (
+				<NewCompanyMember setIsOpen={setNewCompanyMember} />
+			) : (
+				<Container align="center">
+					<Fab color="primary" aria-label="Add new Company Member" onClick={handleNewCompanyMember}>
+						<Add />
+					</Fab>
+				</Container>
+			)}
 		</>
 	) : null;
 }

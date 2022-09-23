@@ -8,8 +8,6 @@
  * @since 0.0.1
  */
 
-// TODO refactor some of the utility methods to a subclass.
-
 /**
  * Callboard_Show class.
  *

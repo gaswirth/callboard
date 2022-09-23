@@ -42,28 +42,26 @@ export default function ShowControl() {
 				<Grid item xs={6}>
 					<Stack spacing={2}>
 						<ViewHeading variant="h6">Current Show</ViewHeading>
-						{show ? (
-							<>
-								<Button onClick={handleQROpen} variant="contained">
-									Sign-In Code
-								</Button>
-								<Dialog onClose={handleQRClose} open={QROpen} fullScreen={fullScreen}>
-									<DialogTitle textAlign="center">Sign In</DialogTitle>
-									<DialogContent>
-										<DialogContentText>{show.datetime}</DialogContentText>
-										<QRCode string={show.slug} />
-									</DialogContent>
-									<DialogActions>
-										<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
-											Print
-										</Button>
-										<Button autoFocus variant="contained" onClick={handleQRClose}>
-											Close
-										</Button>
-									</DialogActions>
-								</Dialog>
-							</>
-						) : null}
+						<>
+							<Button onClick={handleQROpen} variant="contained">
+								Sign-In Code
+							</Button>
+							<Dialog onClose={handleQRClose} open={QROpen} fullScreen={fullScreen}>
+								<DialogTitle textAlign="center">Sign In</DialogTitle>
+								<DialogContent>
+									<DialogContentText>{show.datetime}</DialogContentText>
+									<QRCode string={show.slug} />
+								</DialogContent>
+								<DialogActions>
+									<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
+										Print
+									</Button>
+									<Button autoFocus variant="contained" onClick={handleQRClose}>
+										Close
+									</Button>
+								</DialogActions>
+							</Dialog>
+						</>
 						{showLoading ? (
 							<Skeleton>
 								<ShowTable />

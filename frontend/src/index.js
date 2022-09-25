@@ -13,11 +13,13 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 const uri = process.env.REACT_APP_BACKEND_URL ? process.env.REACT_APP_BACKEND_URL : '';
 
+console.debug('process', process.env.REACT_APP_BACKEND_URL);
+
 /**
  * Apollo client.
  */
 const httpLink = createHttpLink({
-	uri,
+	uri: uri,
 	credentials: 'include',
 });
 const client = new ApolloClient({

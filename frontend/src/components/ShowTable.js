@@ -14,7 +14,7 @@ function anchorElReducer(state, action) {
 		case 'INIT': {
 			var anchorEls = {};
 			Object.values(action.payload).forEach((value) => {
-				const { databaseId: id } = value;
+				const { id } = value;
 				anchorEls[id] = null;
 			});
 
@@ -123,7 +123,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 								</Typography>
 							</TableCell>
 							{shows.map((show, index) => {
-								const { databaseId: id, datetime, notes } = show;
+								const { id, datetime, notes } = show;
 
 								return (
 									<TableCell key={index} id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>

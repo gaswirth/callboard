@@ -11,7 +11,6 @@ export const QUERY_LATEST_SHOW = gql`
 	query LatestShow {
 		shows(first: 1) {
 			nodes {
-				id
 				databaseId
 				datetime
 				attendance

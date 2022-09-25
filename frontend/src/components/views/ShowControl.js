@@ -52,7 +52,7 @@ export default function ShowControl() {
 								<DialogTitle textAlign="center">Sign In</DialogTitle>
 								<DialogContent>
 									<DialogContentText>{show.datetime}</DialogContentText>
-									<QRCode string={`${qrUrlBase}/${show.slug}`} />
+									<QRCode string={`${qrUrlBase}/signin/${show.slug}`} />
 								</DialogContent>
 								<DialogActions>
 									<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>

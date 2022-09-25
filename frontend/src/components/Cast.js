@@ -18,7 +18,7 @@ export default function Cast() {
 			Something's gone terribly, terribly wrong. Seek shelter (bring marshmallows).
 		</Typography>
 	) : (
-		<Container sx={{ p: 3, width: 600 }} maxWidth="xl">
+		<Container sx={{ p: 3 }} maxWidth="xl">
 			{showLoading ? (
 				<Skeleton animation="wave">
 					<ShowTable />

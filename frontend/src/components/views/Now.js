@@ -71,7 +71,7 @@ export default function Now({ show }) {
 	};
 
 	return (
-		<Container>
+		<Container maxWidth="xl">
 			<ViewHeading>{companyName}</ViewHeading>
 			{signInAlert()}
 			<ShowTable shows={[show]} iconButtonsDisabled={true} popoverDisabled={true} />

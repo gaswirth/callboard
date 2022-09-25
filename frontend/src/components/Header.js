@@ -6,10 +6,20 @@ import Logout from 'components/Logout';
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
 import { AuthContext } from 'context/AuthContext';
+import { generateCompanyShortName } from 'lib/functions';
 
 export default function Header({ currentTab, handleTabChange }) {
 	const { user } = useContext(AuthContext);
 	const { data: companyData } = useCompanyName();
+
+	const companyShortName = () => {
+		const name = companyData.callboardOptionsSettings.callboardCompanyName;
+		if (companyData) {
+			return generateCompanyShortName(name);
+		}
+
+		return '';
+	};
 
 	return (
 		<Box sx={{ flexGrow: 1 }}>
@@ -30,7 +40,7 @@ export default function Header({ currentTab, handleTabChange }) {
 						</Tabs>
 					) : null}
 					<Typography variant="h6" textTransform="uppercase" sx={{ mr: 2 }}>
-						{companyData?.callboardOptionsSettings.callboardCompanyName}
+						{companyShortName()}
 					</Typography>
 					<Logout />
 				</Toolbar>

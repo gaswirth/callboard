@@ -61,3 +61,18 @@ export function prepareShowAttendance(attendance) {
 
 	return formattedAttendance;
 }
+
+/**
+ * Generates an abbreviated company name.
+ *
+ * @param {string} name
+ * @returns The abbreviated company name.
+ */
+export function generateCompanyShortName(name) {
+	const shortName = name
+		.split(' ')
+		.map((word) => word[0])
+		.join('');
+
+	return shortName;
+}

@@ -18,7 +18,6 @@ export const useUpdateShowAttendance = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_UPDATE_SHOW_ATTENDANCE);
 
 	const updateAttendanceMutation = ({ showId, companyMemberId, status }) => {
-		console.info(showId, companyMemberId, status);
 		return mutation({
 			variables: {
 				input: {

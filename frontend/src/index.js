@@ -11,12 +11,13 @@ import { AuthContextProvider } from 'context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const uri = process.env.BACKEND_URL ? process.env.BACKEND_URL : '';
 
 /**
  * Apollo client.
  */
 const httpLink = createHttpLink({
-	uri: '/graphql',
+	uri,
 	credentials: 'include',
 });
 const client = new ApolloClient({

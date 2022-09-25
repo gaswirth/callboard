@@ -41,7 +41,7 @@ export const useLatestShow = () => {
 	}, [result]);
 
 	// Prepare show data.
-	const show = result.data ? prepareShow(result.data.shows.nodes[0]) : null;
+	const show = result.data && result.data.length ? prepareShow(result.data.shows.nodes[0]) : null;
 
 	return [result, show];
 };

@@ -11,7 +11,7 @@ import { AuthContextProvider } from 'context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const uri = process.env.BACKEND_URL ? process.env.BACKEND_URL : '';
+const uri = process.env.REACT_APP_BACKEND_URL ? process.env.REACT_APP_BACKEND_URL : '';
 
 /**
  * Apollo client.

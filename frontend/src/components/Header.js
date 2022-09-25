@@ -13,8 +13,8 @@ export default function Header({ currentTab, handleTabChange }) {
 	const { data: companyData } = useCompanyName();
 
 	const companyShortName = () => {
-		const name = companyData.callboardOptionsSettings.callboardCompanyName;
 		if (companyData) {
+			const name = companyData.callboardOptionsSettings.callboardCompanyName;
 			return generateCompanyShortName(name);
 		}
 

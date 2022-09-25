@@ -2,12 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Typography, ButtonGroup, Button, TextField, Paper } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import ViewHeading from 'components/ViewHeading';
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
 export default function NextShowControl() {
 	const { newShowMutation } = useNewShow();
 
+	const [nextShowOpen, setNextShowOpen] = useState(false);
+
+	// TODO convert to reducer
 	const [newShowDateTime, setNewShowDateTime] = useState(null);
 	const [newShowTitle, setNewShowTitle] = useState('');
 	const [newShowNotes, setNewShowNotes] = useState('');
@@ -19,6 +21,10 @@ export default function NextShowControl() {
 	useEffect(() => {
 		if (newShowDateTime && newShowError) setNewShowError('');
 	}, [newShowDateTime, newShowError]);
+
+	const handleNextShowClick = () => {
+		setNextShowOpen(true);
+	};
 
 	const handleDateTimePickerChange = (value) => setNewShowDateTime(value);
 
@@ -36,53 +42,68 @@ export default function NextShowControl() {
 		setNewShowDateTime(null);
 		setNewShowTitle('');
 		setNewShowNotes('');
+
+		// Clear the dialog
+		setNextShowOpen(false);
+	};
+
+	const handleCancelNewShow = () => {
+		setNextShowOpen(false);
 	};
 
 	return (
 		<>
-			<ViewHeading variant="h6">Next Show</ViewHeading>
-			<Paper variant="elevation" sx={{ p: 2 }}>
-				<Stack spacing={2}>
-					<>
-						<DateTimePicker
-							label="Show Date and Time"
-							value={newShowDateTime}
-							disablePast={true}
-							onChange={handleDateTimePickerChange}
-							renderInput={(params) => <TextField {...params} required={true} />}
-						/>
-						{newShowError ? (
-							<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
-								{newShowError}
-							</Typography>
-						) : null}
-						<TextField
-							label="Next Show Title/ID"
-							variant="outlined"
-							value={newShowTitle}
-							onChange={handleNextShowTitleChange}
-						/>
-						<TextField
-							label="Show Notes"
-							multiline={true}
-							minRows={3}
-							variant="outlined"
-							value={newShowNotes}
-							onChange={handleNextShowNotesChange}
-						/>
-						<ButtonGroup disableElevation={false}>
-							<Button
-								size="large"
-								onClick={handleSubmitNewShow}
-								variant="contained"
-								disabled={newShowDateTime ? false : true}
-							>
-								Confirm
-							</Button>
-						</ButtonGroup>
-					</>
-				</Stack>
-			</Paper>
+			{nextShowOpen === false ? (
+				<Button variant="contained" onClick={handleNextShowClick}>
+					Start Next Show
+				</Button>
+			) : (
+				<Paper variant="elevation" sx={{ p: 2 }}>
+					<Stack spacing={2}>
+						<>
+							<DateTimePicker
+								label="Show Date and Time"
+								value={newShowDateTime}
+								disablePast={true}
+								onChange={handleDateTimePickerChange}
+								renderInput={(params) => <TextField {...params} required={true} />}
+							/>
+							{newShowError ? (
+								<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
+									{newShowError}
+								</Typography>
+							) : null}
+							<TextField
+								label="Next Show Title/ID"
+								variant="outlined"
+								value={newShowTitle}
+								onChange={handleNextShowTitleChange}
+							/>
+							<TextField
+								label="Show Notes"
+								multiline={true}
+								minRows={3}
+								variant="outlined"
+								value={newShowNotes}
+								onChange={handleNextShowNotesChange}
+							/>
+							<ButtonGroup disableElevation={false}>
+								<Button
+									size="large"
+									onClick={handleSubmitNewShow}
+									variant="contained"
+									disabled={newShowDateTime ? false : true}
+								>
+									Confirm
+								</Button>
+								<Button size="large" onClick={handleCancelNewShow} variant="contained">
+									Cancel
+								</Button>
+							</ButtonGroup>
+						</>
+					</Stack>
+				</Paper>
+			)}
 		</>
 	);
 }

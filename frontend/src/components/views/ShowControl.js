@@ -51,8 +51,8 @@ export default function ShowControl() {
 							<Dialog onClose={handleQRClose} open={QROpen} fullScreen={fullScreen}>
 								<DialogTitle textAlign="center">Sign In</DialogTitle>
 								<DialogContent>
-									<DialogContentText>{show.datetime}</DialogContentText>
-									<QRCode string={`${qrUrlBase}/signin/${show.slug}`} />
+									<DialogContentText textAlign="center">{show.datetime}</DialogContentText>
+									<QRCode string={`${qrUrlBase}/signin/${show.slug}`} size={300} />
 								</DialogContent>
 								<DialogActions>
 									<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
@@ -79,7 +79,17 @@ export default function ShowControl() {
 			) : null}
 			<Grid item xs={6}>
 				<Stack spacing={2}>
+					<ViewHeading variant="h6">Actions</ViewHeading>
 					<NextShowControl />
+					<Button variant="contained" onClick={() => alert('Google')}>
+						Export Google Sheet
+					</Button>
+					<Button variant="contained" onClick={() => alert('Excel')}>
+						Export Excel
+					</Button>
+					<Button variant="contained" onClick={() => alert('CSV')}>
+						Export CSV
+					</Button>
 				</Stack>
 			</Grid>
 		</Grid>

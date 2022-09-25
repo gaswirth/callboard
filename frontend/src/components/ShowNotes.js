@@ -27,13 +27,12 @@ export default function ShowNotes({ show, editable }) {
 
 	return show ? (
 		<Paper sx={{ p: 2, mt: 2 }}>
-			{/* <Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
+			<Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
 				Show notes
-			</Typography> */}
+			</Typography>
 			{editable ? (
 				<>
 					<TextField
-						label="Show Notes"
 						multiline={true}
 						minRows={3}
 						variant="outlined"

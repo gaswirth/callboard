@@ -29,6 +29,8 @@ export default function ShowControl() {
 	const theme = useTheme();
 	const fullScreen = useMediaQuery(theme.breakpoints.down('xl'));
 
+	const qrUrlBase = process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : '';
+
 	const handleQROpen = () => setQROpen(true);
 	const handleQRClose = () => setQROpen(false);
 
@@ -50,7 +52,7 @@ export default function ShowControl() {
 								<DialogTitle textAlign="center">Sign In</DialogTitle>
 								<DialogContent>
 									<DialogContentText>{show.datetime}</DialogContentText>
-									<QRCode string={show.slug} />
+									<QRCode string={`${qrUrlBase}/${show.slug}`} />
 								</DialogContent>
 								<DialogActions>
 									<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>

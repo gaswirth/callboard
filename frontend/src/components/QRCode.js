@@ -6,7 +6,7 @@ export default function QRCode({ string, size }) {
 	return (
 		<Box textAlign="center">
 			<QRCodeSVG value={string} fgColor="#000" includeMargin={true} size={size ? size : 125} />
-			<Typography variant="body2">{`URL: /signin/${string}`}</Typography>
+			<Typography variant="body2">{`URL: ${string}`}</Typography>
 		</Box>
 	);
 }

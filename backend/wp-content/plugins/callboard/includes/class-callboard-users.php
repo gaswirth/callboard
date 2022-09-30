@@ -41,9 +41,14 @@ class Callboard_Users {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param WP_User $user User object.
+	 * @param  WP_User $user User object.
+	 * @return void
 	 */
 	public function callboard_user_fields( $user ) {
+		if ( ! $user instanceof WP_User ) {
+			return;
+		}
+
 		$role   = get_the_author_meta( 'callboard-role', $user->ID );
 		$active = get_the_author_meta( 'callboard-active', $user->ID );
 

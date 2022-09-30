@@ -7,6 +7,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card,
 import StatusIcon from './StatusIcon';
 import { showLabel } from 'lib/functions';
 
+// TODO get all company members, not just active. filter out unused in table.
 import { useActiveRoster } from 'hooks/queries/use-active-roster';
 
 function anchorElReducer(state, action) {

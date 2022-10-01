@@ -33,5 +33,5 @@ export const useRoster = () => {
 		return prepareRoster(companyMembers);
 	}, [result]);
 
-	return { ...result, preparedData: roster };
+	return { ...result, roster };
 };

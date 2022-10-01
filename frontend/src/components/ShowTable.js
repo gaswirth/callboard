@@ -41,8 +41,9 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps, showQRButton }) {
-	const { preparedData: roster } = useActiveRoster();
+export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps }) {
+	const { roster } = useActiveRoster();
+	// const { roster } = useRoster();
 	const [rows, setRows] = useState([]);
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});

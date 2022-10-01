@@ -196,7 +196,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 					'resolve'     => function ( $show ) {
 						$notes = get_post_meta( $show->ID, 'notes', true );
 
-						return esc_textarea( $notes );
+						return sanitize_textarea_field( $notes );
 					},
 				],
 				'attendance' => [

@@ -16,15 +16,15 @@ export default function Roster() {
 	} = useContext(AuthContext);
 	const [newCompanyMember, setNewCompanyMember] = useState(false);
 
-	const { preparedData } = useRoster();
+	const { roster } = useRoster();
 
 	const activeCompanyMembers = useMemo(() => {
-		return preparedData?.filter((item) => !!item.active);
-	}, [preparedData]);
+		return roster?.filter((item) => !!item.active);
+	}, [roster]);
 
 	const inactiveCompanyMembers = useMemo(() => {
-		return preparedData?.filter((item) => !item.active);
-	}, [preparedData]);
+		return roster?.filter((item) => !item.active);
+	}, [roster]);
 
 	const handleNewCompanyMember = () => {
 		setNewCompanyMember(true);

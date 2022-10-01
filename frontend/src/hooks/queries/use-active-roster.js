@@ -31,5 +31,5 @@ export const useActiveRoster = () => {
 		return prepareRoster(activeCompanyMembers);
 	}, [result]);
 
-	return { ...result, preparedData: roster };
+	return { ...result, roster };
 };

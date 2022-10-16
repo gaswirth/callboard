@@ -1,23 +1,29 @@
 import React from 'react';
-import { Grid, Skeleton } from '@mui/material';
+import { Box, Grid, Skeleton } from '@mui/material';
 
 import ShowTable from 'components/ShowTable';
 
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
 
 export default function History() {
-	const [{ loading: showLoading }, shows] = useRecentShows();
+	const [{ loading: showLoading }, shows] = useRecentShows(8);
 
 	// TODO Date control
 
 	return (
-		<Grid item xs={12}>
+		<Grid container spacing={5}>
 			{showLoading ? (
 				<Skeleton>
-					<ShowTable />
+					<Box />
 				</Skeleton>
 			) : (
-				<ShowTable shows={shows.slice(1)} />
+				shows.map((show) => {
+					return (
+						<Grid key={show.id} item xs={12} sm={6}>
+							<ShowTable show={show} />
+						</Grid>
+					);
+				})
 			)}
 		</Grid>
 	);

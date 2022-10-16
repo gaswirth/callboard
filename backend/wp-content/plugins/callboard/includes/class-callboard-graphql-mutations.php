@@ -46,54 +46,54 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 				'inputFields'         => [
 					'login'    => [
 						'type'        => ['non_null' => 'String'],
-						'description' => __( 'Input your username/email.' ),
+						'description' => __('Input your username/email.'),
 					],
 					'password' => [
 						'type'        => ['non_null' => 'String'],
-						'description' => __( 'Input your password.' ),
+						'description' => __('Input your password.'),
 					],
 				],
 				'outputFields'        => [
 					'status' => [
 						'type'        => 'String',
-						'description' => __( 'Login operation status', 'callboard' ),
-						'resolve'     => function ( $payload ) {
+						'description' => __('Login operation status', 'callboard'),
+						'resolve'     => function ($payload) {
 							return $payload['status'];
 						},
 					],
 					'userId' => [
 						'type'        => 'String',
-						'description' => __( 'User ID', 'callboard' ),
-						'resolve'     => function ( $payload ) {
+						'description' => __('User ID', 'callboard'),
+						'resolve'     => function ($payload) {
 							return $payload['userId'];
 						},
 					],
 					'roles'  => [
 						'type'        => 'String',
-						'description' => __( 'The user\'s roles', 'callboard' ),
-						'resolve'     => function ( $payload ) {
+						'description' => __('The user\'s roles', 'callboard'),
+						'resolve'     => function ($payload) {
 							return $payload['roles'];
 						},
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
+				'mutateAndGetPayload' => function ($input) {
 					$user = wp_signon(
 						[
-							'user_login'    => wp_unslash( $input['login'] ),
+							'user_login'    => wp_unslash($input['login']),
 							'user_password' => $input['password'],
 							'remember'      => true,
 						],
 						true
 					);
 
-					if ( is_wp_error( $user ) ) {
-						throw new \GraphQL\Error\UserError( ! empty( $user->get_error_code() ) ? $user->get_error_code() : __( 'Invalid login', 'callboard' ) );
+					if (is_wp_error($user)) {
+						throw new \GraphQL\Error\UserError(!empty($user->get_error_code()) ? $user->get_error_code() : __('Invalid login', 'callboard'));
 					}
 
 					return [
 						'status' => 'SUCCESS',
 						'userId' => $user->ID,
-						'roles'  => implode( ',', $user->roles ),
+						'roles'  => implode(',', $user->roles),
 					];
 				},
 			]
@@ -115,8 +115,8 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 				'outputFields'        => [
 					'status' => [
 						'type'        => 'String',
-						'description' => __( 'Logout result', 'callboard' ),
-						'resolve'     => function ( $payload ) {
+						'description' => __('Logout result', 'callboard'),
+						'resolve'     => function ($payload) {
 							return $payload['status'];
 						},
 					],
@@ -141,32 +141,32 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 			'newShow',
 			[
 				'inputFields'         => [
-					'description' => __( 'New Show data.', 'callboard' ),
+					'description' => __('New Show data.', 'callboard'),
 					'datetime'    => [
 						'type'        => 'String',
-						'description' => __( 'Date and time string', 'callboard' ),
+						'description' => __('Date and time string', 'callboard'),
 					],
 					'title'       => [
 						'type'        => 'String',
-						'description' => __( 'Show Title/Number/ID.', 'callboard' ),
+						'description' => __('Show Title/Number/ID.', 'callboard'),
 					],
 					'notes'       => [
 						'type'        => 'String',
-						'description' => __( 'Show Notes.', 'callboard' ),
+						'description' => __('Show Notes.', 'callboard'),
 					],
 				],
 				'outputFields'        => [
 					'showId' => [
 						'type'        => 'ID',
-						'description' => __( 'The newly created Show ID', 'callboard' ),
+						'description' => __('The newly created Show ID', 'callboard'),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
+				'mutateAndGetPayload' => function ($input) {
 					/**
 					 * Make sure this datetime is unique.
 					 */
-					if ( Callboard_Show::check_unique_datetime( $input['datetime'] ) === false ) {
-						throw new \GraphQL\Error\Error( __( 'A show already exists with that date and time', 'callboard' ) );
+					if (Callboard_Show::check_unique_datetime($input['datetime']) === false) {
+						throw new \GraphQL\Error\Error(__('A show already exists with that date and time', 'callboard'));
 					}
 
 					/**
@@ -176,11 +176,12 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 						[
 							'post_type'   => 'show',
 							'post_status' => 'publish',
-							'post_title'  => $input['title'] ? sanitize_text_field( $input['title'] ) : '',
-							'post_name'   => Callboard_Functions::generate_random_string( 8 ),
+							'post_title'  => $input['title'] ? sanitize_text_field($input['title']) : '',
+							'post_name'   => Callboard_Functions::generate_random_string(8),
 							'meta_input'  => [
-								'datetime' => Callboard_Functions::format_date_string( $input['datetime'] ),
-								'notes'    => $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '',
+								'datetime'   => Callboard_Functions::format_date_string($input['datetime']),
+								'notes'      => $input['notes'] ? sanitize_textarea_field($input['notes']) : '',
+								'attendance' => Callboard_Users::generate_new_show_attendance(),
 							],
 						]
 					);
@@ -208,29 +209,29 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					'description'     => "A company member's status for a specific show.",
 					'show_id'         => [
 						'type'        => 'ID',
-						'description' => __( 'The show databaseId', 'callboard' ),
+						'description' => __('The show databaseId', 'callboard'),
 					],
 					'companyMemberId' => [
 						'type'        => 'ID',
-						'description' => __( 'The user databaseId', 'callboard' ),
+						'description' => __('The user databaseId', 'callboard'),
 					],
 					'status'          => [
 						'type'        => 'String',
-						'description' => __( 'The vacation status. One of: in, out, vac, pd.', 'callboard' ),
+						'description' => __('The vacation status. One of: in, out, vac, pd.', 'callboard'),
 					],
 				],
 				'outputFields'        => [
 					'newStatus' => [
 						'type'        => 'String',
-						'description' => __( 'The updated status.', 'callboard' ),
+						'description' => __('The updated status.', 'callboard'),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
-					$attendance                                    = get_post_meta( $input['show_id'], 'attendance', true );
+				'mutateAndGetPayload' => function ($input) {
+					$attendance                                    = get_post_meta($input['show_id'], 'attendance', true);
 					$updated_attendance                            = $attendance ? $attendance : [];
 					$updated_attendance[$input['companyMemberId']] = $input['status'];
 
-					$result = update_post_meta( $input['show_id'], 'attendance', $updated_attendance );
+					$result = update_post_meta($input['show_id'], 'attendance', $updated_attendance);
 
 					// If `update_post_meta` returns false, there was either an error, or the submitted value was identical.
 					return [
@@ -256,29 +257,29 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					'description' => 'The show fields to update.',
 					'id'          => [
 						'type'        => 'ID',
-						'description' => __( 'Show ID', 'callboard' ),
+						'description' => __('Show ID', 'callboard'),
 					],
 					'notes'       => [
 						'type'        => 'String',
-						'description' => __( 'Show notes', 'callboard' ),
+						'description' => __('Show notes', 'callboard'),
 					],
 				],
 				'outputFields'        => [
 					'updatedShowNotes' => [
 						'type'        => 'String',
-						'description' => __( 'The updated (sanitized) show notes.', 'callboard' ),
+						'description' => __('The updated (sanitized) show notes.', 'callboard'),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
-					$show_id = absint( $input['id'] );
+				'mutateAndGetPayload' => function ($input) {
+					$show_id = absint($input['id']);
 
-					$notes = $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '';
+					$notes = $input['notes'] ? sanitize_textarea_field($input['notes']) : '';
 
 					// TODO Error handling
-					if ( $notes ) {
-						update_post_meta( $show_id, 'notes', $notes );
+					if ($notes) {
+						update_post_meta($show_id, 'notes', $notes);
 					} else {
-						delete_post_meta( $show_id, 'notes' );
+						delete_post_meta($show_id, 'notes');
 					}
 
 					return [
@@ -304,50 +305,50 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					'description' => 'The user fields to update.',
 					'id'          => [
 						'type'        => 'ID',
-						'description' => __( 'User ID', 'callboard' ),
+						'description' => __('User ID', 'callboard'),
 					],
 					'firstName'   => [
 						'type'        => 'String',
-						'description' => __( 'First name', 'callboard' ),
+						'description' => __('First name', 'callboard'),
 					],
 					'lastName'    => [
 						'type'        => 'String',
-						'description' => __( 'Last name', 'callboard' ),
+						'description' => __('Last name', 'callboard'),
 					],
 					'email'       => [
 						'type'        => 'String',
-						'description' => __( 'Email address', 'callboard' ),
+						'description' => __('Email address', 'callboard'),
 					],
 					'role'        => [
 						'type'        => 'String',
-						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
+						'description' => __('The public role to display on the frontend.', 'callboard'),
 					],
 					'active'      => [
 						'type'        => 'Boolean',
-						'description' => __( 'Whether or not the Company Member is on the active roster.', 'callboard' ),
+						'description' => __('Whether or not the Company Member is on the active roster.', 'callboard'),
 					],
 
 				],
 				'outputFields'        => [
 					'updatedCompanyMember' => [
 						'type'        => 'ID',
-						'description' => __( 'The updated user ID.', 'callboard' ),
+						'description' => __('The updated user ID.', 'callboard'),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
-					$result = wp_update_user( [
-						'ID'         => absint( $input['id'] ),
-						'first_name' => sanitize_text_field( $input['firstName'] ),
-						'last_name'  => sanitize_text_field( $input['lastName'] ),
-						'user_email' => sanitize_email( $input['email'] ),
+				'mutateAndGetPayload' => function ($input) {
+					$result = wp_update_user([
+						'ID'         => absint($input['id']),
+						'first_name' => sanitize_text_field($input['firstName']),
+						'last_name'  => sanitize_text_field($input['lastName']),
+						'user_email' => sanitize_email($input['email']),
 						'meta_input' => [
-							'callboard-role'   => sanitize_text_field( $input['role'] ),
-							'callboard-active' => boolval( $input['active'] ),
+							'callboard-role'   => sanitize_text_field($input['role']),
+							'callboard-active' => boolval($input['active']),
 						],
-					] );
+					]);
 
-					if ( is_wp_error( $result ) ) {
-						throw new \GraphQL\Error\UserError( ! empty( $result->get_error_code() ) ? $result->get_error_code() : __( 'Error updating user', 'callboard' ) );
+					if (is_wp_error($result)) {
+						throw new \GraphQL\Error\UserError(!empty($result->get_error_code()) ? $result->get_error_code() : __('Error updating user', 'callboard'));
 					}
 
 					return [
@@ -373,47 +374,47 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					'description' => 'The user fields.',
 					'firstName'   => [
 						'type'        => 'String',
-						'description' => __( 'First name', 'callboard' ),
+						'description' => __('First name', 'callboard'),
 					],
 					'lastName'    => [
 						'type'        => 'String',
-						'description' => __( 'Last name', 'callboard' ),
+						'description' => __('Last name', 'callboard'),
 					],
 					'email'       => [
 						'type'        => 'String',
-						'description' => __( 'Email address', 'callboard' ),
+						'description' => __('Email address', 'callboard'),
 					],
 					'role'        => [
 						'type'        => 'String',
-						'description' => __( 'The public role to display on the frontend.', 'callboard' ),
+						'description' => __('The public role to display on the frontend.', 'callboard'),
 					],
 					'active'      => [
 						'type'        => 'Boolean',
-						'description' => __( 'Whether or not the Company Member is on the active roster.', 'callboard' ),
+						'description' => __('Whether or not the Company Member is on the active roster.', 'callboard'),
 					],
 				],
 				'outputFields'        => [
 					'newCompanyMemberID' => [
 						'type'        => 'ID',
-						'description' => __( 'The updated user ID.', 'callboard' ),
+						'description' => __('The updated user ID.', 'callboard'),
 					],
 				],
-				'mutateAndGetPayload' => function ( $input ) {
-					$result = wp_insert_user( [
+				'mutateAndGetPayload' => function ($input) {
+					$result = wp_insert_user([
 						'role'       => 'company_member',
-						'first_name' => sanitize_text_field( $input['firstName'] ),
-						'last_name'  => sanitize_text_field( $input['lastName'] ),
-						'user_login' => sanitize_email( $input['email'] ),
+						'first_name' => sanitize_text_field($input['firstName']),
+						'last_name'  => sanitize_text_field($input['lastName']),
+						'user_login' => sanitize_email($input['email']),
 						'user_pass'  => wp_generate_password(),
-						'user_email' => sanitize_email( $input['email'] ),
+						'user_email' => sanitize_email($input['email']),
 						'meta_input' => [
-							'callboard-role'   => sanitize_text_field( $input['role'] ),
-							'callboard-active' => boolval( $input['active'] ),
+							'callboard-role'   => sanitize_text_field($input['role']),
+							'callboard-active' => boolval($input['active']),
 						],
-					] );
+					]);
 
-					if ( is_wp_error( $result ) ) {
-						throw new \GraphQL\Error\UserError( ! empty( $result->get_error_code() ) ? $result->get_error_code() : __( 'Error creating user', 'callboard' ) );
+					if (is_wp_error($result)) {
+						throw new \GraphQL\Error\UserError(!empty($result->get_error_code()) ? $result->get_error_code() : __('Error creating user', 'callboard'));
 					}
 
 					return [
@@ -432,14 +433,14 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 	 * @param  array $headers The HTTP headers present.
 	 * @return array The modified headers.
 	 */
-	public function response_headers_to_send( $headers ) {
+	public function response_headers_to_send($headers) {
 		$http_origin     = get_http_origin();
 		$allowed_origins = [
 			$this->frontend_url,
 		];
 
 		// If the request is coming from an allowed origin, tell the browser it can accept the response.
-		if ( in_array( $http_origin, $allowed_origins, true ) ) {
+		if (in_array($http_origin, $allowed_origins, true)) {
 			$headers['Access-Control-Allow-Origin'] = $http_origin;
 		}
 

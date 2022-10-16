@@ -11,6 +11,7 @@ import {
 	DialogContentText,
 	useMediaQuery,
 	DialogActions,
+	Box
 } from '@mui/material';
 
 import ViewHeading from 'components/ViewHeading';
@@ -66,11 +67,11 @@ export default function ShowControl() {
 						</>
 						{showLoading ? (
 							<Skeleton>
-								<ShowTable />
+								<Box />
 							</Skeleton>
 						) : (
 							<>
-								<ShowTable shows={[show]} popoverDisabled showQRButton />
+								<ShowTable show={show} popoverDisabled showQRButton />
 								<ShowNotes show={show} editable={true} />
 							</>
 						)}

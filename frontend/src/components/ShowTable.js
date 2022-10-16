@@ -1,15 +1,26 @@
 import React, { useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { Popover } from '@mui/material';
+import { InputLabel, MenuItem, Popover, Select } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Card, Typography } from '@mui/material';
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableHead,
+	TableRow,
+	Card,
+	Typography,
+	FormControl,
+} from '@mui/material';
 
 import StatusIcon from './StatusIcon';
 import { showLabel } from 'lib/functions';
 
-// TODO get all company members, not just active. filter out unused in table.
-import { useActiveRoster } from 'hooks/queries/use-active-roster';
+import { useRoster } from 'hooks/queries/use-roster';
+import { useBenchedRoster } from 'hooks/queries/use-benched-roster';
 
+// TODO simplify or remove popover behavior - too complicated for its own good.
 function anchorElReducer(state, action) {
 	switch (action.type) {
 		case 'INIT': {
@@ -41,19 +52,21 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled, addlProps }) {
-	const { roster } = useActiveRoster();
-	// const { roster } = useRoster();
+export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, editRoster, addlProps }) {
+	const { id, notes, attendance, datetime } = show;
+	const { roster } = useRoster(Object.keys(attendance));
+	const { roster: bench } = useBenchedRoster(roster ? roster.map((item) => item.id) : null);
 	const [rows, setRows] = useState([]);
+	const [addCompanyMember, setAddCompanyMember] = useState(null);
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
 
 	// Inialize anchorEls
 	const anchorEls = useMemo(() => {
-		if (isEmpty(shows)) return {};
+		if (isEmpty(show)) return {};
 
-		return { type: 'INIT', payload: shows };
-	}, [shows]);
+		return { type: 'INIT', payload: show };
+	}, [show]);
 
 	useEffect(() => {
 		anchorElDispatch(anchorEls);
@@ -82,9 +95,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 	 * Build the table rows.
 	 */
 	useEffect(() => {
-		if (isEmpty(roster) || isEmpty(shows)) return;
-
-		const attendance = shows.map((show) => show.attendance);
+		if (isEmpty(roster) || !show) return;
 
 		var rows = [];
 
@@ -96,14 +107,21 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 				firstName,
 				lastName,
 				role,
-				attendance: shows.map((show, index) => attendance[index][id]),
+				attendance: attendance[id],
 			});
 		}
 
 		setRows(rows);
-	}, [roster, shows]);
+	}, [roster, attendance, show]);
 
-	return !isEmpty(shows) ? (
+	const handleAddCompanyMember = (event) => {
+		setAddCompanyMember(event.target.value);
+	};
+
+	// TODO Add user to show
+	// TODO Remove user from show
+
+	return show ? (
 		<>
 			<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
 				<Table aria-label="show attendance table">
@@ -124,45 +142,39 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 									Company Member
 								</Typography>
 							</TableCell>
-							{shows.map((show, index) => {
-								const { id, datetime, notes } = show;
-
-								return (
-									<TableCell key={index} id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-										<Typography
-											variant="button"
-											lineHeight={1.2}
-											sx={{
-												cursor: 'default',
-												display: 'block',
-												borderRadius: 1,
-												fontSize: '1.1em',
-											}}
-										>
-											{showLabel(datetime).date}
-											<br />
-											{showLabel(datetime).time}
-										</Typography>
-										<Popover
-											open={!!anchorEl[id]}
-											anchorEl={anchorEl[id]}
-											anchorOrigin={{
-												vertical: 'bottom',
-												horizontal: 'left',
-											}}
-											onClose={handlePopoverClose}
-											disableRestoreFocus
-											sx={{ pointerEvents: 'none' }}
-										>
-											{show.notes ? (
-												<Typography sx={{ p: 2 }}>{notes}</Typography>
-											) : (
-												<Typography sx={{ p: 2, color: 'neutral.gray' }}>No notes.</Typography>
-											)}
-										</Popover>
-									</TableCell>
-								);
-							})}
+							<TableCell id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
+								<Typography
+									variant="button"
+									lineHeight={1.2}
+									sx={{
+										cursor: 'default',
+										display: 'block',
+										borderRadius: 1,
+										fontSize: '1.1em',
+									}}
+								>
+									{showLabel(datetime).date}
+									<br />
+									{showLabel(datetime).time}
+								</Typography>
+								<Popover
+									open={!!anchorEl[id]}
+									anchorEl={anchorEl[id]}
+									anchorOrigin={{
+										vertical: 'bottom',
+										horizontal: 'left',
+									}}
+									onClose={handlePopoverClose}
+									disableRestoreFocus
+									sx={{ pointerEvents: 'none' }}
+								>
+									{notes ? (
+										<Typography sx={{ p: 2 }}>{notes}</Typography>
+									) : (
+										<Typography sx={{ p: 2, color: 'neutral.gray' }}>No notes.</Typography>
+									)}
+								</Popover>
+							</TableCell>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -171,7 +183,7 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 								<TableCell
 									sx={{
 										pt: 1.5,
-										pr: 3,
+										pr: 1,
 										pb: 1,
 										pl: 0,
 										borderRightWidth: 1,
@@ -181,31 +193,38 @@ export default function ShowTable({ shows, iconButtonsDisabled, popoverDisabled,
 									}}
 									scope="row"
 								>
-									<Typography variant="body1" sx={{ lineHeight: 1 }}>
+									<Typography variant="body2" sx={{ lineHeight: 1 }}>
 										{`${row.firstName} ${row.lastName}`}
 									</Typography>
 									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>
 
-								{shows.map((show, index) => {
-									const { id } = show;
-
-									return (
-										<TableCell key={index} scope="row">
-											<StatusIcon
-												status={row.attendance[index] ? row.attendance[index] : ''}
-												companyMemberId={row.companyMemberId}
-												showId={id}
-												buttonDisabled={iconButtonsDisabled}
-											/>
-										</TableCell>
-									);
-								})}
+								<TableCell key={index} scope="row">
+									<StatusIcon
+										status={row.attendance ? row.attendance : ''}
+										companyMemberId={row.companyMemberId}
+										showId={id}
+										buttonDisabled={iconButtonsDisabled}
+									/>
+								</TableCell>
 							</TableRow>
 						))}
 					</TableBody>
 				</Table>
 			</TableContainer>
+			<FormControl fullwidth>
+				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
+				<Select
+					labelId="bench-roster-select-label"
+					id="bench-roster-select"
+					value={addCompanyMember}
+					onChange={handleAddCompanyMember}
+				>
+					{bench.map((user) => (
+						<MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</MenuItem>
+					))}
+				</Select>
+			</FormControl>
 		</>
 	) : (
 		''

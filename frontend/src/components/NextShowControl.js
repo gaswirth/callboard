@@ -1,59 +1,101 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useReducer } from 'react';
 import { Stack, Typography, ButtonGroup, Button, TextField, Paper } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { useNewShow } from 'hooks/mutations/use-new-show';
 
+const initialNewShow = {
+	dialogOpen: false,
+	datetime: '',
+	title: '',
+	notes: '',
+	error: '',
+	save: false,
+};
+
+function newShowReducer(state, action) {
+	switch (action.type) {
+		case 'OPEN':
+			return {
+				...state,
+				dialogOpen: true,
+			};
+
+		case 'ONCHANGE':
+			return {
+				...state,
+				[action.name]: action.value,
+			};
+
+		case 'ERROR': {
+			return {
+				...state,
+				error: action.error,
+			};
+		}
+
+		case 'CLEAR_ERRORS': {
+			return {
+				...state,
+				error: '',
+			};
+		}
+
+		case 'SAVE':
+			return { ...state, save: true };
+
+		case 'CLEAR':
+		default:
+			return initialNewShow;
+	}
+}
+
 export default function NextShowControl() {
 	const { newShowMutation } = useNewShow();
-
-	const [nextShowOpen, setNextShowOpen] = useState(false);
-
-	// TODO convert to reducer
-	const [newShowDateTime, setNewShowDateTime] = useState(null);
-	const [newShowTitle, setNewShowTitle] = useState('');
-	const [newShowNotes, setNewShowNotes] = useState('');
-	const [newShowError, setNewShowError] = useState('');
+	const [{ dialogOpen, datetime, title, notes, error, save }, newShowDispatch] = useReducer(
+		newShowReducer,
+		initialNewShow
+	);
 
 	/**
 	 * Clear any error messages when trying a new date.
 	 */
 	useEffect(() => {
-		if (newShowDateTime && newShowError) setNewShowError('');
-	}, [newShowDateTime, newShowError]);
+		if (datetime && error) newShowDispatch({ type: 'CLEAR_ERRORS' });
+	}, [datetime, error]);
 
-	const handleNextShowClick = () => {
-		setNextShowOpen(true);
-	};
+	const handleNextShowClick = () => newShowDispatch({ type: 'OPEN' });
 
-	const handleDateTimePickerChange = (value) => setNewShowDateTime(value);
+	const handleDateTimePickerChange = (value) => newShowDispatch({ type: 'ONCHANGE', name: 'datetime', value });
 
-	const handleNextShowTitleChange = (event) => setNewShowTitle(event.target.value);
+	const handleNextShowTitleChange = (event) =>
+		newShowDispatch({ type: 'ONCHANGE', name: 'title', value: event.target.value });
 
-	const handleNextShowNotesChange = (event) => setNewShowNotes(event.target.value);
+	const handleNextShowNotesChange = (event) =>
+		newShowDispatch({ type: 'ONCHANGE', name: 'notes', value: event.target.value });
 
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
-	const handleSubmitNewShow = () => {
-		newShowMutation(newShowDateTime, newShowTitle, newShowNotes).catch((errors) => setNewShowError(errors.message));
+	useEffect(() => {
+		if (!save) return;
+
+		newShowMutation(datetime, title, notes)
+			.then(() => newShowDispatch({ type: 'CLEAR' }))
+			.catch((errors) => newShowDispatch({ type: 'ERROR', error: errors.message }));
 
 		// Clear the new show fields.
-		setNewShowDateTime(null);
-		setNewShowTitle('');
-		setNewShowNotes('');
+	});
 
-		// Clear the dialog
-		setNextShowOpen(false);
+	const handleSubmitNewShow = () => {
+		newShowDispatch({ type: 'SAVE' });
 	};
 
-	const handleCancelNewShow = () => {
-		setNextShowOpen(false);
-	};
+	const handleCancelNewShow = () => newShowDispatch({ type: 'CLEAR' });
 
 	return (
 		<>
-			{nextShowOpen === false ? (
+			{dialogOpen === false ? (
 				<Button variant="contained" onClick={handleNextShowClick}>
 					Start Next Show
 				</Button>
@@ -63,20 +105,20 @@ export default function NextShowControl() {
 						<>
 							<DateTimePicker
 								label="Show Date and Time"
-								value={newShowDateTime}
+								value={datetime}
 								disablePast={true}
 								onChange={handleDateTimePickerChange}
 								renderInput={(params) => <TextField {...params} required={true} />}
 							/>
-							{newShowError ? (
+							{error ? (
 								<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
-									{newShowError}
+									{error}
 								</Typography>
 							) : null}
 							<TextField
 								label="Next Show Title/ID"
 								variant="outlined"
-								value={newShowTitle}
+								value={title}
 								onChange={handleNextShowTitleChange}
 							/>
 							<TextField
@@ -84,7 +126,7 @@ export default function NextShowControl() {
 								multiline={true}
 								minRows={3}
 								variant="outlined"
-								value={newShowNotes}
+								value={notes}
 								onChange={handleNextShowNotesChange}
 							/>
 							<ButtonGroup disableElevation={false}>
@@ -92,7 +134,7 @@ export default function NextShowControl() {
 									size="large"
 									onClick={handleSubmitNewShow}
 									variant="contained"
-									disabled={newShowDateTime ? false : true}
+									disabled={datetime ? false : true}
 								>
 									Confirm
 								</Button>

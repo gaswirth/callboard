@@ -21,8 +21,12 @@ export const QUERY_RECENT_SHOWS = gql`
 	}
 `;
 
-export const useRecentShows = () => {
-	const result = useQuery(QUERY_RECENT_SHOWS);
+export const useRecentShows = (count) => {
+	const result = useQuery(QUERY_RECENT_SHOWS, {
+		variables: {
+			last: count ? count : null,
+		},
+	});
 	const { data, startPolling, stopPolling } = result;
 
 	/**

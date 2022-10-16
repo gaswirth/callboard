@@ -1,12 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Skeleton, Typography } from '@mui/material';
+import { Container, Skeleton, Typography, Box } from '@mui/material';
 
 import Now from './views/Now';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
 import { useShowBySlug } from 'hooks/queries/use-show-by-slug';
-import ShowTable from './ShowTable';
 
 export default function Cast() {
 	const { error: backendError } = useCompanyName();
@@ -21,7 +20,7 @@ export default function Cast() {
 		<Container sx={{ p: 3 }} maxWidth="xl">
 			{showLoading ? (
 				<Skeleton animation="wave">
-					<ShowTable />
+					<Box />
 				</Skeleton>
 			) : (
 				<Now show={show} />

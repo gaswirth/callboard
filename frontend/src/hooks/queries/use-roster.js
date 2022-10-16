@@ -8,8 +8,8 @@ import { gql, useQuery } from '@apollo/client';
 import { prepareRoster } from 'lib/functions';
 
 export const QUERY_ROSTER = gql`
-	query Roster {
-		companyMembers {
+	query Roster($ids: [ID] = []) {
+		companyMembers(ids: $ids) {
 			id
 			firstName
 			lastName
@@ -20,8 +20,12 @@ export const QUERY_ROSTER = gql`
 	}
 `;
 
-export const useRoster = () => {
-	const result = useQuery(QUERY_ROSTER);
+export const useRoster = (ids) => {
+	const result = useQuery(QUERY_ROSTER, {
+		variables: {
+			ids: ids ? ids : [],
+		},
+	});
 
 	const roster = useMemo(() => {
 		if (!result.data) return;

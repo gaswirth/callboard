@@ -77,7 +77,6 @@ class Callboard {
 		$this->frontend_url = esc_url( get_option( 'callboard_frontend_url' ) );
 
 		$this->load_dependencies();
-		$this->register_dependency_notices();
 		$this->register_settings();
 		$this->register_user_hooks();
 		$this->register_show_hooks();
@@ -100,15 +99,6 @@ class Callboard {
 		require_once CALLBOARD_PLUGIN_PATH . 'includes/class-callboard-graphql-mutations.php';
 
 		$this->loader = new Callboard_Loader();
-	}
-
-	/**
-	 * Register notices for missing required plugins.
-	 *
-	 * @since 0.0.1
-	 */
-	public function register_dependency_notices() {
-		$this->loader->add_action( 'admin_init', null, array( $this, 'alert_missing_required_plugins' ) );
 	}
 
 	/**
@@ -172,32 +162,6 @@ class Callboard {
 	 */
 	public function run() {
 		$this->loader->run();
-	}
-
-	/**
-	 * Register dependency alerts.
-	 *
-	 * @since 0.0.1
-	 */
-	public function alert_missing_required_plugins() {
-		if ( is_admin() && current_user_can( 'activate_plugins' ) && ! is_plugin_active( 'wp-graphql/wp-graphql.php' ) ) {
-			$this->loader->add_action( 'admin_notices', null, 'plugin_dependency_notices' );
-
-			deactivate_plugins( plugin_basename( __FILE__ ) );
-
-			if ( isset( $_GET['activate'] ) ) {
-				unset( $_GET['activate'] );
-			}
-		}
-	}
-
-	/**
-	 * Print the plugin dependency notice.
-	 *
-	 * @since 0.0.1
-	 */
-	function plugin_dependency_notices() {
-		printf( '<div class="error"><p>%s</p></div>', __( 'Callboard: Please install and activate GraphQL at the `/graphql` endpoint for a working frontend.', 'callboard' ) );
 	}
 }
 

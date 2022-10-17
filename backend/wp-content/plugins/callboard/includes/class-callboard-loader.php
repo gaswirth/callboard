@@ -106,7 +106,6 @@ class Callboard_Loader {
 		];
 
 		return $hooks;
-
 	}
 
 	/**
@@ -122,6 +121,5 @@ class Callboard_Loader {
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], [$hook['component'], $hook['callback']], $hook['priority'], $hook['accepted_args'] );
 		}
-
 	}
 }

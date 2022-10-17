@@ -58,8 +58,6 @@ function run_callboard() {
 
 	$callboard = new Callboard();
 	$callboard->run();
-
 }
-run_callboard();
 
-$callboard = new Callboard();
+run_callboard();

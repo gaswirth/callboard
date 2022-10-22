@@ -1,6 +1,6 @@
 import React, { useReducer, useState, useMemo, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { InputLabel, MenuItem, Popover, Select } from '@mui/material';
+import { Button, ButtonGroup, InputLabel, MenuItem, Popover, Select } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import {
 	Table,
@@ -19,6 +19,7 @@ import { showLabel } from 'lib/functions';
 
 import { useRoster } from 'hooks/queries/use-roster';
 import { useBenchedRoster } from 'hooks/queries/use-benched-roster';
+import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
 // TODO simplify or remove popover behavior - too complicated for its own good.
 function anchorElReducer(state, action) {
@@ -52,12 +53,13 @@ function anchorElReducer(state, action) {
 	}
 }
 
-export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, editRoster, addlProps }) {
+export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, allowRosterEdit, addlProps }) {
 	const { id, notes, attendance, datetime } = show;
 	const { roster } = useRoster(Object.keys(attendance));
 	const { roster: bench } = useBenchedRoster(roster ? roster.map((item) => item.id) : null);
+	const { updateAttendanceMutation } = useUpdateShowAttendance();
 	const [rows, setRows] = useState([]);
-	const [addCompanyMember, setAddCompanyMember] = useState(null);
+	const [addCompanyMember, setAddCompanyMember] = useState('');
 
 	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
 
@@ -114,12 +116,54 @@ export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, 
 		setRows(rows);
 	}, [roster, attendance, show]);
 
-	const handleAddCompanyMember = (event) => {
+	const handleSelectAddCompanyMember = (event) => {
 		setAddCompanyMember(event.target.value);
 	};
 
-	// TODO Add user to show
+	const handleAddCompanyMember = () => {
+		updateAttendanceMutation({ showId: id, companyMemberId: addCompanyMember, status: '' });
+	};
+
+	const handleCancelAddCompanyMember = () => {
+		setAddCompanyMember('');
+	};
+
 	// TODO Remove user from show
+
+	function EditRoster() {
+		return (
+			<FormControl fullWidth>
+				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
+				<Select
+					labelId="bench-roster-select-label"
+					id="bench-roster-select"
+					value={addCompanyMember}
+					onChange={handleSelectAddCompanyMember}
+				>
+					{bench?.map((user) => (
+						<MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</MenuItem>
+					))}
+				</Select>
+				{addCompanyMember ? (
+					<ButtonGroup disableElevation={false}>
+						<Button
+							size="small"
+							onClick={handleAddCompanyMember}
+							variant="contained"
+							disabled={datetime ? false : true}
+						>
+							Confirm
+						</Button>
+						<Button size="small" onClick={handleCancelAddCompanyMember} variant="contained">
+							Cancel
+						</Button>
+					</ButtonGroup>
+				) : (
+					''
+				)}
+			</FormControl>
+		);
+	}
 
 	return show ? (
 		<>
@@ -212,19 +256,7 @@ export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, 
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<FormControl fullwidth>
-				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
-				<Select
-					labelId="bench-roster-select-label"
-					id="bench-roster-select"
-					value={addCompanyMember}
-					onChange={handleAddCompanyMember}
-				>
-					{bench.map((user) => (
-						<MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</MenuItem>
-					))}
-				</Select>
-			</FormControl>
+			{allowRosterEdit && bench && bench.length > 0 ? <EditRoster /> : ''}
 		</>
 	) : (
 		''

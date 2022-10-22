@@ -71,7 +71,7 @@ export default function ShowControl() {
 							</Skeleton>
 						) : (
 							<>
-								<ShowTable show={show} popoverDisabled showQRButton />
+								<ShowTable show={show} popoverDisabled showQRButton allowRosterEdit />
 								<ShowNotes show={show} editable={true} />
 							</>
 						)}

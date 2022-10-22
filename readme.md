@@ -27,11 +27,3 @@ This monorepo holds the backend and frontend components for a complete installat
 ### Frontend:
 
 - Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
-
-## Dreams
-
----
-
-- Passwordless user logins for seamless on-site sign-ins.
-- Emergency offline functionality (attendance import?)
-- Dreeeeeeams....

@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Paper, TextField, Typography } from '@mui/material';
+import { Button, ButtonGroup, Card, TextField, Typography } from '@mui/material';
 import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
 
-export default function ShowNotes({ show, editable }) {
+export default function ShowNotes({ show, editable, title }) {
 	const [notes, setNotes] = useState(show?.notes);
 	const [notesIsEditing, setNotesIsEditing] = useState(false);
 	const { updateShowNotesMutation } = useUpdateShowNotes();
+
+	const notesTitle = title ? title : 'Show notes';
 
 	const handleEditNotes = () => {
 		setNotesIsEditing(true);
@@ -26,9 +28,9 @@ export default function ShowNotes({ show, editable }) {
 	};
 
 	return show ? (
-		<Paper sx={{ p: 2, mt: 2 }}>
+		<Card sx={{ p: 2 }}>
 			<Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
-				Show notes
+				{notesTitle}
 			</Typography>
 			{editable ? (
 				<>
@@ -37,6 +39,7 @@ export default function ShowNotes({ show, editable }) {
 						minRows={3}
 						variant="outlined"
 						value={notes}
+						placeholder={`Click "Edit" to add notes.`}
 						onChange={handleShowNotesChange}
 						disabled={!notesIsEditing}
 						sx={{ width: '100%', mb: 1 }}
@@ -63,6 +66,6 @@ export default function ShowNotes({ show, editable }) {
 					{show.notes ? show.notes : 'No notes.'}
 				</Typography>
 			)}
-		</Paper>
+		</Card>
 	) : null;
 }

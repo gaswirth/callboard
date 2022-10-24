@@ -11,7 +11,7 @@ import {
 	DialogContentText,
 	useMediaQuery,
 	DialogActions,
-	Box
+	Box,
 } from '@mui/material';
 
 import ViewHeading from 'components/ViewHeading';
@@ -19,7 +19,6 @@ import ShowTable from 'components/ShowTable';
 import NextShowControl from 'components/NextShowControl';
 
 import QRCode from 'components/QRCode';
-import ShowNotes from 'components/ShowNotes';
 
 import { useLatestShow } from 'hooks/queries/use-latest-show';
 import { Print } from '@mui/icons-material';
@@ -70,10 +69,7 @@ export default function ShowControl() {
 								<Box />
 							</Skeleton>
 						) : (
-							<>
-								<ShowTable show={show} popoverDisabled showQRButton allowRosterEdit />
-								<ShowNotes show={show} editable={true} />
-							</>
+							<ShowTable show={show} popoverDisabled showQRButton allowRosterEdit allowStatusChanges />
 						)}
 					</Stack>
 				</Grid>

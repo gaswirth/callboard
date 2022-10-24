@@ -3,7 +3,6 @@ import { Alert, Container } from '@mui/material';
 
 import ShowTable from 'components/ShowTable';
 import ViewHeading from 'components/ViewHeading';
-import ShowNotes from 'components/ShowNotes';
 
 import { AuthContext } from 'context/AuthContext';
 import { useCompanyName } from 'hooks/queries/use-company-name';
@@ -74,8 +73,7 @@ export default function Now({ show }) {
 		<Container maxWidth="xl">
 			<ViewHeading>{companyName}</ViewHeading>
 			{signInAlert()}
-			<ShowTable show={show} iconButtonsDisabled={true} popoverDisabled={true} />
-			<ShowNotes show={show} />
+			<ShowTable show={show} allowStatusChanges={true} popoverDisabled={true} />
 		</Container>
 	);
 }

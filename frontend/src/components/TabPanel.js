@@ -3,9 +3,9 @@ import { Container } from '@mui/system';
 
 import ViewHeading from './ViewHeading';
 
-export default function TabPanel({ currentTab, id, title, children, addlProps }) {
+export default function TabPanel({ currentTab, id, title, children }) {
 	return currentTab === id ? (
-		<Container {...addlProps}>
+		<Container>
 			{title ? <ViewHeading>{title}</ViewHeading> : null}
 			{children}
 		</Container>

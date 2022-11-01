@@ -1,6 +1,6 @@
-import React, { useReducer, useState, useMemo, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { Button, ButtonGroup, InputLabel, MenuItem, Popover, Select } from '@mui/material';
+import { Button, ButtonGroup, InputLabel, MenuItem, Select } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import {
 	Table,
@@ -15,83 +15,20 @@ import {
 } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
+import ShowNotes from './ShowNotes';
 import { showLabel } from 'lib/functions';
 
 import { useRoster } from 'hooks/queries/use-roster';
 import { useBenchedRoster } from 'hooks/queries/use-benched-roster';
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
-// TODO simplify or remove popover behavior - too complicated for its own good.
-function anchorElReducer(state, action) {
-	switch (action.type) {
-		case 'INIT': {
-			var anchorEls = {};
-			Object.values(action.payload).forEach((value) => {
-				const { id } = value;
-				anchorEls[id] = null;
-			});
-
-			return anchorEls;
-		}
-
-		case 'OPEN': {
-			return {
-				...state,
-				[action.id]: action.payload,
-			};
-		}
-
-		case 'CLOSE': {
-			return {
-				...state,
-				[action.id]: null,
-			};
-		}
-
-		default:
-			return state;
-	}
-}
-
-export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, allowRosterEdit, addlProps }) {
-	const { id, notes, attendance, datetime } = show;
+export default function ShowTable({ show, allowStatusChanges, allowRosterEdit }) {
+	const { id, attendance, datetime } = show;
 	const { roster } = useRoster(Object.keys(attendance));
 	const { roster: bench } = useBenchedRoster(roster ? roster.map((item) => item.id) : null);
 	const { updateAttendanceMutation } = useUpdateShowAttendance();
 	const [rows, setRows] = useState([]);
 	const [addCompanyMember, setAddCompanyMember] = useState('');
-
-	const [anchorEl, anchorElDispatch] = useReducer(anchorElReducer, {});
-
-	// Inialize anchorEls
-	const anchorEls = useMemo(() => {
-		if (isEmpty(show)) return {};
-
-		return { type: 'INIT', payload: show };
-	}, [show]);
-
-	useEffect(() => {
-		anchorElDispatch(anchorEls);
-	}, [anchorEls]);
-
-	const handlePopoverOpen = (event) => {
-		if (popoverDisabled) return;
-
-		anchorElDispatch({
-			type: 'OPEN',
-			id: event.target.getAttribute('id'),
-			payload: event.target,
-		});
-	};
-
-	const handlePopoverClose = (event) => {
-		if (popoverDisabled) return;
-
-		anchorElDispatch({
-			type: 'CLOSE',
-			id: event.target.getAttribute('id'),
-		});
-	};
 
 	/**
 	 * Build the table rows.
@@ -167,96 +104,82 @@ export default function ShowTable({ show, iconButtonsDisabled, popoverDisabled, 
 
 	return show ? (
 		<>
-			<TableContainer component={Card} sx={{ width: '100%' }} {...addlProps}>
-				<Table aria-label="show attendance table">
-					<TableHead>
-						<TableRow>
-							<TableCell
-								sx={{
-									flexShrink: 1,
-									flexGrow: 1,
-									textAlign: 'right',
-									borderRightWidth: 1,
-									borderRightColor: 'neutral.gray',
-									borderRightStyle: 'solid',
-									textTransform: 'uppercase',
-								}}
-							>
-								<Typography variant="button" sx={visuallyHidden}>
-									Company Member
-								</Typography>
-							</TableCell>
-							<TableCell id={id} onMouseEnter={handlePopoverOpen} onMouseLeave={handlePopoverClose}>
-								<Typography
-									variant="button"
-									lineHeight={1.2}
-									sx={{
-										cursor: 'default',
-										display: 'block',
-										borderRadius: 1,
-										fontSize: '1.1em',
-									}}
-								>
-									{showLabel(datetime).date}
-									<br />
-									{showLabel(datetime).time}
-								</Typography>
-								<Popover
-									open={!!anchorEl[id]}
-									anchorEl={anchorEl[id]}
-									anchorOrigin={{
-										vertical: 'bottom',
-										horizontal: 'left',
-									}}
-									onClose={handlePopoverClose}
-									disableRestoreFocus
-									sx={{ pointerEvents: 'none' }}
-								>
-									{notes ? (
-										<Typography sx={{ p: 2 }}>{notes}</Typography>
-									) : (
-										<Typography sx={{ p: 2, color: 'neutral.gray' }}>No notes.</Typography>
-									)}
-								</Popover>
-							</TableCell>
-						</TableRow>
-					</TableHead>
-					<TableBody>
-						{rows.map((row, index) => (
-							<TableRow key={index}>
+			<Card sx={{ width: '100%' }}>
+				<TableContainer>
+					<Table aria-label="show attendance table">
+						<TableHead>
+							<TableRow>
 								<TableCell
 									sx={{
-										pt: 1.5,
-										pr: 1,
-										pb: 1,
-										pl: 0,
+										flexShrink: 1,
+										flexGrow: 1,
+										textAlign: 'right',
 										borderRightWidth: 1,
 										borderRightColor: 'neutral.gray',
 										borderRightStyle: 'solid',
-										textAlign: 'right',
+										textTransform: 'uppercase',
 									}}
-									scope="row"
 								>
-									<Typography variant="body2" sx={{ lineHeight: 1 }}>
-										{`${row.firstName} ${row.lastName}`}
+									<Typography variant="button" sx={visuallyHidden}>
+										Company Member
 									</Typography>
-									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>
-
-								<TableCell key={index} scope="row">
-									<StatusIcon
-										status={row.attendance ? row.attendance : ''}
-										companyMemberId={row.companyMemberId}
-										showId={id}
-										buttonDisabled={iconButtonsDisabled}
-									/>
+								<TableCell id={id}>
+									<Typography
+										variant="button"
+										lineHeight={1.2}
+										sx={{
+											cursor: 'default',
+											display: 'block',
+											borderRadius: 1,
+											fontSize: '1.1em',
+										}}
+									>
+										{showLabel(datetime).date}
+										<br />
+										{showLabel(datetime).time}
+									</Typography>
 								</TableCell>
 							</TableRow>
-						))}
-					</TableBody>
-				</Table>
-			</TableContainer>
-			{allowRosterEdit && bench && bench.length > 0 ? <EditRoster /> : ''}
+						</TableHead>
+						<TableBody>
+							{rows.map((row, index) => (
+								<TableRow key={index}>
+									<TableCell
+										sx={{
+											pt: 1.5,
+											pr: 1,
+											pb: 1,
+											pl: 0,
+											borderRightWidth: 1,
+											borderRightColor: 'neutral.gray',
+											borderRightStyle: 'solid',
+											textAlign: 'right',
+										}}
+										scope="row"
+									>
+										<Typography variant="body2" sx={{ lineHeight: 1 }}>
+											{`${row.firstName} ${row.lastName}`}
+										</Typography>
+										<Typography variant="caption">{row.role}</Typography>
+									</TableCell>
+
+									<TableCell key={index} scope="row">
+										<StatusIcon
+											status={row.attendance ? row.attendance : ''}
+											companyMemberId={row.companyMemberId}
+											showId={id}
+											buttonDisabled={allowStatusChanges}
+										/>
+									</TableCell>
+								</TableRow>
+							))}
+						</TableBody>
+					</Table>
+				</TableContainer>
+				<ShowNotes show={show} editable={allowStatusChanges} />
+				{allowRosterEdit && bench && bench.length > 0 ? <EditRoster /> : ''}
+			</Card>
 		</>
 	) : (
 		''

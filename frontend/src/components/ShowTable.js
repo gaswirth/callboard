@@ -69,7 +69,7 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 
 	function EditRoster() {
 		return (
-			<FormControl fullWidth>
+			<FormControl fullWidth sx={{ mt: 1 }}>
 				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
 				<Select
 					labelId="bench-roster-select-label"

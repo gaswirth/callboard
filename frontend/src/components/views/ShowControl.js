@@ -35,7 +35,7 @@ export default function ShowControl() {
 	const handleQRClose = () => setQROpen(false);
 
 	const handlePrint = () => {
-		alert('Boop!');
+		alert('Le print, she goes!');
 	};
 
 	return (

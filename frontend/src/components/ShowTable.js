@@ -69,7 +69,7 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 
 	function AddCompanyMember() {
 		return (
-			<FormControl fullWidth sx={{ mt: 2 }}>
+			<FormControl fullWidth sx={{ mt: 1 }}>
 				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
 				<Select
 					labelId="bench-roster-select-label"
@@ -168,7 +168,7 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 										status={row.attendance ? row.attendance : ''}
 										companyMemberId={row.companyMemberId}
 										showId={id}
-										buttonDisabled={allowStatusChanges}
+										allowChange={allowStatusChanges}
 									/>
 								</TableCell>
 							</TableRow>

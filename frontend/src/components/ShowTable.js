@@ -65,11 +65,11 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 		setAddCompanyMember('');
 	};
 
-	// TODO Remove user from show
+	// TODO Functionality: Remove user from show
 
-	function EditRoster() {
+	function AddCompanyMember() {
 		return (
-			<FormControl fullWidth sx={{ mt: 1 }}>
+			<FormControl fullWidth sx={{ mt: 2 }}>
 				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
 				<Select
 					labelId="bench-roster-select-label"
@@ -103,84 +103,82 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 	}
 
 	return show ? (
-		<>
-			<Card sx={{ width: '100%' }}>
-				<TableContainer>
-					<Table aria-label="show attendance table">
-						<TableHead>
-							<TableRow>
+		<Card sx={{ width: '100%' }}>
+			<TableContainer>
+				<Table aria-label="show attendance table">
+					<TableHead>
+						<TableRow>
+							<TableCell
+								sx={{
+									flexShrink: 1,
+									flexGrow: 1,
+									textAlign: 'right',
+									borderRightWidth: 1,
+									borderRightColor: 'neutral.gray',
+									borderRightStyle: 'solid',
+									textTransform: 'uppercase',
+								}}
+							>
+								<Typography variant="button" sx={visuallyHidden}>
+									Company Member
+								</Typography>
+							</TableCell>
+							<TableCell id={id}>
+								<Typography
+									variant="button"
+									lineHeight={1.2}
+									sx={{
+										cursor: 'default',
+										display: 'block',
+										borderRadius: 1,
+										fontSize: '1.1em',
+									}}
+								>
+									{showLabel(datetime).date}
+									<br />
+									{showLabel(datetime).time}
+								</Typography>
+							</TableCell>
+						</TableRow>
+					</TableHead>
+					<TableBody>
+						{rows.map((row, index) => (
+							<TableRow key={index}>
 								<TableCell
 									sx={{
-										flexShrink: 1,
-										flexGrow: 1,
-										textAlign: 'right',
+										pt: 1.5,
+										pr: 1,
+										pb: 1,
+										pl: 0,
 										borderRightWidth: 1,
 										borderRightColor: 'neutral.gray',
 										borderRightStyle: 'solid',
-										textTransform: 'uppercase',
+										textAlign: 'right',
 									}}
+									scope="row"
 								>
-									<Typography variant="button" sx={visuallyHidden}>
-										Company Member
+									<Typography variant="body2" sx={{ lineHeight: 1 }}>
+										{`${row.firstName} ${row.lastName}`}
 									</Typography>
+									<Typography variant="caption">{row.role}</Typography>
 								</TableCell>
-								<TableCell id={id}>
-									<Typography
-										variant="button"
-										lineHeight={1.2}
-										sx={{
-											cursor: 'default',
-											display: 'block',
-											borderRadius: 1,
-											fontSize: '1.1em',
-										}}
-									>
-										{showLabel(datetime).date}
-										<br />
-										{showLabel(datetime).time}
-									</Typography>
+
+								<TableCell key={index} scope="row">
+									<StatusIcon
+										status={row.attendance ? row.attendance : ''}
+										companyMemberId={row.companyMemberId}
+										showId={id}
+										buttonDisabled={allowStatusChanges}
+									/>
 								</TableCell>
 							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row, index) => (
-								<TableRow key={index}>
-									<TableCell
-										sx={{
-											pt: 1.5,
-											pr: 1,
-											pb: 1,
-											pl: 0,
-											borderRightWidth: 1,
-											borderRightColor: 'neutral.gray',
-											borderRightStyle: 'solid',
-											textAlign: 'right',
-										}}
-										scope="row"
-									>
-										<Typography variant="body2" sx={{ lineHeight: 1 }}>
-											{`${row.firstName} ${row.lastName}`}
-										</Typography>
-										<Typography variant="caption">{row.role}</Typography>
-									</TableCell>
-
-									<TableCell key={index} scope="row">
-										<StatusIcon
-											status={row.attendance ? row.attendance : ''}
-											companyMemberId={row.companyMemberId}
-											showId={id}
-											buttonDisabled={allowStatusChanges}
-										/>
-									</TableCell>
-								</TableRow>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
-				<ShowNotes show={show} editable={allowStatusChanges} />
-				{allowRosterEdit && bench && bench.length > 0 ? <EditRoster /> : ''}
-			</Card>
-		</>
+						))}
+					</TableBody>
+				</Table>
+			</TableContainer>
+			{allowRosterEdit && bench && bench.length > 0 ? <AddCompanyMember /> : ''}
+			<ShowNotes show={show} editable={allowStatusChanges} />
+		</Card>
 	) : (
 		''
 	);

@@ -8,13 +8,13 @@ import { Box, Container } from '@mui/system';
 import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
-import NewCompanyMember from 'components/NewCompanyMember';
+import EditCompanyMember from 'components/EditCompanyMember';
 
 export default function Roster() {
 	const {
 		user: { isAdmin },
 	} = useContext(AuthContext);
-	const [newCompanyMember, setNewCompanyMember] = useState(false);
+	const [addNewCompanyMember, setAddNewCompanyMember] = useState(false);
 
 	const { roster } = useRoster();
 
@@ -26,8 +26,8 @@ export default function Roster() {
 		return roster?.filter((item) => !item.active);
 	}, [roster]);
 
-	const handleNewCompanyMember = () => {
-		setNewCompanyMember(true);
+	const handleAddNewCompanyMember = () => {
+		setAddNewCompanyMember(true);
 	};
 
 	return isAdmin ? (
@@ -48,11 +48,11 @@ export default function Roster() {
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>
 			) : null}
-			{newCompanyMember ? (
-				<NewCompanyMember setIsOpen={setNewCompanyMember} />
+			{addNewCompanyMember ? (
+				<EditCompanyMember setIsOpen={setAddNewCompanyMember} />
 			) : (
 				<Container align="center">
-					<Fab color="primary" aria-label="Add new Company Member" onClick={handleNewCompanyMember}>
+					<Fab color="primary" aria-label="Add new Company Member" onClick={handleAddNewCompanyMember}>
 						<Add />
 					</Fab>
 				</Container>

@@ -140,6 +140,7 @@ export default function RosterTable({ roster }) {
 					</TableHead>
 					<TableBody>
 						{roster?.map((row) => (
+							// TODO Replace this with <EditCompanyMember> component
 							<TableRow key={row.id}>
 								<TableCell>
 									{editCompanyMember.id === row.id ? (

@@ -1,9 +1,22 @@
-import React, { useReducer, useEffect } from 'react';
-import { Stack, FormControlLabel, FormGroup, IconButton, Paper, Switch, TextField, Typography } from '@mui/material';
-import { Check, Clear } from '@mui/icons-material';
+import React, { useReducer, useEffect, useState } from 'react';
+import {
+	Stack,
+	FormControlLabel,
+	FormGroup,
+	Paper,
+	Switch,
+	TextField,
+	Typography,
+	ButtonGroup,
+	Button,
+} from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 
 import { CompanyMember } from 'lib/classes';
 import { useNewCompanyMember } from 'hooks/mutations/use-new-company-member';
+import { Check, Clear } from '@mui/icons-material';
+
+// TODO Change this to be a reusable EditCompanyMember module, and use this making a new company member, and editing.
 
 const emptyCompanyMember = new CompanyMember('', '', '', '', '', true);
 const initialCompanyMember = { ...emptyCompanyMember, email: '' };
@@ -34,9 +47,10 @@ function newCompanyMemberReducer(state, action) {
 	}
 }
 
-export default function NewCompanyMember({ setIsOpen }) {
+export default function EditCompanyMember({ setIsOpen }) {
 	const [newCompanyMember, newCompanyMemberDispatch] = useReducer(newCompanyMemberReducer, initialCompanyMember);
 	const { newCompanyMemberMutation } = useNewCompanyMember();
+	const [loading, setLoading] = useState(false);
 
 	/**
 	 * Fire the mutation!
@@ -45,8 +59,12 @@ export default function NewCompanyMember({ setIsOpen }) {
 		if (!newCompanyMember.save) return;
 
 		newCompanyMemberMutation(newCompanyMember)
+			.then(setLoading(true))
 			.then(newCompanyMemberDispatch({ type: 'SAVE_COMPLETE' }))
-			.then(setIsOpen(false))
+			.then(() => {
+				setLoading(false);
+				setIsOpen(false);
+			})
 			.catch((errors) => {
 				console.log(errors);
 			});
@@ -124,12 +142,14 @@ export default function NewCompanyMember({ setIsOpen }) {
 						/>
 					</FormGroup>
 					<Stack direction="row">
-						<IconButton type="submit" aria-label="Submit">
-							<Check />
-						</IconButton>
-						<IconButton aria-label="Cancel" onClick={handleNewCompanyMemberCancel}>
-							<Clear />
-						</IconButton>
+						<ButtonGroup>
+							<LoadingButton loading={loading ? true : false} variant="outlined" type="submit" aria-label="Submit">
+								<Check />
+							</LoadingButton>
+							<Button aria-label="Cancel" onClick={handleNewCompanyMemberCancel}>
+								<Clear />
+							</Button>
+						</ButtonGroup>
 					</Stack>
 				</Stack>
 			</form>

@@ -20,6 +20,7 @@ const theme = createTheme({
 		},
 		warning: {
 			main: '#d32f2f',
+			strong: '#ce0606',
 		},
 		light: {
 			main: '#fff',

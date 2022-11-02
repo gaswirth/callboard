@@ -1,30 +1,45 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Card, TextField, Typography } from '@mui/material';
+import { Button, ButtonGroup, Card, Container, TextField, Typography } from '@mui/material';
+
 import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
+import { useDeleteShow } from 'hooks/mutations/use-delete-show';
 
 export default function ShowNotes({ show, editable, title }) {
 	const [notes, setNotes] = useState(show?.notes);
-	const [notesIsEditing, setNotesIsEditing] = useState(false);
+	const [armNotesEdit, setArmNotesEdit] = useState(false);
+	const [armDeleteShow, setArmDeleteShow] = useState(false);
 	const { updateShowNotesMutation } = useUpdateShowNotes();
+	const { deleteShowMutation } = useDeleteShow();
 
 	const notesTitle = title ? title : 'Show notes';
 
 	const handleEditNotes = () => {
-		setNotesIsEditing(true);
+		setArmNotesEdit(true);
 	};
 
 	const handleShowNotesChange = (event) => {
 		setNotes(event.target.value);
 	};
 
+	const handleDeleteShow = () => {
+		setArmDeleteShow(true);
+	};
+
+	const reallyHandleDeleteShow = () => {
+		deleteShowMutation(show.id).then((result) => {
+			console.info(result);
+			setArmDeleteShow(false);
+		});
+	};
+
 	const handleSubmitNotes = () => {
 		updateShowNotesMutation(show.id, notes);
-		setNotesIsEditing(false);
+		setArmNotesEdit(false);
 	};
 
 	const handleCancelNotes = () => {
 		setNotes(show?.notes);
-		setNotesIsEditing(false);
+		setArmNotesEdit(false);
 	};
 
 	return show ? (
@@ -41,25 +56,37 @@ export default function ShowNotes({ show, editable, title }) {
 						value={notes}
 						placeholder={`Click "Edit" to add notes.`}
 						onChange={handleShowNotesChange}
-						disabled={!notesIsEditing}
+						disabled={!armNotesEdit}
 						sx={{ width: '100%', mb: 1 }}
 					/>
-					<ButtonGroup disableElevation={false}>
-						{notesIsEditing ? (
-							<>
-								<Button onClick={handleSubmitNotes} variant="contained">
-									Save
-								</Button>
-								<Button onClick={handleCancelNotes} variant="contained">
-									Cancel
-								</Button>
-							</>
-						) : (
+					{armNotesEdit ? (
+						<ButtonGroup disableElevation={false} sx={{ width: '100%' }}>
+							<Button onClick={handleSubmitNotes} variant="contained">
+								Save
+							</Button>
+							<Button onClick={handleCancelNotes} variant="contained">
+								Cancel
+							</Button>
+						</ButtonGroup>
+					) : (
+						<Container
+							disableGutters={true}
+							sx={{ display: 'inline-flex', justifyContent: 'space-between', my: 1, px: 0 }}
+						>
 							<Button onClick={handleEditNotes} variant="contained">
 								Edit Notes
 							</Button>
-						)}
-					</ButtonGroup>
+							{armDeleteShow ? (
+								<Button onClick={reallyHandleDeleteShow} variant="contained" sx={{ backgroundColor: 'warning.strong' }}>
+									CLICK AGAIN TO DELETE
+								</Button>
+							) : (
+								<Button onClick={handleDeleteShow} variant="contained" sx={{ backgroundColor: 'warning.main' }}>
+									Delete Show
+								</Button>
+							)}
+						</Container>
+					)}
 				</>
 			) : (
 				<Typography variant="body2" sx={{ p: 1 }}>

@@ -30,7 +30,11 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 	const handleIconClick = (event, newValue) => {
 		updateAttendanceMutation({ showId, companyMemberId, status: newValue });
 
-		if (!updateAttendanceError && !updateAttendanceLoading) setAnchorEl(null);
+		if (!updateAttendanceError && !updateAttendanceLoading) closePopover();
+	};
+
+	const closePopover = () => {
+		setAnchorEl(null);
 	};
 
 	return (
@@ -52,7 +56,7 @@ export default function StatusSelect({ status, children, companyMemberId, showId
 				open={!!anchorEl}
 				anchorEl={anchorEl}
 				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-				onClose={() => setAnchorEl(null)}
+				onClose={closePopover}
 			>
 				<ToggleButtonGroup
 					value={status}

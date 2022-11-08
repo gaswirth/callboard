@@ -1,5 +1,14 @@
 import React, { useEffect, useReducer } from 'react';
-import { Stack, Typography, ButtonGroup, Button, TextField, Paper } from '@mui/material';
+import {
+	Stack,
+	Typography,
+	Button,
+	TextField,
+	Dialog,
+	DialogTitle,
+	DialogContent,
+	DialogActions,
+} from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { useNewShow } from 'hooks/mutations/use-new-show';
@@ -91,6 +100,7 @@ export default function NextShowControl() {
 		newShowDispatch({ type: 'SAVE' });
 	};
 
+	const handleCloseNewShowDialog = () => newShowDispatch({ type: 'CLEAR' });
 	const handleCancelNewShow = () => newShowDispatch({ type: 'CLEAR' });
 
 	return (
@@ -100,9 +110,10 @@ export default function NextShowControl() {
 					Start Next Show
 				</Button>
 			) : (
-				<Paper variant="elevation" sx={{ p: 2 }}>
-					<Stack spacing={2}>
-						<>
+				<Dialog onClose={handleCloseNewShowDialog} open={dialogOpen}>
+					<DialogTitle>New Show</DialogTitle>
+					<DialogContent>
+						<Stack spacing={2}>
 							<DateTimePicker
 								label="Show Date and Time"
 								value={datetime}
@@ -129,22 +140,17 @@ export default function NextShowControl() {
 								value={notes}
 								onChange={handleNextShowNotesChange}
 							/>
-							<ButtonGroup disableElevation={false}>
-								<Button
-									size="large"
-									onClick={handleSubmitNewShow}
-									variant="contained"
-									disabled={datetime ? false : true}
-								>
-									Confirm
-								</Button>
-								<Button size="large" onClick={handleCancelNewShow} variant="contained">
-									Cancel
-								</Button>
-							</ButtonGroup>
-						</>
-					</Stack>
-				</Paper>
+						</Stack>
+					</DialogContent>
+					<DialogActions>
+						<Button size="large" onClick={handleSubmitNewShow} variant="contained" disabled={datetime ? false : true}>
+							Confirm
+						</Button>
+						<Button size="large" onClick={handleCancelNewShow} variant="contained">
+							Cancel
+						</Button>
+					</DialogActions>
+				</Dialog>
 			)}
 		</>
 	);

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, Card, Container, TextField, Typography } from '@mui/material';
+import { Button, Card, Container, TextField, Typography } from '@mui/material';
 
 import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
 import { useDeleteShow } from 'hooks/mutations/use-delete-show';
@@ -27,7 +27,6 @@ export default function ShowNotes({ show, editable, title }) {
 
 	const reallyHandleDeleteShow = () => {
 		deleteShowMutation(show.id).then((result) => {
-			console.info(result);
 			setArmDeleteShow(false);
 		});
 	};
@@ -49,6 +48,7 @@ export default function ShowNotes({ show, editable, title }) {
 			</Typography>
 			{editable ? (
 				<>
+					{/* Remove the Arming Edit button. Just click to edit. */}
 					<TextField
 						multiline={true}
 						minRows={3}
@@ -60,14 +60,14 @@ export default function ShowNotes({ show, editable, title }) {
 						sx={{ width: '100%', mb: 1 }}
 					/>
 					{armNotesEdit ? (
-						<ButtonGroup disableElevation={false} sx={{ width: '100%' }}>
+						<>
 							<Button onClick={handleSubmitNotes} variant="contained">
 								Save
 							</Button>
 							<Button onClick={handleCancelNotes} variant="contained">
 								Cancel
 							</Button>
-						</ButtonGroup>
+						</>
 					) : (
 						<Container
 							disableGutters={true}

@@ -1,12 +1,10 @@
 /**
- * useInactiveRoster hook. Query to retrieve Company Members.
- *
- * // MAYBE Determine need for this hook.
+ * useInctiveRoster hook. Query to retrieve "inactive" Company Members.
  */
 
 import { gql, useQuery } from '@apollo/client';
 import { prepareRoster } from 'lib/functions';
-import { useMemo } from 'react';
+// import { useMemo } from 'react';
 
 export const QUERY_INACTIVE_ROSTER = gql`
 	query InactiveRoster {
@@ -23,15 +21,19 @@ export const QUERY_INACTIVE_ROSTER = gql`
 export const useInactiveRoster = () => {
 	const result = useQuery(QUERY_INACTIVE_ROSTER);
 
+	// TODO evaluate useMemo necessity
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
 		const {
-			data: { inactiveCompanyMembers },
+			data: { activeCompanyMembers },
 		} = result;
 
-		return prepareRoster(inactiveCompanyMembers);
+		return prepareRoster(activeCompanyMembers);
 	}, [result]);
+
+	// const roster =
+	// 	result.data.inactiveCompanyMembers.length > 0 ? prepareRoster(result.data.inactiveCompanyMembers) : null;
 
 	return { ...result, roster };
 };

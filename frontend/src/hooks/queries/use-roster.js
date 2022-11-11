@@ -2,8 +2,8 @@
  * useRoster hook. Query to retrieve Company Members.
  */
 
-import { useMemo } from 'react';
 import { gql, useQuery } from '@apollo/client';
+import { useMemo } from 'react';
 
 import { prepareRoster } from 'lib/functions';
 
@@ -20,13 +20,14 @@ export const QUERY_ROSTER = gql`
 	}
 `;
 
-export const useRoster = (ids) => {
+export const useRoster = ({ ids } = {}) => {
 	const result = useQuery(QUERY_ROSTER, {
 		variables: {
 			ids: ids ? ids : [],
 		},
 	});
 
+	// TODO evaluate useMemo here
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
@@ -36,6 +37,11 @@ export const useRoster = (ids) => {
 
 		return prepareRoster(companyMembers);
 	}, [result]);
+
+	// let roster = '';
+	// if (result.data) {
+	// 	roster = prepareRoster(result.data.companyMembers);
+	// }
 
 	return { ...result, roster };
 };

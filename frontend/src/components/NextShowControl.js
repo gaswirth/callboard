@@ -1,14 +1,5 @@
 import React, { useEffect, useReducer } from 'react';
-import {
-	Stack,
-	Typography,
-	Button,
-	TextField,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogActions,
-} from '@mui/material';
+import { Stack, Typography, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
 import { useNewShow } from 'hooks/mutations/use-new-show';
@@ -89,7 +80,7 @@ export default function NextShowControl() {
 	useEffect(() => {
 		if (!save) return;
 
-		newShowMutation(datetime, title, notes)
+		newShowMutation({ datetime, title, notes })
 			.then(() => newShowDispatch({ type: 'CLEAR' }))
 			.catch((errors) => newShowDispatch({ type: 'ERROR', error: errors.message }));
 
@@ -110,9 +101,11 @@ export default function NextShowControl() {
 					Start Next Show
 				</Button>
 			) : (
+				// TODO Break this into its own component
+
 				<Dialog onClose={handleCloseNewShowDialog} open={dialogOpen}>
 					<DialogTitle>New Show</DialogTitle>
-					<DialogContent>
+					<DialogContent sx={{ px: 2, py: 1 }}>
 						<Stack spacing={2}>
 							<DateTimePicker
 								label="Show Date and Time"
@@ -142,7 +135,7 @@ export default function NextShowControl() {
 							/>
 						</Stack>
 					</DialogContent>
-					<DialogActions>
+					<DialogActions sx={{ mb: 2, px: 2 }}>
 						<Button size="large" onClick={handleSubmitNewShow} variant="contained" disabled={datetime ? false : true}>
 							Confirm
 						</Button>

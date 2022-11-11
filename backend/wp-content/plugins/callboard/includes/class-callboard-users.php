@@ -23,8 +23,8 @@ class Callboard_Users {
 	 * @since 0.0.1
 	 */
 	public function add_company_member_role() {
-		$subscriber = get_role('subscriber');
-		add_role('company_member', __('Company Member', 'callboard'), $subscriber->capabilities);
+		$subscriber = get_role( 'subscriber' );
+		add_role( 'company_member', __( 'Company Member', 'callboard' ), $subscriber->capabilities );
 	}
 
 	/**
@@ -33,7 +33,7 @@ class Callboard_Users {
 	 * @return void
 	 */
 	public static function remove_company_member_role() {
-		remove_role('company_member');
+		remove_role( 'company_member' );
 	}
 
 	/**
@@ -90,7 +90,7 @@ class Callboard_Users {
 	 *
 	 * @return array A collection of users.
 	 */
-	public static function query_company_members_excluding($exclude) {
+	public static function query_company_members_excluding( $exclude ) {
 		return get_users(
 			[
 				'role__in'    => 'company_member',
@@ -110,8 +110,8 @@ class Callboard_Users {
 
 		$attendance = [];
 
-		foreach ($users as $user) {
-			$attendance[$user->get('ID')] = '';
+		foreach ( $users as $user ) {
+			$attendance[$user->get( 'ID' )] = '';
 		}
 
 		return $attendance;
@@ -125,15 +125,15 @@ class Callboard_Users {
 	 * @param  WP_User $user User object.
 	 * @return void
 	 */
-	public function callboard_user_fields($user) {
-		if (!$user instanceof WP_User) {
+	public function callboard_user_fields( $user ) {
+		if ( ! $user instanceof WP_User ) {
 			return;
 		}
 
-		$role   = get_the_author_meta('callboard-role', $user->ID);
-		$active = get_the_author_meta('callboard-active', $user->ID);
+		$role   = get_the_author_meta( 'callboard-role', $user->ID );
+		$active = get_the_author_meta( 'callboard-active', $user->ID );
 
-		wp_nonce_field('custom_user_fields', 'custom_user_fields_nonce', false);
+		wp_nonce_field( 'custom_user_fields', 'custom_user_fields_nonce', false );
 
 		printf(
 			'<h3>%1$s</h3>
@@ -152,12 +152,12 @@ class Callboard_Users {
 					</td>
 				</tr>
 			</table>',
-			esc_html__('Callboard Data', 'callboard'),
-			esc_html__('Please do not edit this directly.', 'callboard'),
-			esc_html__('Role', 'callboard'),
-			esc_textarea($role),
-			esc_html__('Active', 'callboard'),
-			checked($active, true, false)
+			esc_html__( 'Callboard Data', 'callboard' ),
+			esc_html__( 'Please do not edit this directly.', 'callboard' ),
+			esc_html__( 'Role', 'callboard' ),
+			esc_textarea( $role ),
+			esc_html__( 'Active', 'callboard' ),
+			checked( $active, true, false )
 		);
 	}
 
@@ -168,44 +168,48 @@ class Callboard_Users {
 	 *
 	 * @param int $user_id Current user ID.
 	 */
-	public function save_callboard_user_fields($user_id) {
-		if (!current_user_can('edit_user', $user_id) || !isset($_POST['custom_user_fields_nonce']) || !wp_verify_nonce($_POST['custom_user_fields_nonce'], 'custom_user_fields')) {
+	public function save_callboard_user_fields( $user_id ) {
+		if ( ! current_user_can( 'edit_user', $user_id ) || ! isset( $_POST['custom_user_fields_nonce'] ) || ! wp_verify_nonce( $_POST['custom_user_fields_nonce'], 'custom_user_fields' ) ) {
 			return false;
 		}
 
-		if (isset($_POST['callboard-role'])) {
-			if (empty($_POST['callboard-role'])) {
-				delete_user_meta($user_id, 'callboard-role');
+		if ( isset( $_POST['callboard-role'] ) ) {
+			if ( empty( $_POST['callboard-role'] ) ) {
+				delete_user_meta( $user_id, 'callboard-role' );
 			}
 
-			update_user_meta($user_id, 'callboard-role', wp_strip_all_tags(wp_unslash($_POST['callboard-role'])));
+			update_user_meta( $user_id, 'callboard-role', wp_strip_all_tags( wp_unslash( $_POST['callboard-role'] ) ) );
 		}
 
-		if (!isset($_POST['callboard-active'])) {
-			delete_user_meta($user_id, 'callboard-active');
+		if ( ! isset( $_POST['callboard-active'] ) ) {
+			delete_user_meta( $user_id, 'callboard-active' );
 		} else {
-			update_user_meta($user_id, 'callboard-active', wp_strip_all_tags(wp_unslash($_POST['callboard-active'])));
+			update_user_meta( $user_id, 'callboard-active', wp_strip_all_tags( wp_unslash( $_POST['callboard-active'] ) ) );
 		}
 	}
 
 	/**
 	 * Prepares a Company Member for sending to the frontend.
 	 *
-	 * @param WP_User $user The user.
-	 * @return array The Company Member data.
+	 * @param  WP_User $user The user.
+	 * @return array   The Company Member data.
 	 */
-	public static function prepare_company_member_for_frontend($user) {
-		$user_id    = $user->get('ID');
-		$first_name = get_user_meta($user->ID, 'first_name', true);
-		$last_name  = get_user_meta($user->ID, 'last_name', true);
+	public static function prepare_company_member_for_frontend( $user ) {
+		$user_id  = $user->get( 'ID' );
+		$usermeta = get_user_meta( $user->ID );
+
+		$first_name = isset( $usermeta['first_name'] ) ? $usermeta['first_name'][0] : '';
+		$last_name  = isset( $usermeta['last_name'] ) ? $usermeta['last_name'][0] : '';
+		$role       = isset( $usermeta['callboard-role'] ) ? $usermeta['callboard-role'][0] : '';
+		$active     = $usermeta['callboard-active'][0];
 
 		return [
 			'id'        => $user_id,
 			'firstName' => $first_name,
 			'lastName'  => $last_name,
-			'email'     => $user->get('user_email'),
-			'role'      => get_user_meta($user->ID, 'callboard-role', true),
-			'active'    => true,
+			'email'     => $user->get( 'user_email' ),
+			'role'      => $role,
+			'active'    => $active,
 		];
 	}
 }

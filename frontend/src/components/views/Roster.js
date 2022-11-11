@@ -1,4 +1,4 @@
-import React, { useContext, useState, useMemo } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { useRoster } from 'hooks/queries/use-roster';
 
@@ -18,13 +18,17 @@ export default function Roster() {
 
 	const { roster } = useRoster();
 
-	const activeCompanyMembers = useMemo(() => {
-		return roster?.filter((item) => !!item.active);
-	}, [roster]);
+	// TODO evaluate memo here
+	// const activeCompanyMembers = useMemo(() => {
+	// 	return roster?.filter((item) => !!item.active);
+	// }, [roster]);
 
-	const inactiveCompanyMembers = useMemo(() => {
-		return roster?.filter((item) => !item.active);
-	}, [roster]);
+	// const inactiveCompanyMembers = useMemo(() => {
+	// 	return roster?.filter((item) => !item.active);
+	// }, [roster]);
+
+	const activeCompanyMembers = roster ? roster.filter((item) => !!item.active) : [];
+	const inactiveCompanyMembers = roster ? roster.filter((item) => !item.active) : [];
 
 	const handleAddNewCompanyMember = () => {
 		setAddNewCompanyMember(true);

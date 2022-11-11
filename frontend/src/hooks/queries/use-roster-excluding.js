@@ -1,15 +1,13 @@
 /**
- * useBenchedRoster hook. Query to retrieve all users except those in the specified subset.
- *
- * Used to retrieve "benched" performers (those not currently listed in a show's `attendance` meta);
+ * useRosterExcluding hook. Query to retrieve all users except those in the specified subset.
  */
 
 import { gql, useQuery } from '@apollo/client';
 import { prepareRoster } from 'lib/functions';
 import { useMemo } from 'react';
 
-export const QUERY_BENCH = gql`
-	query Bench($excludes: [ID!]) {
+export const QUERY_ROSTER_EXCLUDING = gql`
+	query RosterExcluding($excludes: [ID!]) {
 		companyMembersExcluding(excludes: $excludes) {
 			active
 			email
@@ -21,13 +19,14 @@ export const QUERY_BENCH = gql`
 	}
 `;
 
-export const useBenchedRoster = (ids) => {
-	const result = useQuery(QUERY_BENCH, {
+export const useRosterExcluding = (ids) => {
+	const result = useQuery(QUERY_ROSTER_EXCLUDING, {
 		variables: {
 			excludes: ids ? ids : null,
 		},
 	});
 
+	// TODO evaluate useMemo
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
@@ -37,6 +36,11 @@ export const useBenchedRoster = (ids) => {
 
 		return prepareRoster(companyMembersExcluding);
 	}, [result]);
+
+	// let roster = '';
+	// if (result.data) {
+	// 	roster = prepareRoster(result.data.companyMembersExcluding);
+	// }
 
 	return { ...result, roster };
 };

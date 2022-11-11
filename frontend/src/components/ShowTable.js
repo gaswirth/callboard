@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { Button, ButtonGroup, InputLabel, MenuItem, Select } from '@mui/material';
 import { visuallyHidden } from '@mui/utils';
 import {
 	Table,
@@ -11,24 +10,21 @@ import {
 	TableRow,
 	Card,
 	Typography,
-	FormControl,
 } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
 import ShowNotes from './ShowNotes';
+import AddCompanyMemberSelect from './AddCompanyMemberSelect';
 import { showLabel } from 'lib/functions';
 
 import { useRoster } from 'hooks/queries/use-roster';
-import { useBenchedRoster } from 'hooks/queries/use-benched-roster';
-import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
+import { useRosterExcluding } from 'hooks/queries/use-roster-excluding';
 
 export default function ShowTable({ show, allowStatusChanges, allowRosterEdit }) {
 	const { id, attendance, datetime } = show;
-	const { roster } = useRoster(Object.keys(attendance));
-	const { roster: bench } = useBenchedRoster(roster ? roster.map((item) => item.id) : null);
-	const { updateAttendanceMutation } = useUpdateShowAttendance();
+	const { roster } = useRoster({ ids: Object.keys(attendance) });
+	const { roster: bench } = useRosterExcluding(roster ? roster.map((item) => item.id) : null);
 	const [rows, setRows] = useState([]);
-	const [addCompanyMember, setAddCompanyMember] = useState('');
 
 	/**
 	 * Build the table rows.
@@ -53,54 +49,18 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 		setRows(rows);
 	}, [roster, attendance, show]);
 
-	const handleSelectAddCompanyMember = (event) => {
-		setAddCompanyMember(event.target.value);
-	};
-
-	const handleAddCompanyMember = () => {
-		updateAttendanceMutation({ showId: id, companyMemberId: addCompanyMember, status: '' });
-	};
-
-	const handleCancelAddCompanyMember = () => {
-		setAddCompanyMember('');
-	};
-
 	// TODO Functionality: Remove user from show
 
-	function AddCompanyMember() {
-		return (
-			<FormControl fullWidth sx={{ mt: 1 }}>
-				<InputLabel id="bench-roster-select-label">Add Company Member</InputLabel>
-				<Select
-					labelId="bench-roster-select-label"
-					id="bench-roster-select"
-					value={addCompanyMember}
-					onChange={handleSelectAddCompanyMember}
-				>
-					{bench?.map((user) => (
-						<MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</MenuItem>
-					))}
-				</Select>
-				{addCompanyMember ? (
-					<ButtonGroup disableElevation={false}>
-						<Button
-							size="small"
-							onClick={handleAddCompanyMember}
-							variant="contained"
-							disabled={datetime ? false : true}
-						>
-							Confirm
-						</Button>
-						<Button size="small" onClick={handleCancelAddCompanyMember} variant="contained">
-							Cancel
-						</Button>
-					</ButtonGroup>
-				) : (
-					''
-				)}
-			</FormControl>
-		);
-	}
+	const cellStyle = {
+		pt: 1.5,
+		pr: 1,
+		pb: 1,
+		pl: 0,
+		borderRightWidth: 1,
+		borderRightColor: 'neutral.gray',
+		borderRightStyle: 'solid',
+		textAlign: 'right',
+	};
 
 	return show ? (
 		<Card sx={{ width: '100%' }}>
@@ -144,19 +104,7 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 					<TableBody>
 						{rows.map((row, index) => (
 							<TableRow key={index}>
-								<TableCell
-									sx={{
-										pt: 1.5,
-										pr: 1,
-										pb: 1,
-										pl: 0,
-										borderRightWidth: 1,
-										borderRightColor: 'neutral.gray',
-										borderRightStyle: 'solid',
-										textAlign: 'right',
-									}}
-									scope="row"
-								>
+								<TableCell sx={{ ...cellStyle }} scope="row">
 									<Typography variant="body2" sx={{ lineHeight: 1 }}>
 										{`${row.firstName} ${row.lastName}`}
 									</Typography>
@@ -173,10 +121,18 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 								</TableCell>
 							</TableRow>
 						))}
+						{allowRosterEdit && bench && bench.length > 0 ? (
+							<TableRow key="add-company-member">
+								<TableCell sx={{ ...cellStyle }} scope="row">
+									<AddCompanyMemberSelect companyMembers={bench} show={show} />
+								</TableCell>
+							</TableRow>
+						) : (
+							''
+						)}
 					</TableBody>
 				</Table>
 			</TableContainer>
-			{allowRosterEdit && bench && bench.length > 0 ? <AddCompanyMember /> : ''}
 			<ShowNotes show={show} editable={allowStatusChanges} />
 		</Card>
 	) : (

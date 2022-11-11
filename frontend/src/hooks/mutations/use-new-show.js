@@ -17,7 +17,7 @@ export const MUTATE_NEW_SHOW = gql`
 export const useNewShow = () => {
 	const [mutation, mutationResults] = useMutation(MUTATE_NEW_SHOW);
 
-	const newShowMutation = (datetime, title, notes) => {
+	const newShowMutation = ({datetime, title, notes}) => {
 		return mutation({
 			variables: {
 				input: {

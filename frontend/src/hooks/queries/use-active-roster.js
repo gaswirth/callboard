@@ -1,5 +1,5 @@
 /**
- * useActiveRoster hook. Query to retrieve Company Members.
+ * useActiveRoster hook. Query to retrieve "active" Company Members.
  */
 
 import { gql, useQuery } from '@apollo/client';
@@ -21,6 +21,7 @@ export const QUERY_ACTIVE_ROSTER = gql`
 export const useActiveRoster = () => {
 	const result = useQuery(QUERY_ACTIVE_ROSTER);
 
+	// TODO evaluate useMemo necessity
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
@@ -30,6 +31,8 @@ export const useActiveRoster = () => {
 
 		return prepareRoster(activeCompanyMembers);
 	}, [result]);
+
+	// const roster = result.data.activeCompanyMembers.length > 0 ? prepareRoster(result.data.activeCompanyMembers) : null;
 
 	return { ...result, roster };
 };

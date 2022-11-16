@@ -48,7 +48,7 @@ export default function ShowNotes({ show, editable, title }) {
 			</Typography>
 			{editable ? (
 				<>
-					{/* Remove the Arming Edit button. Just click to edit. */}
+					{/* TODO Remove the Arming Edit button. Just click to edit. */}
 					<TextField
 						multiline={true}
 						minRows={3}

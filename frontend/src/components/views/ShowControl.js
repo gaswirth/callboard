@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-	Grid,
+	Container,
 	Stack,
 	Skeleton,
 	Button,
@@ -14,7 +14,7 @@ import {
 
 import ViewHeading from 'components/ViewHeading';
 import ShowTable from 'components/ShowTable';
-import NextShowControl from 'components/NextShowControl';
+import NewShow from 'components/NewShow';
 
 import QRCode from 'components/QRCode';
 
@@ -38,7 +38,7 @@ export default function ShowControl() {
 	};
 
 	return show ? (
-		<Grid>
+		<Container maxWidth="sm">
 			<Stack spacing={2}>
 				<ViewHeading variant="h6">Current Show</ViewHeading>
 				<>
@@ -93,8 +93,8 @@ export default function ShowControl() {
 				) : (
 					<ShowTable show={show} popoverDisabled showQRButton allowRosterEdit allowStatusChanges />
 				)}
-				<NextShowControl />
+				<NewShow />
 			</Stack>
-		</Grid>
+		</Container>
 	) : null;
 }

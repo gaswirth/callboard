@@ -10,6 +10,7 @@ import {
 	TableRow,
 	Card,
 	Typography,
+	Container,
 } from '@mui/material';
 
 import StatusIcon from './StatusIcon';
@@ -121,17 +122,21 @@ export default function ShowTable({ show, allowStatusChanges, allowRosterEdit })
 								</TableCell>
 							</TableRow>
 						))}
-						{allowRosterEdit && bench && bench.length > 0 ? (
+						{/* {allowRosterEdit && bench && bench.length > 0 ? (
 							<TableRow key="add-company-member">
-								<TableCell sx={{ ...cellStyle }} scope="row">
+								<TableCell sx={{ ...cellStyle, py: 2 }} scope="row">
 									<AddCompanyMemberSelect companyMembers={bench} show={show} />
 								</TableCell>
+								<TableCell></TableCell>
 							</TableRow>
 						) : (
 							''
-						)}
+						)} */}
 					</TableBody>
 				</Table>
+				<Container sx={{ py: 1, px: 2 }}>
+					<AddCompanyMemberSelect companyMembers={bench} show={show} />
+				</Container>
 			</TableContainer>
 			<ShowNotes show={show} editable={allowStatusChanges} />
 		</Card>

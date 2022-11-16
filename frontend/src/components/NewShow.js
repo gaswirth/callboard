@@ -50,7 +50,7 @@ function newShowReducer(state, action) {
 	}
 }
 
-export default function NextShowControl() {
+export default function NewShow() {
 	const { newShowMutation } = useNewShow();
 	const [{ dialogOpen, datetime, title, notes, error, save }, newShowDispatch] = useReducer(
 		newShowReducer,
@@ -77,14 +77,13 @@ export default function NextShowControl() {
 	/**
 	 * Fire the mutation to create a new Show.
 	 */
+	// TODO refactor without useEffect
 	useEffect(() => {
 		if (!save) return;
 
 		newShowMutation({ datetime, title, notes })
 			.then(() => newShowDispatch({ type: 'CLEAR' }))
 			.catch((errors) => newShowDispatch({ type: 'ERROR', error: errors.message }));
-
-		// Clear the new show fields.
 	});
 
 	const handleSubmitNewShow = () => {

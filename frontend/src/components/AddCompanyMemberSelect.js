@@ -41,11 +41,16 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 				))}
 			</Select>
 			{addCompanyMember ? (
-				<ButtonGroup disableElevation={false}>
+				<ButtonGroup disableElevation={false} sx={{ py: 1 }}>
 					<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={datetime ? false : true}>
 						Confirm
 					</Button>
-					<Button size="small" onClick={handleCancelAddCompanyMember} variant="contained">
+					<Button
+						size="small"
+						onClick={handleCancelAddCompanyMember}
+						variant="contained"
+						sx={{ backgroundColor: 'warning.main' }}
+					>
 						Cancel
 					</Button>
 				</ButtonGroup>

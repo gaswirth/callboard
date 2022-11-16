@@ -1,24 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { Button, Card, Container, TextField, Typography } from '@mui/material';
 
 import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
 import { useDeleteShow } from 'hooks/mutations/use-delete-show';
 
-export default function ShowNotes({ show, editable, title }) {
-	const [notes, setNotes] = useState(show?.notes);
+const initialNotes = {
+	value: '',
+};
+
+function notesReducer(state, action) {
+	switch (action.type) {
+		case 'SET_NOTES': {
+			return { ...state, value: action.value };
+		}
+
+		default:
+			return { initialNotes };
+	}
+}
+
+export default function ShowNotes({ show, editable }) {
+	// const [notes, setNotes] = useState('');
+	const [notes, notesDispatch] = useReducer(notesReducer, initialNotes);
 	const [armNotesEdit, setArmNotesEdit] = useState(false);
 	const [armDeleteShow, setArmDeleteShow] = useState(false);
 	const { updateShowNotesMutation } = useUpdateShowNotes();
 	const { deleteShowMutation } = useDeleteShow();
 
-	const notesTitle = title ? title : 'Show notes';
+	/**
+	 * Set the notes value from props when `show.notes` changes.
+	 */
+	useEffect(() => {
+		notesDispatch({ type: 'SET_NOTES', value: show.notes });
+	}, [show.notes]);
 
 	const handleEditNotes = () => {
 		setArmNotesEdit(true);
 	};
 
 	const handleShowNotesChange = (event) => {
-		setNotes(event.target.value);
+		notesDispatch({ type: 'SET_NOTES', value: event.target.value });
 	};
 
 	const handleDeleteShow = () => {
@@ -32,28 +53,28 @@ export default function ShowNotes({ show, editable, title }) {
 	};
 
 	const handleSubmitNotes = () => {
-		updateShowNotesMutation(show.id, notes);
+		updateShowNotesMutation(show.id, notes.value);
 		setArmNotesEdit(false);
 	};
 
 	const handleCancelNotes = () => {
-		setNotes(show?.notes);
+		notesDispatch({ type: 'SET_NOTES', value: show.notes });
 		setArmNotesEdit(false);
 	};
 
 	return show ? (
 		<Card sx={{ p: 2 }}>
 			<Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
-				{notesTitle}
+				Notes
 			</Typography>
 			{editable ? (
 				<>
-					{/* TODO Remove the Arming Edit button. Just click to edit. */}
+					{/* Remove the Arming Edit button. Just click to edit. */}
 					<TextField
 						multiline={true}
 						minRows={3}
 						variant="outlined"
-						value={notes}
+						value={notes.value}
 						placeholder={`Click "Edit" to add notes.`}
 						onChange={handleShowNotesChange}
 						disabled={!armNotesEdit}

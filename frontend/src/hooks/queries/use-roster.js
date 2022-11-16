@@ -27,7 +27,9 @@ export const useRoster = ({ ids } = {}) => {
 		},
 	});
 
-	// TODO evaluate useMemo here
+	/**
+	 * Memoize the prepared roster value
+	 */
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
@@ -37,11 +39,6 @@ export const useRoster = ({ ids } = {}) => {
 
 		return prepareRoster(companyMembers);
 	}, [result]);
-
-	// let roster = '';
-	// if (result.data) {
-	// 	roster = prepareRoster(result.data.companyMembers);
-	// }
 
 	return { ...result, roster };
 };

@@ -11,22 +11,22 @@ import {
 	DialogActions,
 	Box,
 } from '@mui/material';
+import { Print } from '@mui/icons-material';
 
 import ViewHeading from 'components/ViewHeading';
 import ShowTable from 'components/ShowTable';
 import NewShow from 'components/NewShow';
-
 import QRCode from 'components/QRCode';
 
 import { useLatestShow } from 'hooks/queries/use-latest-show';
-import { Print } from '@mui/icons-material';
+import { useSigninURL } from 'hooks/hooks';
 
 export default function ShowControl() {
 	const [{ loading: showLoading }, show] = useLatestShow();
 	const [QROpen, setQROpen] = useState(false);
 	const [actionsOpen, setExportOpen] = useState(false);
 
-	const qrUrlBase = process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : '';
+	const signinURL = useSigninURL(show?.slug);
 
 	const handleQROpen = () => setQROpen(true);
 	const handleQRClose = () => setQROpen(false);
@@ -55,7 +55,7 @@ export default function ShowControl() {
 						<DialogTitle textAlign="center">Export</DialogTitle>
 						<DialogContent>
 							<DialogContentText textAlign="center">{show.datetime}</DialogContentText>
-							<QRCode string={`${qrUrlBase}/signin/${show.slug}`} size={300} />
+							<QRCode string={signinURL} size={300} />
 						</DialogContent>
 						<DialogActions>
 							<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
@@ -91,7 +91,7 @@ export default function ShowControl() {
 						<Box />
 					</Skeleton>
 				) : (
-					<ShowTable show={show} popoverDisabled showQRButton allowRosterEdit allowStatusChanges />
+					<ShowTable show={show} allowStatusChanges />
 				)}
 				<NewShow />
 			</Stack>

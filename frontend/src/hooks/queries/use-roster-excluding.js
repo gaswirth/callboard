@@ -26,7 +26,9 @@ export const useRosterExcluding = (ids) => {
 		},
 	});
 
-	// TODO evaluate useMemo
+	/**
+	 * Memoize the prepared roster value
+	 */
 	const roster = useMemo(() => {
 		if (!result.data) return;
 
@@ -36,11 +38,6 @@ export const useRosterExcluding = (ids) => {
 
 		return prepareRoster(companyMembersExcluding);
 	}, [result]);
-
-	// let roster = '';
-	// if (result.data) {
-	// 	roster = prepareRoster(result.data.companyMembersExcluding);
-	// }
 
 	return { ...result, roster };
 };

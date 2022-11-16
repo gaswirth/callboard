@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
 	palette: {
-		type: 'dark',
+		type: 'light',
 		text: {
 			main: '#333',
 			light: '#aaa',
@@ -15,6 +15,7 @@ const theme = createTheme({
 			main: '#ff9100',
 		},
 		neutral: {
+			lightergray: 'rgba(235, 235, 235, 0.4)',
 			lightgray: 'rgb(235, 235, 235)',
 			gray: '#aaa',
 		},

@@ -24,7 +24,6 @@ export const useUpdateShowNotes = () => {
 					notes,
 				},
 			},
-			// refetchQueries: [{ query: QUERY_ROSTER }, { query: QUERY_ACTIVE_ROSTER }],
 		});
 	};
 

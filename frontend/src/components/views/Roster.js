@@ -18,7 +18,6 @@ export default function Roster() {
 
 	const { roster } = useRoster();
 
-	// TODO evaluate memo here
 	const activeCompanyMembers = useMemo(() => {
 		return roster?.filter((item) => !!item.active);
 	}, [roster]);
@@ -26,9 +25,6 @@ export default function Roster() {
 	const inactiveCompanyMembers = useMemo(() => {
 		return roster?.filter((item) => !item.active);
 	}, [roster]);
-
-	// const activeCompanyMembers = roster ? roster.filter((item) => !!item.active) : [];
-	// const inactiveCompanyMembers = roster ? roster.filter((item) => !item.active) : [];
 
 	const handleAddNewCompanyMember = () => {
 		setAddNewCompanyMember(true);

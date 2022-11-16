@@ -81,28 +81,20 @@ export const useLocalStorage = (
  * Sorts an array of shows by the `datetime` field, descending.
  *
  * @param {Array} shows A collection of shows.
- * @returns The sorted collection of shows.
+ * @returns {Array} The sorted collection of shows.
  */
 export const sortShowsByDatetime = (shows) => {
 	return shows.sort((a, b) => (isAfter(a.datetime > b.datetime) ? 1 : isBefore(a.datetime, b.datetime) ? -1 : 0));
 };
 
 /**
- * Splits the roster into active and inactive collections.
- *
- * @param {Array} roster A collection of CompanyMembers.
- * @return {Object} The active and inactive collections.
+ * 
+ * @param {string} slug The show's URL slug
+ * @returns {string} The show's signin URL.
  */
-// export const useActiveInactiveRoster = (roster) => {
-// 	let splitRoster = {
-// 		active: [],
-// 		inactive: [],
-// 	};
+export const useSigninURL = (slug) => {
+	const qrUrlBase = process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : '';
+	const ep = 'signin';
 
-// 	roster.forEach((item) => {
-// 		const status = item.active ? 'active' : 'inactive';
-// 		splitRoster[status].push(item);
-// 	});
-
-// 	return splitRoster;
-// };
+	return `${qrUrlBase}/${ep}/${slug}`;
+};

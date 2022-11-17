@@ -20,7 +20,6 @@ function notesReducer(state, action) {
 }
 
 export default function ShowNotes({ show, editable }) {
-	// const [notes, setNotes] = useState('');
 	const [notes, notesDispatch] = useReducer(notesReducer, initialNotes);
 	const [armNotesEdit, setArmNotesEdit] = useState(false);
 	const [armDeleteShow, setArmDeleteShow] = useState(false);

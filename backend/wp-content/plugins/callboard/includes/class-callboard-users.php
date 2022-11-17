@@ -201,7 +201,7 @@ class Callboard_Users {
 		$first_name = isset( $usermeta['first_name'] ) ? $usermeta['first_name'][0] : '';
 		$last_name  = isset( $usermeta['last_name'] ) ? $usermeta['last_name'][0] : '';
 		$role       = isset( $usermeta['callboard-role'] ) ? $usermeta['callboard-role'][0] : '';
-		$active     = $usermeta['callboard-active'][0];
+		$active     = isset( $usermeta['callboard-active'] ) ? $usermeta['callboard-active'][0] : null;
 
 		return [
 			'id'        => $user_id,

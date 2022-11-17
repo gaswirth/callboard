@@ -12,6 +12,8 @@ export default function Header({ currentTab, handleTabChange }) {
 	const { user } = useContext(AuthContext);
 	const { data: companyData } = useCompanyName();
 
+	console.info(companyData);
+
 	const companyShortName = () => {
 		if (companyData) {
 			const name = companyData.callboardOptionsSettings.callboardCompanyName;

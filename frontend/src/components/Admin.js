@@ -6,6 +6,7 @@ import TabPanel from 'components/TabPanel';
 
 import Roster from './views/Roster';
 import History from './views/History';
+import Now from './views/Now';
 import ShowControl from './views/ShowControl';
 
 import { AuthContext } from 'context/AuthContext';
@@ -40,7 +41,7 @@ export default function Admin() {
 					</TabPanel>
 				</Container>
 			) : (
-				'Nothing to see here...'
+				<Now />
 			)}
 		</>
 	);

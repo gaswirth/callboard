@@ -36,6 +36,13 @@ class Callboard {
 	protected $plugin_name;
 
 	/**
+	 * The plugin title.
+	 * @access protected
+	 * @since 0.0.1
+	 */
+	protected $plugin_title;
+
+	/**
 	 * The plugin version.
 	 *
 	 * @access protected
@@ -66,7 +73,8 @@ class Callboard {
 	 * @since 0.0.1
 	 */
 	public function __construct() {
-		$this->plugin_name = 'callboard';
+		$this->plugin_name  = 'callboard';
+		$this->plugin_title = 'Callboard';
 
 		if ( defined( 'CALLBOARD_VERSION' ) ) {
 			$this->version = CALLBOARD_VERSION;
@@ -107,9 +115,13 @@ class Callboard {
 	 * @since 0.0.1
 	 */
 	public function register_settings() {
-		$callboard_settings = new Callboard_Settings( $this->plugin_name );
+		$callboard_settings = new Callboard_Settings( $this->plugin_name, $this->plugin_title );
 
+		// MAYBE change this to add_action?? why filter?
 		$this->loader->add_filter( 'init', $callboard_settings, 'register_settings_fields' );
+
+		$this->loader->add_action( 'admin_init', $callboard_settings, 'settings_fields_admin_init' );
+		$this->loader->add_action( 'admin_menu', $callboard_settings, 'callboard_options_page' );
 	}
 
 	/**

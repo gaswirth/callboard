@@ -60,41 +60,34 @@
 		}
 
 		/**
-		 * Register a settings field.
+		 * Register settings.
 		 *
-		 * @param string $key               The setting key.
-		 * @param string $type              The data type.
-		 * @param string $sanitize_callback A sanitize function to run on the input value.
-		 * @param string $default           The default field value. Defaults to ''.
+		 * @return void
 		 */
-		public function register_field( $key, $type, $sanitize_callback, $default = '' ) {
+		public function register_settings() {
 			register_setting(
-				$this->option_group,
-				$key,
+				$this->plugin_name,
+				'callboard_frontend_url',
 				[
-					'type'              => $type,
-					'sanitize_callback' => $sanitize_callback,
-					'default'           => $default,
+					'type'              => 'string',
+					'description'       => 'The app\'s frontend url.',
+					'sanitize_callback' => 'esc_url_raw',
+					'show_in_rest'      => true,
 					'show_in_graphql'   => true,
 				]
 			);
-		}
 
-		/**
-		 * Register settings fields.
-		 *
-		 * @since 0.0.1
-		 */
-		public function register_settings_fields() {
-			/**
-			 * Frontend URL.
-			 */
-			$this->register_field( 'callboard_frontend_url', 'string', 'esc_url' );
-
-			/**
-			 * Company Name.
-			 */
-			$this->register_field( 'callboard_company_name', 'string', 'esc_textarea' );
+			register_setting(
+				$this->plugin_name,
+				'callboard_company_name',
+				[
+					'type'              => 'string',
+					'description'       => 'The app\'s frontend url.',
+					'sanitize_callback' => 'sanitize_text_field',
+					'show_in_rest'      => true,
+					'show_in_graphql'   => true,
+				]
+			);
 		}
 
 		/**
@@ -103,19 +96,25 @@
 		 * @return void
 		 */
 		public function settings_fields_admin_init() {
+			/**
+			 * Register settings sections.
+			 */
 			add_settings_section(
-				$this->option_group . '_fields',
+				$this->option_group,
 				sprintf( __( '%s Settings', 'callboard' ), $this->plugin_title ),
 				[$this, 'settings_fields_admin_init_cb'],
 				$this->plugin_name,
 			);
 
+			/**
+			 * Register input fields.
+			 */
 			add_settings_field(
 				'callboard_frontend_url',
 				__( 'Callboard Frontend URL' ),
 				[$this, 'callboard_frontend_url_cb'],
 				$this->plugin_name,
-				$this->option_group . '_fields',
+				$this->option_group,
 				[
 					'label_for' => 'callboard_frontend_url',
 				]
@@ -126,7 +125,7 @@
 				__( 'Company Name' ),
 				[$this, 'callboard_company_name_cb'],
 				$this->plugin_name,
-				$this->option_group . '_fields',
+				$this->option_group,
 				[
 					'label_for' => 'callboard_company_name',
 				]
@@ -149,76 +148,76 @@
 		 */
 		public function callboard_frontend_url_cb( $args ) {
 			$value = get_option( 'callboard_frontend_url' );
-			?>
-
-			<input name="<?php $args['label_for']; ?>" type="text" value="<?php echo esc_url( $value ); ?>"
-
-			<?php
-		}
-
-		/**
-		 * Print the input for callboard_frontend_url.
-		 *
-		 * @param array $args
-		 */
-		public function callboard_company_name_cb( $args ) {
-			$value = get_option( 'callboard_company_name' );
-			?>
-
-			<input name="<?php $args['label_for']; ?>" type="text" value="<?php echo esc_url( $value ); ?>"
-
-			<?php
-		}
-
-	/**
-	 * Add the top level menu page.
-	 */
-	public function callboard_options_page() {
-		add_menu_page(
-			$this->plugin_title . ' Settings',
-			$this->plugin_title,
-			'manage_options',
-			'callboard',
-			[$this, 'callboard_options_page_html']
-		);
-	}
-
-	/**
-	 * Top level menu callback function
-	 */
-	function callboard_options_page_html() {
-		// check user capabilities
-		if ( ! current_user_can( 'manage_options' ) ) {
-			return;
-		}
-
-		// add error/update messages
-
-		// check if the user have submitted the settings
-		// WordPress will add the "settings-updated" $_GET parameter to the url
-		if ( isset( $_GET['settings-updated'] ) ) {
-			// add settings saved message with the class of "updated"
-			add_settings_error( 'callboard_messages', 'callboard_message', __( 'Settings Saved', 'callboard' ), 'updated' );
-		}
-
-		// show error/update messages
-		settings_errors( 'callboard_messages' );
 		?>
+
+			<input name="<?php echo $args['label_for']; ?>" id="<?php echo $args['label_for']; ?>" type="text" value="<?php echo esc_url( $value ); ?>" />
+
+			<?php
+				}
+
+					/**
+					 * Print the input for callboard_frontend_url.
+					 *
+					 * @param array $args
+					 */
+					public function callboard_company_name_cb( $args ) {
+						$value = get_option( 'callboard_company_name' );
+					?>
+
+			<input name="<?php echo $args['label_for']; ?>" id="<?php echo $args['label_for']; ?>" type="text" value="<?php echo esc_textarea( $value ); ?>" />
+
+			<?php
+				}
+
+					/**
+					 * Add the top level menu page.
+					 */
+					public function callboard_options_page() {
+						add_menu_page(
+							$this->plugin_title . ' Settings',
+							$this->plugin_title,
+							'manage_options',
+							$this->plugin_name,
+							[$this, 'callboard_options_page_html']
+						);
+					}
+
+					/**
+					 * Top level menu callback function
+					 */
+					function callboard_options_page_html() {
+						// check user capabilities
+						if ( ! current_user_can( 'manage_options' ) ) {
+							return;
+						}
+
+						// add error/update messages
+
+						// check if the user have submitted the settings
+						// WordPress will add the "settings-updated" $_GET parameter to the url
+						if ( isset( $_GET['settings-updated'] ) ) {
+							// add settings saved message with the class of "updated"
+							add_settings_error( 'callboard_messages', 'callboard_message', __( 'Settings Saved', 'callboard' ), 'updated' );
+						}
+
+						// show error/update messages
+						settings_errors( 'callboard_messages' );
+					?>
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<form action="options.php" method="post">
 				<?php
-				// output security fields for the registered setting "wporg"
-				settings_fields( $this->plugin_name );
-				// output setting sections and their fields
-				// (sections are registered for "wporg", each field is registered to a specific section)
-				do_settings_sections( $this->plugin_name );
-				// output save settings button
-				submit_button( 'Save Settings' );
-				?>
+					// output security fields for the registered setting "callboard"
+							settings_fields( $this->plugin_name );
+							// output setting sections and their fields
+							// (sections are registered for "callboard", each field is registered to a specific section)
+							do_settings_sections( $this->plugin_name );
+							// output save settings button
+							submit_button( 'Save Settings' );
+						?>
 			</form>
 		</div>
 		<?php
-	}
+			}
 
-}
+		}

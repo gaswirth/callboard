@@ -117,9 +117,7 @@ class Callboard {
 	public function register_settings() {
 		$callboard_settings = new Callboard_Settings( $this->plugin_name, $this->plugin_title );
 
-		// MAYBE change this to add_action?? why filter?
-		$this->loader->add_filter( 'init', $callboard_settings, 'register_settings_fields' );
-
+		$this->loader->add_action( 'init', $callboard_settings, 'register_settings' );
 		$this->loader->add_action( 'admin_init', $callboard_settings, 'settings_fields_admin_init' );
 		$this->loader->add_action( 'admin_menu', $callboard_settings, 'callboard_options_page' );
 	}
@@ -160,7 +158,7 @@ class Callboard {
 	 */
 	public function register_graphql_hooks() {
 		$queries   = new Callboard_GraphQL_Queries();
-		$mutations = new Callboard_GraphQL_Mutations( $this->frontend_url );
+		$mutations = new Callboard_GraphQL_Mutations();
 
 		$this->loader->add_action( 'graphql_register_types', $queries, 'register_types' );
 		$this->loader->add_filter( 'graphql_response_headers_to_send', $mutations, 'response_headers_to_send' );

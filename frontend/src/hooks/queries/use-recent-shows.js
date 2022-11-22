@@ -1,5 +1,5 @@
 /**
- * useRecentShows hook. Queries the most recent show.
+ * useRecentShows hook. Queries the most recent show (by date).
  */
 
 import { useEffect } from 'react';
@@ -8,8 +8,8 @@ import { isEmpty } from 'lodash';
 import { prepareShow } from 'lib/functions';
 
 export const QUERY_RECENT_SHOWS = gql`
-	query RecentShows($last: Int = 8) {
-		shows(first: $last) {
+	query RecentShows($last: Int = 8, $notIn: [ID] = "") {
+		shows(first: $last, where: { notIn: $notIn }) {
 			nodes {
 				databaseId
 				datetime
@@ -21,10 +21,11 @@ export const QUERY_RECENT_SHOWS = gql`
 	}
 `;
 
-export const useRecentShows = (count) => {
+export const useRecentShows = (count, notIn = []) => {
 	const result = useQuery(QUERY_RECENT_SHOWS, {
 		variables: {
 			last: count ? count : null,
+			notIn,
 		},
 	});
 	const { data, startPolling, stopPolling } = result;

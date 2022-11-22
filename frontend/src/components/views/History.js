@@ -4,11 +4,13 @@ import { Box, Grid, Skeleton } from '@mui/material';
 import ShowTable from 'components/ShowTable';
 
 import { useRecentShows } from 'hooks/queries/use-recent-shows';
+import { useCurrentShowId } from 'hooks/queries/use-current-show-id';
 
 export default function History() {
-	const [{ loading: showLoading }, shows] = useRecentShows(8);
+	const currentShowId = useCurrentShowId();
+	const [{ loading: showLoading }, shows] = useRecentShows(8, currentShowId);
 
-	// TODO Date control
+	// MAYBE Date control or lazy load?
 
 	return (
 		<Grid container spacing={5}>

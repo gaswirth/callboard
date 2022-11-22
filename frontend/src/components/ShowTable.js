@@ -21,7 +21,7 @@ import { showLabel } from 'lib/functions';
 import { useRoster } from 'hooks/queries/use-roster';
 import { useRosterExcluding } from 'hooks/queries/use-roster-excluding';
 
-export default function ShowTable({ show, allowStatusChanges }) {
+export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMember }) {
 	const { id, attendance, datetime } = show;
 	const { roster } = useRoster({ ids: Object.keys(attendance) });
 	const { roster: bench } = useRosterExcluding(roster ? roster.map((item) => item.id) : null);
@@ -124,17 +124,19 @@ export default function ShowTable({ show, allowStatusChanges }) {
 						))}
 					</TableBody>
 				</Table>
-				<Container
-					sx={{
-						backgroundColor: 'neutral.lightergray',
-						pt: 1,
-						pb: 3,
-						px: 3,
-						textAlign: 'center',
-					}}
-				>
-					<AddCompanyMemberSelect companyMembers={bench} show={show} />
-				</Container>
+				{bench && bench.length && allowAddCompanyMember ? (
+					<Container
+						sx={{
+							backgroundColor: 'neutral.lightergray',
+							pt: 1,
+							pb: 3,
+							px: 3,
+							textAlign: 'center',
+						}}
+					>
+						<AddCompanyMemberSelect companyMembers={bench} show={show} />
+					</Container>
+				) : null}
 			</TableContainer>
 			<ShowNotes show={show} editable={allowStatusChanges} />
 		</Card>

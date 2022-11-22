@@ -38,6 +38,13 @@ const signInAlert = (userStatus) => {
 			};
 			break;
 
+		case 'na':
+			alert = {
+				severity: 'warning',
+				message: 'You are not on the roster for this show. Please see stage management.',
+			};
+			break;
+
 		default:
 			alert = null;
 	}
@@ -59,21 +66,23 @@ export default function Now({ signUsersIn }) {
 
 	const { updateAttendanceMutation } = useUpdateShowAttendance();
 
+	const companyMemberOnRoster = show && companyMemberId in show.attendance ? true : false;
+
 	// Check current user attendance
 	useEffect(() => {
 		if (!signUsersIn || !show) return;
 
-		if (!show.attendance[companyMemberId]) {
+		if (companyMemberOnRoster && show.attendance[companyMemberId] === '') {
 			updateAttendanceMutation({ showId: show.id, companyMemberId, status: 'in' });
 		}
-	}, [show, companyMemberId, signUsersIn, updateAttendanceMutation]);
+	}, [show, companyMemberId, signUsersIn, companyMemberOnRoster, updateAttendanceMutation]);
 
-	return (
+	return companyMemberOnRoster ? (
 		<Container maxWidth="xl">
 			{signUsersIn ? signInAlert(userStatus) : null}
-
-			{/* MAYBE hide table if signed in but not on the roster? */}
 			{loading ? 'Loading...' : <ShowTable show={show} allowStatusChanges={false} />}
 		</Container>
+	) : (
+		signInAlert('na')
 	);
 }

@@ -41,9 +41,6 @@ function newShowReducer(state, action) {
 			};
 		}
 
-		case 'SAVE':
-			return { ...state, save: true };
-
 		case 'CLEAR':
 		default:
 			return initialNewShow;
@@ -52,10 +49,7 @@ function newShowReducer(state, action) {
 
 export default function NewShow() {
 	const { newShowMutation } = useNewShow();
-	const [{ dialogOpen, datetime, title, notes, error, save }, newShowDispatch] = useReducer(
-		newShowReducer,
-		initialNewShow
-	);
+	const [{ dialogOpen, datetime, title, notes, error }, newShowDispatch] = useReducer(newShowReducer, initialNewShow);
 
 	/**
 	 * Clear any error messages when trying a new date.
@@ -74,20 +68,10 @@ export default function NewShow() {
 	const handleNextShowNotesChange = (event) =>
 		newShowDispatch({ type: 'ONCHANGE', name: 'notes', value: event.target.value });
 
-	/**
-	 * Fire the mutation to create a new Show.
-	 */
-	// TODO refactor without useEffect
-	useEffect(() => {
-		if (!save) return;
-
+	const handleSubmitNewShow = () => {
 		newShowMutation({ datetime, title, notes })
 			.then(() => newShowDispatch({ type: 'CLEAR' }))
 			.catch((errors) => newShowDispatch({ type: 'ERROR', error: errors.message }));
-	});
-
-	const handleSubmitNewShow = () => {
-		newShowDispatch({ type: 'SAVE' });
 	};
 
 	const handleCloseNewShowDialog = () => newShowDispatch({ type: 'CLEAR' });
@@ -100,8 +84,6 @@ export default function NewShow() {
 					Start Next Show
 				</Button>
 			) : (
-				// TODO Break this into its own component
-
 				<Dialog onClose={handleCloseNewShowDialog} open={dialogOpen}>
 					<DialogTitle>New Show</DialogTitle>
 					<DialogContent sx={{ px: 2, py: 1 }}>

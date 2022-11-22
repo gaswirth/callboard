@@ -38,65 +38,67 @@ export default function ShowControl() {
 	};
 
 	return (
-		<Stack spacing={2}>
-			{show ? (
-				<Container maxWidth="sm">
-					<ViewHeading variant="h6">Current Show</ViewHeading>
+		<Container maxWidth="sm">
+			<Stack spacing={2}>
+				{show ? (
 					<>
-						<Stack direction="row" justifyContent="space-between">
-							<Button onClick={handleQROpen} variant="contained">
-								QR Code
-							</Button>
-							<Button onClick={handleExportOpen} variant="contained">
-								Export
-							</Button>
-						</Stack>
-
-						<Dialog onClose={handleQRClose} open={QROpen}>
-							<DialogTitle textAlign="center">Export</DialogTitle>
-							<DialogContent>
-								<DialogContentText textAlign="center">{show.datetime}</DialogContentText>
-								<QRCode string={signinURL} size={300} />
-							</DialogContent>
-							<DialogActions>
-								<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
-									Print
+						<ViewHeading variant="h6">Current Show</ViewHeading>
+						<>
+							<Stack direction="row" justifyContent="space-between">
+								<Button onClick={handleQROpen} variant="contained">
+									QR Code
 								</Button>
-								<Button autoFocus variant="contained" onClick={handleQRClose}>
-									Close
+								<Button onClick={handleExportOpen} variant="contained">
+									Export
 								</Button>
-							</DialogActions>
-						</Dialog>
+							</Stack>
 
-						<Dialog onClose={handleExportClose} open={actionsOpen}>
-							<DialogTitle textAlign="center">Export</DialogTitle>
-							<DialogContent>
-								<DialogContentText>
-									<Stack spacing={2}>
-										<Button variant="contained" onClick={() => alert('Google')}>
-											Export Google Sheet
-										</Button>
-										<Button variant="contained" onClick={() => alert('Excel')}>
-											Export Excel
-										</Button>
-										<Button variant="contained" onClick={() => alert('CSV')}>
-											Export CSV
-										</Button>
-									</Stack>
-								</DialogContentText>
-							</DialogContent>
-						</Dialog>
+							<Dialog onClose={handleQRClose} open={QROpen}>
+								<DialogTitle textAlign="center">Export</DialogTitle>
+								<DialogContent>
+									<DialogContentText textAlign="center">{show.datetime}</DialogContentText>
+									<QRCode string={signinURL} size={300} />
+								</DialogContent>
+								<DialogActions>
+									<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
+										Print
+									</Button>
+									<Button autoFocus variant="contained" onClick={handleQRClose}>
+										Close
+									</Button>
+								</DialogActions>
+							</Dialog>
+
+							<Dialog onClose={handleExportClose} open={actionsOpen}>
+								<DialogTitle textAlign="center">Export</DialogTitle>
+								<DialogContent>
+									<DialogContentText>
+										<Stack spacing={2}>
+											<Button variant="contained" onClick={() => alert('Google')}>
+												Export Google Sheet
+											</Button>
+											<Button variant="contained" onClick={() => alert('Excel')}>
+												Export Excel
+											</Button>
+											<Button variant="contained" onClick={() => alert('CSV')}>
+												Export CSV
+											</Button>
+										</Stack>
+									</DialogContentText>
+								</DialogContent>
+							</Dialog>
+						</>
+						{showLoading ? (
+							<Skeleton>
+								<Box />
+							</Skeleton>
+						) : (
+							<ShowTable show={show} allowStatusChanges allowAddCompanyMember />
+						)}
 					</>
-					{showLoading ? (
-						<Skeleton>
-							<Box />
-						</Skeleton>
-					) : (
-						<ShowTable show={show} allowStatusChanges allowAddCompanyMember />
-					)}
-				</Container>
-			) : null}
-			<NewShow />
-		</Stack>
+				) : null}
+				<NewShow />
+			</Stack>
+		</Container>
 	);
 }

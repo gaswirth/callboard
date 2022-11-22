@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup, InputLabel, MenuItem, Select } from '@mui/material';
-import { FormControl } from '@mui/material';
+import { Autocomplete, Button, ButtonGroup, FormControl, TextField } from '@mui/material';
 
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
@@ -10,8 +9,8 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 
 	const { id: showId, datetime } = show;
 
-	const handleSelectAddCompanyMember = (event) => {
-		setAddCompanyMember(event.target.value);
+	const handleSelectAddCompanyMember = (event, newValue) => {
+		setAddCompanyMember(newValue?.id);
 	};
 
 	const handleAddCompanyMember = () => {
@@ -19,39 +18,24 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 		setAddCompanyMember('');
 	};
 
-	const handleCancelAddCompanyMember = () => {
-		setAddCompanyMember('');
-	};
-
 	return companyMembers ? (
 		<FormControl variant="standard" sx={{ width: '80%' }}>
-			<InputLabel id="company-member-select-label" sx={{ textAlign: 'right' }}>
-				Add Company Member
-			</InputLabel>
-			{/* TODO Autocomplete MUI component */}
-			<Select
-				labelId="company-member-select-label"
+			<Autocomplete
 				id="company-member-select"
-				value={addCompanyMember}
+				options={companyMembers.map((item) => {
+					return { label: `${item.firstName} ${item.lastName}`, id: item.id };
+				})}
+				renderInput={(params) => <TextField {...params} label="Add Company Member" />}
 				onChange={handleSelectAddCompanyMember}
-				sx={{ borderWidth: 0 }}
-			>
-				{companyMembers.map((user) => (
-					<MenuItem key={user.id} value={user.id}>{`${user.firstName} ${user.lastName}`}</MenuItem>
-				))}
-			</Select>
+				isOptionEqualToValue={(option, value) => option.id === value.id}
+				selectOnFocus
+				clearOnBlur
+				handleHomeEndKeys
+			/>
 			{addCompanyMember ? (
 				<ButtonGroup disableElevation={false} sx={{ py: 1 }}>
 					<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={datetime ? false : true}>
 						Confirm
-					</Button>
-					<Button
-						size="small"
-						onClick={handleCancelAddCompanyMember}
-						variant="contained"
-						sx={{ backgroundColor: 'warning.main' }}
-					>
-						Cancel
 					</Button>
 				</ButtonGroup>
 			) : (

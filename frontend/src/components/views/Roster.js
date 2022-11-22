@@ -37,6 +37,9 @@ export default function Roster() {
 					<Typography variant="h5" align="center" textTransform="uppercase">
 						Active
 					</Typography>
+					<Typography variant="body2" align="center">
+						New shows will include all active users on the sign-in sheet.
+					</Typography>
 					<RosterTable roster={activeCompanyMembers} />
 				</Box>
 			) : null}
@@ -44,6 +47,9 @@ export default function Roster() {
 				<Box>
 					<Typography variant="h5" align="center" textTransform="uppercase">
 						Inactive
+					</Typography>
+					<Typography variant="body2" align="center">
+						Inactive company members can be added to the current show individually.
 					</Typography>
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>

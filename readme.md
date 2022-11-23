@@ -7,22 +7,21 @@
 
 This monorepo holds the backend and frontend components for a complete installation.
 
-## Basics
+## Requirements
 
 ---
 
-- Backend: WordPress (headless)
-- Frontend: React (`create-react-app`)
-- PHP: 7.4+
+- Backend: WordPress with PHP 8.0 or greater.
+- Frontend: Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
 
 ## Setup
 
 ---
 
-### Backend:
+### Backend instructions:
 
 - Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Currently, the backend is looking for a WP install at `http://localhost/backend`, which will ultimately not be hard coded.
 
-### Frontend:
+### TODO
 
-- Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
+- Improve this sad lil' readme

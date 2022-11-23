@@ -8,8 +8,6 @@
  * @since 0.0.1
  */
 
-// TODO Add settings page.
-
 /**
  * Handles all global plugin settings and options.
  *

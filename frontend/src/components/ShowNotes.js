@@ -79,34 +79,40 @@ export default function ShowNotes({ show, editable }) {
 						disabled={!armNotesEdit}
 						sx={{ width: '100%', mb: 1 }}
 					/>
-					{armNotesEdit ? (
-						<>
-							<Button onClick={handleSubmitNotes} variant="contained">
-								Save
-							</Button>
-							<Button onClick={handleCancelNotes} variant="contained">
-								Cancel
-							</Button>
-						</>
-					) : (
-						<Container
-							disableGutters={true}
-							sx={{ display: 'inline-flex', justifyContent: 'space-between', my: 1, px: 0 }}
-						>
-							<Button onClick={handleEditNotes} variant="contained">
-								Edit Notes
-							</Button>
-							{armDeleteShow ? (
-								<Button onClick={reallyHandleDeleteShow} variant="contained" sx={{ backgroundColor: 'warning.strong' }}>
-									CLICK AGAIN TO DELETE
+					<Container
+						disableGutters={true}
+						sx={{ display: 'inline-flex', justifyContent: 'space-between', my: 1, px: 0 }}
+					>
+						{armNotesEdit ? (
+							<>
+								<Button onClick={handleSubmitNotes} variant="contained" sx={{ mr: 1 }}>
+									Save
 								</Button>
-							) : (
-								<Button onClick={handleDeleteShow} variant="contained" sx={{ backgroundColor: 'warning.main' }}>
-									Delete Show
+								<Button onClick={handleCancelNotes} variant="contained" sx={{ backgroundColor: 'neutral.gray' }}>
+									Cancel
 								</Button>
-							)}
-						</Container>
-					)}
+							</>
+						) : (
+							<>
+								<Button onClick={handleEditNotes} variant="contained">
+									Edit Notes
+								</Button>
+								{armDeleteShow ? (
+									<Button
+										onClick={reallyHandleDeleteShow}
+										variant="contained"
+										sx={{ backgroundColor: 'warning.strong' }}
+									>
+										CLICK AGAIN TO DELETE
+									</Button>
+								) : (
+									<Button onClick={handleDeleteShow} variant="contained" sx={{ backgroundColor: 'neutral.gray' }}>
+										Delete Show
+									</Button>
+								)}
+							</>
+						)}
+					</Container>
 				</>
 			) : (
 				<Typography variant="body2" sx={{ p: 1 }}>

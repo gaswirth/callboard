@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Autocomplete, Button, ButtonGroup, FormControl, TextField } from '@mui/material';
+import { Autocomplete, Button, FormControl, TextField } from '@mui/material';
 
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
@@ -19,7 +19,7 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 	};
 
 	return companyMembers ? (
-		<FormControl variant="standard" sx={{ width: '80%' }}>
+		<FormControl variant="standard" sx={{ width: '80%', pt: 2 }}>
 			<Autocomplete
 				id="company-member-select"
 				options={companyMembers.map((item) => {
@@ -33,14 +33,10 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 				handleHomeEndKeys
 			/>
 			{addCompanyMember ? (
-				<ButtonGroup disableElevation={false} sx={{ py: 1 }}>
-					<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={datetime ? false : true}>
-						Confirm
-					</Button>
-				</ButtonGroup>
-			) : (
-				''
-			)}
+				<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={datetime ? false : true}>
+					Confirm
+				</Button>
+			) : null}
 		</FormControl>
 	) : null;
 }

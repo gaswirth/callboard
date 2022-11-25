@@ -20,8 +20,9 @@ This monorepo holds the backend and frontend components for a complete installat
 
 ### Backend instructions:
 
-- Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Currently, the backend is looking for a WP install at `http://localhost/backend`, which will ultimately not be hard coded.
+- Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Visit the Callboard settings page from the WP Dashboard to set your frontend URL.
 
 ### TODO
 
+- Integrate user-specified frontend URL automatically into necessary GraphQL CORS headers.
 - Improve this sad lil' readme

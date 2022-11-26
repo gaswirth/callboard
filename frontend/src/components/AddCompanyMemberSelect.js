@@ -33,7 +33,13 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 				handleHomeEndKeys
 			/>
 			{addCompanyMember ? (
-				<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={datetime ? false : true}>
+				<Button
+					size="small"
+					onClick={handleAddCompanyMember}
+					variant="contained"
+					disabled={datetime ? false : true}
+					sx={{ mt: 1 }}
+				>
 					Confirm
 				</Button>
 			) : null}

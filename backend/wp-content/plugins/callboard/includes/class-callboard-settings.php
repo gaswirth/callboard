@@ -162,14 +162,14 @@ class Callboard_Settings {
 	/**
 	 * Renders the setting input field.
 	 *
-	 * @param  string $id    The unique field id.
-	 * @param  string $value The option value.
-	 * @param  string $type  The input text type.
+	 * @param  string $input_id The unique field id.
+	 * @param  string $value    The option value.
+	 * @param  string $type     The input text type.
 	 * @return void
 	 */
-	private function print_input_field( $id, $value, $type ) {
+	private function print_input_field( $input_id, $value, $type ) {
 		// Translators: 1. Unique field id, 2. Input field type, 3. Stored value.
-		printf( '<input name="%1$s" id="%1$s" type="%2$s" value="%3$s" />', $id, $type, $value );
+		printf( '<input name="%1$s" id="%1$s" type="%2$s" value="%3$s" />', $input_id, $type, $value );
 	}
 
 	/**

@@ -70,6 +70,7 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 						$first_name = get_user_meta( $user_id, 'first_name', true );
 						$last_name  = get_user_meta( $user_id, 'last_name', true );
 
+						// TODO create class/obj method to prepare data this way
 						$company_members[] = [
 							'id'        => $user_id,
 							'firstName' => $first_name,

@@ -18,9 +18,7 @@ export default function App() {
 					<Login />
 				</Box>
 			) : (
-				<>
-					<Main />
-				</>
+				<Main />
 			)}
 		</LocalizationProvider>
 	);

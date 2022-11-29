@@ -29,7 +29,7 @@ export const useRosterExcluding = (ids) => {
 	/**
 	 * Memoize the prepared roster value
 	 */
-	const roster = useMemo(() => {
+	const rosterExcluding = useMemo(() => {
 		if (!result.data) return;
 
 		const {
@@ -39,5 +39,5 @@ export const useRosterExcluding = (ids) => {
 		return prepareRoster(companyMembersExcluding);
 	}, [result]);
 
-	return { ...result, roster };
+	return [result, rosterExcluding];
 };

@@ -40,6 +40,7 @@ export const CompanyMember = class {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
+		this.fullName = `${this.firstName} ${this.lastName}`;
 		this.email = email;
 		this.role = role;
 		this.active = active;

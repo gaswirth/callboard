@@ -40,5 +40,5 @@ export const useRoster = ({ ids } = {}) => {
 		return prepareRoster(companyMembers);
 	}, [result]);
 
-	return { ...result, roster };
+	return [result, roster];
 };

@@ -8,7 +8,7 @@ import { Box, Container } from '@mui/system';
 import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
-import EditCompanyMember from 'components/EditCompanyMember';
+import CompanyMemberDialog from 'components/CompanyMemberDialog';
 
 export default function Roster() {
 	const {
@@ -16,7 +16,7 @@ export default function Roster() {
 	} = useContext(AuthContext);
 	const [addNewCompanyMember, setAddNewCompanyMember] = useState(false);
 
-	const { roster } = useRoster();
+	const [, roster] = useRoster();
 
 	const activeCompanyMembers = useMemo(() => {
 		return roster?.filter((item) => !!item.active);
@@ -30,6 +30,10 @@ export default function Roster() {
 		setAddNewCompanyMember(true);
 	};
 
+	const handleCloseCompanyMemberDialog = () => {
+		setAddNewCompanyMember(false);
+	};
+
 	return isAdmin ? (
 		<>
 			{!isEmpty(activeCompanyMembers) ? (
@@ -38,7 +42,7 @@ export default function Roster() {
 						Active
 					</Typography>
 					<Typography variant="body2" align="center">
-						New shows will include all active users on the sign-in sheet.
+						New shows will include all active company members on the sign-in sheet.
 					</Typography>
 					<RosterTable roster={activeCompanyMembers} />
 				</Box>
@@ -54,15 +58,14 @@ export default function Roster() {
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>
 			) : null}
-			{addNewCompanyMember ? (
-				<EditCompanyMember setIsOpen={setAddNewCompanyMember} />
-			) : (
-				<Container align="center">
-					<Fab color="primary" aria-label="Add new Company Member" onClick={handleAddNewCompanyMember}>
-						<Add />
-					</Fab>
-				</Container>
-			)}
+
+			<Container align="center">
+				<Fab color="primary" aria-label="Add new Company Member" onClick={handleAddNewCompanyMember}>
+					<Add />
+				</Fab>
+			</Container>
+
+			<CompanyMemberDialog newCompanyMember={addNewCompanyMember} onCloseDialog={handleCloseCompanyMemberDialog} />
 		</>
 	) : null;
 }

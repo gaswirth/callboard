@@ -1,30 +1,32 @@
 import React, { useEffect, useReducer } from 'react';
-import { FormControl, FormControlLabel, FormGroup, IconButton, Switch, Stack, TextField } from '@mui/material';
-import { Check, Clear } from '@mui/icons-material';
-
-import { CompanyMember } from 'lib/classes';
+import { FormControl, FormControlLabel, FormGroup, Button, Stack, TextField, Checkbox } from '@mui/material';
 import { useNewCompanyMember } from 'hooks/mutations/use-new-company-member';
 import { useUpdateCompanyMember } from 'hooks/mutations/use-update-company-member';
+import { useSendPasswordResetEmail } from 'hooks/mutations/use-reset-password-email';
+import { createCompanyMember } from 'lib/functions';
 
-const emptyCM = new CompanyMember();
+const emptyCM = createCompanyMember();
 const initialCompanyMemberState = { ...emptyCM };
 
 function updateCompanyMemberReducer(state, action) {
 	switch (action.type) {
-		case 'INIT':
-			const newCM = new CompanyMember(
-				action.id,
-				action.firstName,
-				action.lastName,
-				action.email,
-				action.role,
-				action.active
-			);
+		case 'INIT': {
+			const { id, username, firstName, lastName, email, role, active } = action;
+			const newCM = createCompanyMember({
+				id,
+				username,
+				firstName,
+				lastName,
+				email,
+				role,
+				active,
+			});
 
 			return {
 				...state,
 				...newCM,
 			};
+		}
 
 		case 'ONCHANGE':
 			return {
@@ -47,6 +49,7 @@ function updateCompanyMemberReducer(state, action) {
 export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }) {
 	const { updateCompanyMemberMutation } = useUpdateCompanyMember();
 	const { newCompanyMemberMutation } = useNewCompanyMember();
+	const { sendResetPasswordEmailMutation } = useSendPasswordResetEmail();
 	const [updateCompanyMember, updateCompanyMemberDispatch] = useReducer(
 		updateCompanyMemberReducer,
 		initialCompanyMemberState
@@ -55,10 +58,11 @@ export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }
 	useEffect(() => {
 		if (!companyMember) return;
 
-		const { id, firstName, lastName, email, role, active } = companyMember;
+		const { id, username, firstName, lastName, email, role, active } = companyMember;
 		updateCompanyMemberDispatch({
 			type: 'INIT',
 			id,
+			username,
 			firstName,
 			lastName,
 			email,
@@ -102,52 +106,82 @@ export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }
 		onCloseDialog();
 	};
 
+	const handleResetPasswordClick = () => {
+		sendResetPasswordEmailMutation({ username: updateCompanyMember.username });
+	};
+
+	const textFieldSx = {
+		my: 1,
+	};
+
 	return (
-		<FormControl>
+		<FormControl sx={{ p: 2 }}>
 			<form onSubmit={handleSave}>
-				<FormGroup>
+				<Stack direction="row">
 					<TextField
 						label="First name"
 						value={updateCompanyMember.firstName}
 						id="firstName"
 						name="firstName"
 						onChange={handleTextChange}
+						variant="standard"
+						sx={textFieldSx}
 					/>
 					<TextField
 						label="Last name"
 						value={updateCompanyMember.lastName}
 						id="lastName"
 						name="lastName"
+						variant="standard"
 						onChange={handleTextChange}
+						sx={textFieldSx}
 					/>
-				</FormGroup>
-				<TextField label="Role" value={updateCompanyMember.role} id="role" name="role" onChange={handleTextChange} />
-				<TextField
-					label="Email"
-					value={updateCompanyMember.email}
-					id="email"
-					name="email"
-					onChange={handleTextChange}
-				/>
-				<FormGroup>
+				</Stack>
+				<Stack direction="column">
+					<TextField
+						label="Role"
+						value={updateCompanyMember.role}
+						id="role"
+						name="role"
+						variant="standard"
+						onChange={handleTextChange}
+						sx={textFieldSx}
+					/>
+					<TextField
+						label="Email"
+						value={updateCompanyMember.email}
+						id="email"
+						name="email"
+						variant="standard"
+						onChange={handleTextChange}
+						sx={textFieldSx}
+					/>
+				</Stack>
+				<FormGroup sx={{ mt: 2 }}>
 					<FormControlLabel
-						label="Active"
+						label="Active roster"
 						control={
-							<Switch
+							<Checkbox
 								checked={updateCompanyMember.active || false}
+								size="medium"
 								onChange={handleActiveToggle}
 								inputProps={{ 'aria-label': 'active' }}
 							/>
 						}
 					/>
 				</FormGroup>
-				<Stack direction="row" justifyContent="center">
-					<IconButton aria-label="save" type="submit">
-						<Check />
-					</IconButton>
-					<IconButton aria-label="cancel" onClick={handleCancelRow}>
-						<Clear />
-					</IconButton>
+				<Stack direction="row" justifyContent="space-between" sx={{ mt: 4 }}>
+					<Stack direction="row" justifyContent="center">
+						<Button aria-label="save" type="submit" variant="contained" sx={{ mr: 1 }}>
+							Save
+						</Button>
+						<Button aria-label="cancel" onClick={handleCancelRow} variant="contained">
+							Cancel
+						</Button>
+					</Stack>
+					<Button onClick={handleResetPasswordClick} variant="contained" sx={{ backgroundColor: 'warning.main' }}>
+						Send Password Reset
+					</Button>
 				</Stack>
 			</form>
 		</FormControl>

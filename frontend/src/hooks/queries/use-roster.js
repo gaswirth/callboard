@@ -11,6 +11,7 @@ export const QUERY_ROSTER = gql`
 	query Roster($ids: [ID] = []) {
 		companyMembers(ids: $ids) {
 			id
+			username
 			firstName
 			lastName
 			email

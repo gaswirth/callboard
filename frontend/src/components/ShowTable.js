@@ -11,7 +11,6 @@ import {
 	Card,
 	Typography,
 	Container,
-	Link,
 } from '@mui/material';
 
 import { showLabel } from 'lib/functions';
@@ -53,10 +52,6 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 	}, [roster, attendance, show]);
 
 	// TODO Functionality: Remove user from show
-
-	function handleClickCompanyMember(event) {
-		setEditCompanyMember(event.target.attributes.cmid.nodeValue);
-	}
 
 	function handleCloseCompanyMemberDialog() {
 		setEditCompanyMember(null);
@@ -120,9 +115,7 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 									<TableRow key={index}>
 										<TableCell sx={{ ...cellStyle }} scope="row">
 											<Typography variant="body2" sx={{ lineHeight: 1 }}>
-												<Link href="#" onClick={handleClickCompanyMember} cmid={companyMemberId}>
-													{fullName}
-												</Link>
+												{fullName}
 											</Typography>
 											<Typography variant="caption">{role}</Typography>
 										</TableCell>

@@ -37,6 +37,20 @@ class Callboard_Users {
 	}
 
 	/**
+	 * Runs get_users() to retrieve the whole roster, or a subset if specified.
+	 *
+	 * @param  array $include
+	 * @return array A collection of users.
+	 */
+	public static function query_roster( $include = [] ) {
+		if ( ! empty( $include ) ) {
+			$query_args['include'] = $include;
+		}
+
+		return get_users( $query_args );
+	}
+
+	/**
 	 * Runs get_users() to retrieve "active" Company Members.
 	 *
 	 * @return array A collection of users.
@@ -198,16 +212,19 @@ class Callboard_Users {
 		$user_id  = $user->get( 'ID' );
 		$usermeta = get_user_meta( $user->ID );
 
+		$username   = $user->get( 'user_login' );
 		$first_name = isset( $usermeta['first_name'] ) ? $usermeta['first_name'][0] : '';
 		$last_name  = isset( $usermeta['last_name'] ) ? $usermeta['last_name'][0] : '';
+		$email      = $user->get( 'user_email' );
 		$role       = isset( $usermeta['callboard-role'] ) ? $usermeta['callboard-role'][0] : '';
 		$active     = isset( $usermeta['callboard-active'] ) ? $usermeta['callboard-active'][0] : null;
 
 		return [
 			'id'        => $user_id,
+			'username'  => $username,
 			'firstName' => $first_name,
 			'lastName'  => $last_name,
-			'email'     => $user->get( 'user_email' ),
+			'email'     => $email,
 			'role'      => $role,
 			'active'    => $active,
 		];

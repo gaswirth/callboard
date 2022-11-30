@@ -27,7 +27,8 @@ export function showLabel(datetime) {
  */
 export function prepareRoster(rosterData) {
 	return rosterData.map(
-		(item) => new CompanyMember(item.id, item.firstName, item.lastName, item.email, item.role, item.active)
+		(item) =>
+			new CompanyMember(item.id, item.username, item.firstName, item.lastName, item.email, item.role, item.active)
 	);
 }
 
@@ -75,4 +76,23 @@ export function generateCompanyShortName(name) {
 		.join('');
 
 	return shortName;
+}
+
+/**
+ * CompanyMember factory.
+ *
+ * @param {*} attributes The CompanyMember attributes.
+ * @returns {CompanyMember}
+ */
+export function createCompanyMember(attributes = {}) {
+	const { id, username, firstName, lastName, email, role, active } = attributes;
+	return new CompanyMember(
+		id ? id : null,
+		username ? username : '',
+		firstName ? firstName : '',
+		lastName ? lastName : '',
+		email ? email : '',
+		role ? role : '',
+		active ? active : null
+	);
 }

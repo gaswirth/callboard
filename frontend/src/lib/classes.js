@@ -33,11 +33,12 @@ export const Show = class {
  * @param {String} lastName
  * @param {String} email
  * @param {String} role Public/visible role.
- * @param {Boolean} active Whether or not the Company Member is on the active roster.
+ * @param {Boolean} active (default: false) Whether or not the Company Member is on the active roster.
  */
 export const CompanyMember = class {
-	constructor(id = '', firstName = '', lastName = '', email = '', role = '', active = null) {
+	constructor(id = '', username = '', firstName = '', lastName = '', email = '', role = '', active = false) {
 		this.id = id;
+		this.username = username;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.fullName = `${this.firstName} ${this.lastName}`;

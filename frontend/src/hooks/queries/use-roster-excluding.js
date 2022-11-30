@@ -9,12 +9,13 @@ import { useMemo } from 'react';
 export const QUERY_ROSTER_EXCLUDING = gql`
 	query RosterExcluding($excludes: [ID!]) {
 		companyMembersExcluding(excludes: $excludes) {
-			active
-			email
-			firstName
 			id
+			username
+			firstName
 			lastName
+			email
 			role
+			active
 		}
 	}
 `;

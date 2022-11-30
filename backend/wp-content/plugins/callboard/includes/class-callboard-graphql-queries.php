@@ -62,23 +62,10 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 						$query_args['include'] = $args['ids'];
 					}
 
-					$users = get_users( $query_args );
-
+					$users           = get_users( $query_args );
 					$company_members = [];
 					foreach ( $users as $user ) {
-						$user_id    = $user->get( 'ID' );
-						$first_name = get_user_meta( $user_id, 'first_name', true );
-						$last_name  = get_user_meta( $user_id, 'last_name', true );
-
-						// TODO create class/obj method to prepare data this way
-						$company_members[] = [
-							'id'        => $user_id,
-							'firstName' => $first_name,
-							'lastName'  => $last_name,
-							'email'     => $user->get( 'user_email' ),
-							'role'      => get_user_meta( $user_id, 'callboard-role', true ),
-							'active'    => get_user_meta( $user_id, 'callboard-active', true ),
-						];
+						$company_members[] = Callboard_Users::prepare_company_member_for_frontend( $user );
 					}
 
 					return $company_members;
@@ -194,6 +181,10 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 					'firstName' => [
 						'type'        => 'String',
 						'description' => __( 'First name', 'callboard' ),
+					],
+					'username'  => [
+						'type'        => 'String',
+						'description' => __( 'Username', 'callboard' ),
 					],
 					'lastName'  => [
 						'type'        => 'String',

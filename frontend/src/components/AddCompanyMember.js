@@ -12,14 +12,12 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 
-import { CompanyMember } from 'lib/classes';
+import { createCompanyMember } from 'lib/functions';
 import { useNewCompanyMember } from 'hooks/mutations/use-new-company-member';
 import { Check, Clear } from '@mui/icons-material';
 
-// TODO Change this to be a reusable AddCompanyMember module, and use this making a new company member, and editing.
-
-const emptyCompanyMember = new CompanyMember('', '', '', '', '', true);
-const initialCompanyMember = { ...emptyCompanyMember, email: '' };
+const emptyCM = createCompanyMember();
+const initialCompanyMember = { ...emptyCM, email: '' };
 
 function newCompanyMemberReducer(state, action) {
 	switch (action.type) {

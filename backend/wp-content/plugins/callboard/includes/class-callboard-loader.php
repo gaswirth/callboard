@@ -133,8 +133,12 @@ class Callboard_Loader {
 	 * @return void
 	 */
 	public static function require_template( $file, $template_vars = [] ) {
-		// TODO check if file exists first and catch error if it doesn't
+		$path = CALLBOARD_PLUGIN_PATH . 'includes/templates/' . esc_url( $file );
 
-		require CALLBOARD_PLUGIN_PATH . 'includes/templates/' . esc_url( $file );
+		try {
+			require $path;
+		} catch ( \Throwable $error ) {
+			throw new WP_Error( 'template', __( 'The required template file does not exist.' ), $path );
+		}
 	}
 }

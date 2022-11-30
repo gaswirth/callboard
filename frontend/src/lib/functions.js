@@ -79,6 +79,18 @@ export function generateCompanyShortName(name) {
 }
 
 /**
+ * Count the number of words in a string.
+ *
+ * @param {String} str The string to process.
+ * @returns {Number} The string's word count.
+ */
+export function getWordCount(str) {
+	return str.split(' ').filter(function (n) {
+		return n !== '';
+	}).length;
+}
+
+/**
  * CompanyMember factory.
  *
  * @param {*} attributes The CompanyMember attributes.

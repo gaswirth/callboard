@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { Tab, Tabs, Typography, Box, AppBar, Toolbar } from '@mui/material';
 
+import { generateCompanyShortName, getWordCount } from 'lib/functions';
 import Logout from 'components/Logout';
 
 import { useCompanyName } from 'hooks/queries/use-company-name';
 
 import { AuthContext } from 'context/AuthContext';
-import { generateCompanyShortName } from 'lib/functions';
 
 export default function Header({ currentTab, handleTabChange }) {
 	const { user } = useContext(AuthContext);
@@ -17,7 +17,9 @@ export default function Header({ currentTab, handleTabChange }) {
 			const {
 				callboardSettings: { callboardCompanyName },
 			} = companyData;
-			return generateCompanyShortName(callboardCompanyName);
+			return getWordCount(callboardCompanyName) > 2
+				? generateCompanyShortName(callboardCompanyName)
+				: callboardCompanyName;
 		}
 
 		return '';
@@ -37,8 +39,8 @@ export default function Header({ currentTab, handleTabChange }) {
 							sx={{ flexGrow: 1 }}
 						>
 							<Tab value="showControl" label="Show" />
-							<Tab value="history" label="History" />
 							<Tab value="roster" label="Roster" />
+							<Tab value="history" label="History" />
 						</Tabs>
 					) : null}
 					<Typography variant="h6" textTransform="uppercase" sx={{ mr: 2 }}>

@@ -23,7 +23,7 @@ export default function Admin() {
 
 	return backendError ? (
 		<Typography variant="h5" textAlign="center" sx={{ my: 2 }}>
-			Could not initialize Callboard. Please ensure the server is running and the Callboard plugin is active.
+			Could not initialize Callboard. Please ensure the database server is running and the Callboard plugin is active.
 		</Typography>
 	) : (
 		<>

@@ -158,11 +158,12 @@ export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }
 					/>
 				</Stack>
 				<FormGroup sx={{ mt: 2 }}>
+					{/* New company members have `active` true by default. */}
 					<FormControlLabel
 						label="Active roster"
 						control={
 							<Checkbox
-								checked={updateCompanyMember.active || false}
+								checked={updateCompanyMember.active || true}
 								size="medium"
 								onChange={handleActiveToggle}
 								inputProps={{ 'aria-label': 'active' }}

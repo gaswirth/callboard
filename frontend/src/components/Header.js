@@ -36,7 +36,7 @@ export default function Header({ currentTab, handleTabChange }) {
 							textColor="inherit"
 							sx={{ flexGrow: 1 }}
 						>
-							<Tab value="showControl" label="Show Control" />
+							<Tab value="showControl" label="Show" />
 							<Tab value="history" label="History" />
 							<Tab value="roster" label="Roster" />
 						</Tabs>

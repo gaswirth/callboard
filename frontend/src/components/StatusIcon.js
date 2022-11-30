@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box } from '@mui/system';
+import { Box } from '@mui/material';
 
 import { attendanceStatus } from 'lib/globals';
 import StatusSelect from './StatusSelect';

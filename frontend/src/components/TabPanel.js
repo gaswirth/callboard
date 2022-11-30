@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mui/system';
+import { Container } from '@mui/material';
 
 import ViewHeading from './ViewHeading';
 

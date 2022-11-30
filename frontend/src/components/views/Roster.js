@@ -34,11 +34,22 @@ export default function Roster() {
 		setAddNewCompanyMember(false);
 	};
 
+	const boxStyles = {
+		mt: 4,
+		mb: 8,
+	};
+
 	return isAdmin ? (
 		<>
+			<Container align="center" sx={{ mb: 4 }}>
+				<Fab color="primary" variant="extended" onClick={handleAddNewCompanyMember}>
+					<Add sx={{ mr: 1 }} />
+					Add Company Member
+				</Fab>
+			</Container>
 			{!isEmpty(activeCompanyMembers) ? (
-				<Box>
-					<Typography variant="h5" align="center" textTransform="uppercase">
+				<Box sx={{ ...boxStyles }}>
+					<Typography variant="h4" align="center" textTransform="uppercase">
 						Active
 					</Typography>
 					<Typography variant="body2" align="center">
@@ -48,8 +59,8 @@ export default function Roster() {
 				</Box>
 			) : null}
 			{!isEmpty(inactiveCompanyMembers) ? (
-				<Box>
-					<Typography variant="h5" align="center" textTransform="uppercase">
+				<Box sx={{ ...boxStyles }}>
+					<Typography variant="h4" align="center" textTransform="uppercase">
 						Inactive
 					</Typography>
 					<Typography variant="body2" align="center">
@@ -58,12 +69,6 @@ export default function Roster() {
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>
 			) : null}
-
-			<Container align="center">
-				<Fab color="primary" aria-label="Add new Company Member" onClick={handleAddNewCompanyMember}>
-					<Add />
-				</Fab>
-			</Container>
 
 			<CompanyMemberDialog newCompanyMember={addNewCompanyMember} onCloseDialog={handleCloseCompanyMemberDialog} />
 		</>

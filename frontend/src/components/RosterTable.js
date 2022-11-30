@@ -30,7 +30,7 @@ export default function RosterTable({ roster }) {
 
 	return isEmpty(roster) ? null : (
 		<>
-			<Container sx={{ my: 4 }}>
+			<Container sx={{ mt: 2 }}>
 				<TableContainer>
 					<Table aria-label="Company roster">
 						<TableHead>
@@ -44,7 +44,6 @@ export default function RosterTable({ roster }) {
 						</TableHead>
 						<TableBody>
 							{roster?.map((row) => (
-								// TODO Move most of this into the modal
 								<TableRow key={row.id}>
 									<TableCell>
 										<Typography variant="body">{row.fullName}</Typography>

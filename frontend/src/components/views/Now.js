@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import { Alert, Container } from '@mui/material';
+import { Alert, CircularProgress, Container } from '@mui/material';
 
 import ShowTable from 'components/ShowTable';
 
@@ -41,7 +41,7 @@ const signInAlert = (userStatus) => {
 		case 'na':
 			alert = {
 				severity: 'warning',
-				message: 'You are not on the roster for this show. Please see stage management.',
+				message: 'You are not on the roster for this performance. Please see stage management.',
 			};
 			break;
 
@@ -77,12 +77,19 @@ export default function Now({ signUsersIn }) {
 		}
 	}, [show, companyMemberId, signUsersIn, companyMemberOnRoster, updateAttendanceMutation]);
 
-	return companyMemberOnRoster ? (
-		<Container maxWidth="xl">
-			{signUsersIn ? signInAlert(userStatus) : null}
-			{loading ? 'Loading...' : <ShowTable show={show} allowStatusChanges={false} />}
+	return (
+		<Container maxWidth="xl" sx={{ mt: 4 }}>
+			{signInAlert(userStatus)}
+
+			{loading ? (
+				<Container align="center" sx={{ mx: 4 }}>
+					<CircularProgress size="200" />
+				</Container>
+			) : !companyMemberOnRoster ? (
+				signInAlert('na')
+			) : (
+				<ShowTable show={show} allowStatusChanges={false} />
+			)}
 		</Container>
-	) : (
-		signInAlert('na')
 	);
 }

@@ -22,9 +22,9 @@ export const useUpdateShowAttendance = () => {
 			variables: {
 				input: {
 					clientMutationId: 'updateShowAttendanceMutation',
-					show_id: showId,
+					showId,
 					companyMemberId,
-					status: status,
+					status,
 				},
 			},
 			refetchQueries: [{ query: QUERY_RECENT_SHOWS }],

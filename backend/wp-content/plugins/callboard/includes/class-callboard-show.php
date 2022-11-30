@@ -140,11 +140,14 @@ class Callboard_Show {
 		$meta = get_post_meta( $post->ID );
 
 		// Set variables for the template.
-		$datetime   = isset( $meta['datetime'] ) ? $meta['datetime'][0] : '';
-		$notes      = isset( $meta['notes'] ) ? $meta['notes'][0] : '';
-		$attendance = isset( $meta['attendance'][0] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : '';
+		$template_vars = [
+			'datetime'   => isset( $meta['datetime'] ) ? $meta['datetime'][0] : '',
+			'notes'      => isset( $meta['notes'] ) ? $meta['notes'][0] : '',
+			'attendance' => isset( $meta['attendance'][0] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : '',
+		];
 
-		require CALLBOARD_PLUGIN_PATH . 'includes/templates/show-meta-template.php';
+		// Load the template.
+		Callboard_Loader::require_template( 'show-meta-template.php', $template_vars );
 	}
 
 	/**

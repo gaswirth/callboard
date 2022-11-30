@@ -206,10 +206,7 @@ class Callboard_Settings {
 		// show error/update messages
 		settings_errors( 'callboard_messages' );
 
-		// Set variables for the template.
-		// TODO template require loader class (and for the other instances of this)?
-		$options_group = $this->plugin_name;
-		require CALLBOARD_PLUGIN_PATH . 'includes/templates/options-page.php';
+		// Load the template.
+		Callboard_Loader::require_template( 'options-page.php', ['options_group' => $this->plugin_name] );
 	}
-
 }

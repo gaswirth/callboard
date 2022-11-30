@@ -1,6 +1,6 @@
 <?php
 /**
- * Register all actions and filters.
+ * Set up all actions, filters, and templates.
  *
  * @package Callboard
  * @subpackage Callboard/includes
@@ -21,7 +21,6 @@
  * @since 0.0.1
  */
 class Callboard_Loader {
-
 	/**
 	 * The array of actions registered with WordPress.
 	 *
@@ -121,5 +120,21 @@ class Callboard_Loader {
 		foreach ( $this->actions as $hook ) {
 			add_action( $hook['hook'], [$hook['component'], $hook['callback']], $hook['priority'], $hook['accepted_args'] );
 		}
+	}
+
+	/**
+	 * Loads templates from the plugin's `includes/templates` directory.
+	 *
+	 * @access static
+	 * @since 0.0.2
+	 *
+	 * @param  string $file          The template file.
+	 * @param  array  $template_vars An optional array of data to be used in the template.
+	 * @return void
+	 */
+	public static function require_template( $file, $template_vars = [] ) {
+		// TODO check if file exists first and catch error if it doesn't
+
+		require CALLBOARD_PLUGIN_PATH . 'includes/templates/' . esc_url( $file );
 	}
 }

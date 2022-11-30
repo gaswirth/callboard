@@ -8,3 +8,6 @@ wp-cli.yml
 
 # WP config (for subdir installs)
 wp-config.php
+
+# Composer
+vendor/

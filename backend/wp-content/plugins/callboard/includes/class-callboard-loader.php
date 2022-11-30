@@ -133,6 +133,7 @@ class Callboard_Loader {
 	 * @return void
 	 */
 	public static function require_template( $file, $template_vars = [] ) {
+		$template_vars; // Ensure template variables are available to the required template.
 		$path = CALLBOARD_PLUGIN_PATH . 'includes/templates/' . esc_url( $file );
 
 		try {

@@ -8,7 +8,7 @@ import { useLatestShow } from 'hooks/queries/use-latest-show';
 import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
 
 /**
- * Print an alert on signin.
+ * Display an alert on signin.
  *
  * @returns {string} The alert to print.
  */

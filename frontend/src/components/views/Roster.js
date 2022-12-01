@@ -49,10 +49,10 @@ export default function Roster() {
 			</Container>
 			{!isEmpty(activeCompanyMembers) ? (
 				<Box sx={{ ...boxStyles }}>
-					<Typography variant="h4" align="center" textTransform="uppercase">
+					<Typography variant="h5" align="center" textTransform="uppercase">
 						Active
 					</Typography>
-					<Typography variant="body2" align="center">
+					<Typography variant="body2" align="center" sx={{ pb: 2 }}>
 						New shows will include all active company members on the sign-in sheet.
 					</Typography>
 					<RosterTable roster={activeCompanyMembers} />
@@ -60,10 +60,10 @@ export default function Roster() {
 			) : null}
 			{!isEmpty(inactiveCompanyMembers) ? (
 				<Box sx={{ ...boxStyles }}>
-					<Typography variant="h4" align="center" textTransform="uppercase">
+					<Typography variant="h5" align="center" textTransform="uppercase">
 						Inactive
 					</Typography>
-					<Typography variant="body2" align="center">
+					<Typography variant="body2" align="center" sx={{ pb: 2 }}>
 						Inactive company members can be added to the current show individually.
 					</Typography>
 					<RosterTable roster={inactiveCompanyMembers} />

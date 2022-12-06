@@ -1,9 +1,9 @@
 /**
- * useLastestShow hook. Queries the show with the most recent `datetime`.
+ * useShowBySlug hook. Queries the show with the most recent `datetime`.
  */
 
-import { useEffect } from 'react';
-import { isEmpty } from 'lodash';
+// TODO Determine if this is necessary for proper sign-in.
+
 import { gql, useQuery } from '@apollo/client';
 import { prepareShow } from 'lib/functions';
 
@@ -25,21 +25,6 @@ export const useShowBySlug = (slug) => {
 			slug,
 		},
 	});
-
-	/**
-	 * Manually run startPolling.
-	 *
-	 * @see {@link https://github.com/apollographql/apollo-client/issues/9819}
-	 */
-	useEffect(() => {
-		const { data, startPolling, stopPolling } = result;
-
-		if (isEmpty(data)) return;
-
-		startPolling(500);
-
-		return () => stopPolling();
-	}, [result]);
 
 	// Prepare show data.
 	const show = result.data ? prepareShow(result.data.showBy) : null;

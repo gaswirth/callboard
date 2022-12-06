@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { isEmpty } from 'lodash';
-import { visuallyHidden } from '@mui/utils';
 import {
 	Table,
 	TableBody,
@@ -75,22 +74,13 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 					<Table aria-label="show attendance table">
 						<TableHead>
 							<TableRow>
-								<TableCell
-									sx={{
-										flexShrink: 1,
-										flexGrow: 1,
-										textAlign: 'right',
-										borderRightWidth: 1,
-										borderRightColor: 'neutral.gray',
-										borderRightStyle: 'solid',
-										textTransform: 'uppercase',
-									}}
-								>
-									<Typography variant="button" sx={visuallyHidden}>
-										Company Member
+								<TableCell sx={{ ...cellStyle, borderBottomWidth: 3 }}>
+									<Typography variant="body2" sx={{ lineHeight: 0.5, pt: 0.5 }}>
+										Name
 									</Typography>
+									<Typography variant="caption">Role</Typography>
 								</TableCell>
-								<TableCell id={showId}>
+								<TableCell id={showId} sx={{ borderBottomWidth: 3 }}>
 									<Typography
 										variant="button"
 										lineHeight={1.2}

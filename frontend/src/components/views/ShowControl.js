@@ -52,6 +52,7 @@ export default function ShowControl() {
 							</Button>
 						</Stack>
 
+						{/* TODO Print! */}
 						<Dialog onClose={handleQRClose} open={QROpen}>
 							<DialogTitle textAlign="center">Sign-In</DialogTitle>
 							<DialogContent>
@@ -60,7 +61,6 @@ export default function ShowControl() {
 							</DialogContent>
 							<DialogActions>
 								<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
-									{/* TODO Print! */}
 									Print
 								</Button>
 								<Button autoFocus variant="contained" onClick={handleQRClose}>
@@ -69,6 +69,7 @@ export default function ShowControl() {
 							</DialogActions>
 						</Dialog>
 
+						{/* TODO Export! */}
 						<Dialog onClose={handleExportClose} open={actionsOpen}>
 							<DialogTitle textAlign="center">Export</DialogTitle>
 							<DialogContent>

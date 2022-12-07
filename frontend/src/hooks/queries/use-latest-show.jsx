@@ -5,7 +5,7 @@
 import { useEffect } from 'react';
 import { isEmpty } from 'lodash';
 import { gql, useQuery } from '@apollo/client';
-import { prepareShow } from 'lib/functions';
+import { prepareShow } from '@/lib/functions';
 
 export const QUERY_LATEST_SHOW = gql`
 	query LatestShow {

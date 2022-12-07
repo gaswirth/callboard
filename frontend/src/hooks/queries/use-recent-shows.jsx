@@ -3,7 +3,7 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
-import { prepareShow } from 'lib/functions';
+import { prepareShow } from '@/lib/functions';
 
 export const QUERY_RECENT_SHOWS = gql`
 	query RecentShows($last: Int = 8, $notIn: [ID] = "") {

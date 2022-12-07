@@ -1,14 +1,15 @@
 import React, { useContext, useState, useMemo } from 'react';
-
-import { useRoster } from 'hooks/queries/use-roster';
-
-import { AuthContext } from 'context/AuthContext';
-import RosterTable from 'components/RosterTable';
 import { Box, Container } from '@mui/system';
 import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
-import CompanyMemberDialog from 'components/CompanyMemberDialog';
+
+import RosterTable from '@/components/RosterTable';
+import CompanyMemberDialog from '@/components/CompanyMemberDialog';
+
+import { useRoster } from '@/hooks/queries/use-roster';
+
+import { AuthContext } from '@/context/AuthContext';
 
 export default function Roster() {
 	const {

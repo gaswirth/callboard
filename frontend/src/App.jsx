@@ -3,10 +3,10 @@ import { Box } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
-import Login from 'components/Login';
-import Main from './components/Main';
+import Login from '@/components/Login';
+import Main from '@/components/Main';
 
-import { AuthContext } from 'context/AuthContext';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function App() {
 	const { user } = useContext(AuthContext);

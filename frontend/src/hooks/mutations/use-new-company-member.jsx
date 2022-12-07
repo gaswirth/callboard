@@ -2,7 +2,7 @@
  * useNewCompanyMember hook. GraphQL mutation to create a new Company Member.
  */
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_ROSTER } from 'hooks/queries/use-roster';
+import { QUERY_ROSTER } from '@/hooks/queries/use-roster';
 
 export const MUTATE_UPDATE_COMPANY_MEMBER = gql`
 	mutation newCompanyMember($input: NewCompanyMemberInput!) {

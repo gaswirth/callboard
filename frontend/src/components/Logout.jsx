@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { Button } from '@mui/material';
 
-import { AuthContext } from 'context/AuthContext';
-import { useLogoutMutation } from 'hooks/mutations/use-logout-mutation';
+import { AuthContext } from '@/context/AuthContext';
+import { useLogoutMutation } from '@/hooks/mutations/use-logout-mutation';
 import { LogoutOutlined } from '@mui/icons-material';
 
 export default function Logout() {

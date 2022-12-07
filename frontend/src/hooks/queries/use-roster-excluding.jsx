@@ -3,7 +3,7 @@
  */
 
 import { gql, useQuery } from '@apollo/client';
-import { prepareRoster } from 'lib/functions';
+import { prepareRoster } from '@/lib/functions';
 import { useMemo } from 'react';
 
 export const QUERY_ROSTER_EXCLUDING = gql`

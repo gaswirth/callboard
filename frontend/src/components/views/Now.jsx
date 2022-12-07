@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import { Alert, CircularProgress, Container } from '@mui/material';
 
-import ShowTable from 'components/ShowTable';
+import ShowTable from '@/components/ShowTable';
 
-import { AuthContext } from 'context/AuthContext';
-import { useLatestShow } from 'hooks/queries/use-latest-show';
-import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
+import { AuthContext } from '@/context/AuthContext';
+import { useLatestShow } from '@/hooks/queries/use-latest-show';
+import { useUpdateShowAttendance } from '@/hooks/mutations/use-update-show-attendance';
 
 /**
  * Display an alert on signin.

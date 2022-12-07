@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from 'react';
 import { Stack, Typography, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
-import { useNewShow } from 'hooks/mutations/use-new-show';
+import { useNewShow } from '@/hooks/mutations/use-new-show';
 
 const initialNewShow = {
 	dialogOpen: false,

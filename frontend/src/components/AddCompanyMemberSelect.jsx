@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Autocomplete, Button, FormControl, TextField } from '@mui/material';
 
-import { useUpdateShowAttendance } from 'hooks/mutations/use-update-show-attendance';
+import { useUpdateShowAttendance } from '@/hooks/mutations/use-update-show-attendance';
 
 export default function AddCompanyMemberSelect({ companyMembers, show }) {
 	const [addCompanyMember, setAddCompanyMember] = useState('');

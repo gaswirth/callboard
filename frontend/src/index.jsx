@@ -6,12 +6,12 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 
 import App from './App';
 import theme from './theme';
-import { AuthContextProvider } from 'context/AuthContext';
+import { AuthContextProvider } from '@/context/AuthContext';
 
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const backend = process.env.REACT_APP_BACKEND_URL ? process.env.REACT_APP_BACKEND_URL : '';
+const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
 
 /**
  * Apollo client.

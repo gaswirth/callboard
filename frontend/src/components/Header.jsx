@@ -1,12 +1,12 @@
 import React, { useContext } from 'react';
 import { Tab, Tabs, Typography, Box, AppBar, Toolbar } from '@mui/material';
 
-import { generateCompanyShortName, getWordCount } from 'lib/functions';
-import Logout from 'components/Logout';
+import { generateCompanyShortName, getWordCount } from '@/lib/functions';
+import Logout from '@/components/Logout';
 
-import { useCompanyName } from 'hooks/queries/use-company-name';
+import { useCompanyName } from '@/hooks/queries/use-company-name';
 
-import { AuthContext } from 'context/AuthContext';
+import { AuthContext } from '@/context/AuthContext';
 
 export default function Header({ currentTab, handleTabChange }) {
 	const { user } = useContext(AuthContext);

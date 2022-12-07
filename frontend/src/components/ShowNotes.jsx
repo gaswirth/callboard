@@ -1,8 +1,8 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import { Button, Card, Container, TextField, Typography } from '@mui/material';
 
-import { useUpdateShowNotes } from 'hooks/mutations/use-update-show-notes';
-import { useDeleteShow } from 'hooks/mutations/use-delete-show';
+import { useUpdateShowNotes } from '@/hooks/mutations/use-update-show-notes';
+import { useDeleteShow } from '@/hooks/mutations/use-delete-show';
 
 const initialNotes = {
 	value: '',

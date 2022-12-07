@@ -1,7 +1,7 @@
 /**
  * Classes for standardized data types.
  */
-import { adminRoles } from 'context/AuthContext';
+import { adminRoles } from '@/context/AuthContext';
 import { prepareShowAttendance } from './functions';
 
 /**

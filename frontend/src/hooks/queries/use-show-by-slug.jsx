@@ -5,7 +5,7 @@
 // TODO Determine if this is necessary for proper sign-in.
 
 import { gql, useQuery } from '@apollo/client';
-import { prepareShow } from 'lib/functions';
+import { prepareShow } from '@/lib/functions';
 
 export const QUERY_SHOW_BY_SLUG = gql`
 	query ShowBySlug($slug: String!) {

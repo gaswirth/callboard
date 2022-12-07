@@ -93,7 +93,7 @@ export const sortShowsByDatetime = (shows) => {
  * @returns {string} The show's signin URL.
  */
 export const useSigninURL = (slug) => {
-	const qrUrlBase = process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : '';
+	const qrUrlBase = import.meta.env.VITE_FRONTEND_URL ? import.meta.env.VITE_FRONTEND_URL : '';
 	const ep = 'signin';
 
 	return `${qrUrlBase}/${ep}/${slug}`;

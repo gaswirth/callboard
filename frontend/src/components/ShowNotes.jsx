@@ -61,7 +61,7 @@ export default function ShowNotes({ show, editable }) {
 		setArmNotesEdit(false);
 	};
 
-	return show ? (
+	return (
 		<Card sx={{ p: 2 }}>
 			<Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
 				Notes
@@ -120,5 +120,5 @@ export default function ShowNotes({ show, editable }) {
 				</Typography>
 			)}
 		</Card>
-	) : null;
+	);
 }

@@ -67,7 +67,7 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 		textAlign: 'right',
 	};
 
-	return show ? (
+	return (
 		<>
 			<Card sx={{ width: '100%' }}>
 				<TableContainer>
@@ -140,7 +140,5 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 			</Card>
 			<CompanyMemberDialog companyMemberId={editCompanyMember} onCloseDialog={handleCloseCompanyMemberDialog} />
 		</>
-	) : (
-		''
 	);
 }

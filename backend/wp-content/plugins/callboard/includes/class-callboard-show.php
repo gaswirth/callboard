@@ -138,10 +138,10 @@ class Callboard_Show {
 		wp_nonce_field( basename( __FILE__ ), 'show_data_nonce' );
 
 		$meta = get_post_meta( $post->ID );
+		$date = get_the_time( Callboard::DATETIME_FORMAT, $post );
 
 		// Set variables for the template.
 		$template_vars = [
-			'datetime'   => isset( $meta['datetime'] ) ? $meta['datetime'][0] : '',
 			'notes'      => isset( $meta['notes'] ) ? $meta['notes'][0] : '',
 			'attendance' => isset( $meta['attendance'][0] ) ? Callboard_Functions::format_attendance_array_for_textarea( $meta['attendance'][0] ) : '',
 		];
@@ -182,15 +182,9 @@ class Callboard_Show {
 	 */
 	public function sanitize_show_meta( $post_id, $show_data ) {
 		$update_fields = [
-			'datetime'   => '',
 			'notes'      => '',
 			'attendance' => '',
 		];
-
-		if ( isset( $show_data['datetime'] ) && $show_data['datetime'] ) {
-			$datetime                  = $show_data['datetime'];
-			$update_fields['datetime'] = Callboard_Functions::validate_date_string( $datetime ) ? $datetime : get_post_meta( $post_id, 'datetime', true );
-		}
 
 		if ( isset( $show_data['notes'] ) && $show_data['notes'] ) {
 			$update_fields['notes'] = sanitize_textarea_field( $show_data['notes'] );
@@ -272,21 +266,25 @@ class Callboard_Show {
 	}
 
 	/**
-	 * Checks if a show exists with a certain `datetime` meta value.
+	 * Checks if a duplicate
 	 *
 	 * @param  string  $datetime The `datetime` meta value to query for.
 	 * @return boolean True if the datetime is unique, false otherwise.
 	 */
-	public static function check_unique_datetime( $datetime ) {
+	public static function datetime_is_unique( $datetime ) {
+		// MAYBE Deprecate
+
+		$_date = new DateTime( $datetime );
+
 		$shows = get_posts( [
 			'post_type'      => 'show',
-			// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query
-			'meta_query'     => [
-				[
-					'key'     => 'datetime',
-					'value'   => Callboard_Functions::format_date_string( $datetime ),
-					'compare' => '=',
-				],
+			'post_status'    => ['publish', 'future'],
+			'date_query'     => [
+				'year'   => $_date->format( 'Y' ),
+				'month'  => $_date->format( 'm' ),
+				'day'    => $_date->format( 'd' ),
+				'hour'   => $_date->format( 'H' ),
+				'minute' => $_date->format( 'i' ),
 			],
 			'posts_per_page' => 1,
 		] );

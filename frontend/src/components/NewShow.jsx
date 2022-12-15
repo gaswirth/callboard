@@ -10,7 +10,6 @@ const initialNewShow = {
 	title: '',
 	notes: '',
 	error: '',
-	save: false,
 };
 
 function newShowReducer(state, action) {
@@ -30,7 +29,8 @@ function newShowReducer(state, action) {
 		case 'ERROR': {
 			return {
 				...state,
-				error: action.error,
+				dialogOpen: true,
+				error: action.message,
 			};
 		}
 
@@ -48,15 +48,8 @@ function newShowReducer(state, action) {
 }
 
 export default function NewShow() {
-	const { newShowMutation } = useNewShow();
+	const { newShowMutation, results } = useNewShow();
 	const [{ dialogOpen, datetime, title, notes, error }, newShowDispatch] = useReducer(newShowReducer, initialNewShow);
-
-	/**
-	 * Clear any error messages when trying a new date.
-	 */
-	useEffect(() => {
-		if (datetime && error) newShowDispatch({ type: 'CLEAR_ERRORS' });
-	}, [datetime, error]);
 
 	const handleNextShowClick = () => newShowDispatch({ type: 'OPEN' });
 
@@ -70,8 +63,13 @@ export default function NewShow() {
 
 	const handleSubmitNewShow = () => {
 		newShowMutation({ datetime, title, notes })
-			.then(() => newShowDispatch({ type: 'CLEAR' }))
-			.catch((errors) => newShowDispatch({ type: 'ERROR', error: errors.message }));
+			.catch((error) => newShowDispatch({ type: 'ERROR', message: error.message }))
+			.then((result) => {
+				if (result) {
+					// If data was returned, clear the modal.
+					return newShowDispatch({ type: 'CLEAR' });
+				}
+			});
 	};
 
 	const handleCloseNewShowDialog = () => newShowDispatch({ type: 'CLEAR' });

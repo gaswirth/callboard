@@ -36,4 +36,23 @@ class Callboard_GraphQL {
 	public function __construct( $frontend_url = '' ) {
 		$this->frontend_url = $frontend_url;
 	}
+
+	/**
+	 * Adds the `future` post status to all `show` queries.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @param  WP_Query $query
+	 * @return void
+	 */
+	public function modify_show_query( $query ) {
+		$post_type = $query->get( 'post_type' );
+		if ( 'string' === gettype( $post_type ) ) {
+			return;
+		}
+
+		if ( in_array( 'show', $query->get( 'post_type' ), true ) ) {
+			$query->set( 'post_status', ['publish', 'future'] );
+		}
+	}
 }

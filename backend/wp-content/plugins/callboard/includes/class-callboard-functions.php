@@ -33,10 +33,10 @@ class Callboard_Functions extends Callboard {
 	 * Changes a date string to another format.
 	 *
 	 * @param  string $datetime The datetime string to format.
-	 * @param  string $format   The format to which to convert the string. Defaults to standard plugin format.
+	 * @param  string $format   The format to which to convert the string.
 	 * @return string The formatted datetime string.
 	 */
-	public static function format_date_string( $datetime, $format = Callboard::DATETIME_FORMAT ) {
+	public static function format_date_string( $datetime, $format ) {
 		$date = new DateTime( $datetime );
 		return $date->format( $format );
 	}

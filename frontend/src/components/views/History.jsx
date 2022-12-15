@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid, Skeleton } from '@mui/material';
+import { Container, Grid, CircularProgress } from '@mui/material';
 
 import ShowTable from '@/components/ShowTable';
 
@@ -10,14 +10,14 @@ export default function History() {
 	const currentShowId = useCurrentShowId();
 	const [{ loading: showLoading }, shows] = useRecentShows(8, currentShowId);
 
-	// MAYBE Date control or lazy load?
+	// TODO Date control
 
 	return (
 		<Grid container spacing={5}>
 			{showLoading ? (
-				<Skeleton>
-					<Box />
-				</Skeleton>
+				<Container>
+					<CircularProgress size="200" />
+				</Container>
 			) : (
 				shows.map((show) => {
 					return (

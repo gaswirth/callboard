@@ -165,7 +165,7 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 					/**
 					 * Make sure this datetime is unique.
 					 */
-					if ( Callboard_Show::check_unique_datetime( $input['datetime'] ) === false ) {
+					if ( ! Callboard_Show::datetime_is_unique( $input['datetime'] ) ) {
 						throw new \GraphQL\Error\Error( __( 'A show already exists with that date and time', 'callboard' ) );
 					}
 
@@ -178,8 +178,8 @@ class Callboard_GraphQL_Mutations extends Callboard_GraphQL {
 							'post_status' => 'publish',
 							'post_title'  => $input['title'] ? sanitize_text_field( $input['title'] ) : '',
 							'post_name'   => Callboard_Functions::generate_random_string( 8 ),
+							'post_date'   => Callboard_Functions::format_date_string( $input['datetime'], Callboard::POST_DATE_FORMAT ),
 							'meta_input'  => [
-								'datetime'   => Callboard_Functions::format_date_string( $input['datetime'] ),
 								'notes'      => $input['notes'] ? sanitize_textarea_field( $input['notes'] ) : '',
 								'attendance' => Callboard_Users::generate_new_show_attendance(),
 							],

@@ -37,6 +37,7 @@ class Callboard {
 
 	/**
 	 * The plugin title.
+	 *
 	 * @access protected
 	 * @since 0.0.1
 	 */
@@ -68,6 +69,14 @@ class Callboard {
 	public const DATETIME_FORMAT = 'm/d/Y h:i A';
 
 	/**
+	 * The datetime string format for use with `WP_Post::post_date`.
+	 *
+	 * @var string
+	 * @since 0.0.3
+	 */
+	public const POST_DATE_FORMAT = 'Y-m-d H:i:s';
+
+	/**
 	 * Constructor.
 	 *
 	 * @since 0.0.1
@@ -86,6 +95,7 @@ class Callboard {
 
 		$this->load_dependencies();
 		$this->register_settings();
+		$this->register_query_modifications();
 		$this->register_user_hooks();
 		$this->register_show_hooks();
 		$this->register_graphql_hooks();
@@ -113,6 +123,8 @@ class Callboard {
 	 * Register settings.
 	 *
 	 * @since 0.0.1
+	 *
+	 * @return void
 	 */
 	public function register_settings() {
 		$callboard_settings = new Callboard_Settings( $this->plugin_name, $this->plugin_title );
@@ -120,6 +132,19 @@ class Callboard {
 		$this->loader->add_action( 'init', $callboard_settings, 'register_settings' );
 		$this->loader->add_action( 'admin_init', $callboard_settings, 'settings_fields_admin_init' );
 		$this->loader->add_action( 'admin_menu', $callboard_settings, 'callboard_options_page' );
+	}
+
+	/**
+	 * Register GraphQL query modifications.
+	 *
+	 * @since 0.0.3
+	 *
+	 * @return void
+	 */
+	public function register_query_modifications() {
+		$callboard_graphql = new Callboard_GraphQL();
+
+		$this->loader->add_action( 'pre_get_posts', $callboard_graphql, 'modify_show_query' );
 	}
 
 	/**

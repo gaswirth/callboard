@@ -222,7 +222,8 @@ class Callboard_GraphQL_Queries extends Callboard_GraphQL {
 					'type'        => 'String',
 					'description' => __( 'The show date and time.', 'callboard' ),
 					'resolve'     => function ( $show ) {
-						$datetime = get_post_meta( $show->ID, 'datetime', true );
+						// $datetime = get_post_meta( $show->ID, 'datetime', true );
+						$datetime = get_post_time( Callboard::DATETIME_FORMAT, false, $show->ID );
 
 						return esc_textarea( $datetime );
 					},

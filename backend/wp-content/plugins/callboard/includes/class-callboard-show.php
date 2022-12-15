@@ -138,7 +138,6 @@ class Callboard_Show {
 		wp_nonce_field( basename( __FILE__ ), 'show_data_nonce' );
 
 		$meta = get_post_meta( $post->ID );
-		$date = get_the_time( Callboard::DATETIME_FORMAT, $post );
 
 		// Set variables for the template.
 		$template_vars = [
@@ -168,7 +167,7 @@ class Callboard_Show {
 			return;
 		}
 
-		$update_fields = $this->sanitize_show_meta( $post_id, $show_data );
+		$update_fields = $this->sanitize_show_meta( $show_data );
 		$this->update_show_meta( $post_id, $update_fields );
 	}
 
@@ -177,10 +176,9 @@ class Callboard_Show {
 	 *
 	 * @since 0.0.1
 	 *
-	 * @param int   $post_id   The post ID.
 	 * @param array $show_data An array of meta values, keyed by field.
 	 */
-	public function sanitize_show_meta( $post_id, $show_data ) {
+	public function sanitize_show_meta( $show_data ) {
 		$update_fields = [
 			'notes'      => '',
 			'attendance' => '',

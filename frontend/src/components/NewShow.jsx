@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import { Stack, Typography, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 
@@ -48,7 +48,7 @@ function newShowReducer(state, action) {
 }
 
 export default function NewShow() {
-	const { newShowMutation, results } = useNewShow();
+	const { newShowMutation } = useNewShow();
 	const [{ dialogOpen, datetime, title, notes, error }, newShowDispatch] = useReducer(newShowReducer, initialNewShow);
 
 	const handleNextShowClick = () => newShowDispatch({ type: 'OPEN' });

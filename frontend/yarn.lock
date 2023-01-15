@@ -600,10 +600,10 @@
     prop-types "^15.8.1"
     react-is "^18.2.0"
 
-"@mui/x-date-pickers@^5.0.4":
-  version "5.0.11"
-  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-5.0.11.tgz#f8b79222971b01bc94a6af30e97f30be7153efb0"
-  integrity sha512-YxUpyepbtzo6mu42KaaoJrfBHvlLobEdkP5EcEQ+OSaY5xxCEHqfSgi1NioXcxzZUi6ome5jcrjAopUHzFGk0g==
+"@mui/x-date-pickers@^5.0.12":
+  version "5.0.13"
+  resolved "https://registry.yarnpkg.com/@mui/x-date-pickers/-/x-date-pickers-5.0.13.tgz#0188f17483984ffe3f615444bff225256f7b4a0c"
+  integrity sha512-nUc35Zvah/l4bEWcPNRtSvWBL+7uAlokd6G6PzQfLe2TQo4GNlK1JVRfoVpBY5FsdM09uWLrpvfWLbka87k7GA==
   dependencies:
     "@babel/runtime" "^7.18.9"
     "@date-io/core" "^2.15.0"

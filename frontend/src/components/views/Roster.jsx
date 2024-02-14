@@ -45,7 +45,7 @@ export default function Roster() {
 			<Container align="center" sx={{ mb: 4 }}>
 				<Fab color="primary" variant="extended" onClick={handleAddNewCompanyMember}>
 					<Add sx={{ mr: 1 }} />
-					Add Company Member
+					New Company Member
 				</Fab>
 			</Container>
 			{!isEmpty(activeCompanyMembers) ? (

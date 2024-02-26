@@ -1,14 +1,14 @@
 {
-	"compilerOptions": {
-		"baseUrl": "src",
-		"target": "ESNext",
-		"paths": {
-			"@/*": [
-				"./src"
-			]
-		}
-	},
-	"include": [
-		"src"
-	]
+  "compilerOptions": {
+    "baseUrl": "src",
+    "target": "ESNext",
+    "paths": {
+      "@/*": [
+        "./src"
+      ]
+    }
+  },
+  "include": [
+    "src"
+  ]
 }

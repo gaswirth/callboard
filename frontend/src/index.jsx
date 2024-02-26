@@ -11,7 +11,7 @@ import { AuthContextProvider } from '@/context/AuthContext';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const backend = import.meta.env.VITE_BACKEND_URL ? import.meta.env.VITE_BACKEND_URL : '';
+const backend = import.meta.env.VITE_GRAPHQL_ENDPOINT ? import.meta.env.VITE_GRAPHQL_ENDPOINT : '';
 
 /**
  * Apollo client.

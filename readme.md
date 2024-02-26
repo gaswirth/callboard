@@ -19,12 +19,15 @@ This readme is sad and will be helped soon.
 
 ---
 
-### Backend instructions:
+### Backend instructions
 
 - Copy the contents of `backend/wp-content` to a WordPress installation _(for now)_. Visit the Callboard settings page from the WP Dashboard to set your frontend URL.
 
-### Frontend development:
+### Frontend development
 
+- Add `.env` to the `frontend/` directory with the following vars:
+  - VITE_GRAPHQL_ENDPOINT: The URL for your graphql endpoint
+  - VITE_FRONTEND_URL: Your frontend's URL
 - Run `yarn install` in the `frontend/` directory, and `yarn start` to start developing.
 
 ### TODO

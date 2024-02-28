@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
 
 import Login from '@/components/Login';
 import Main from '@/components/Main';

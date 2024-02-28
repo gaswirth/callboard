@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Box } from '@mui/material';
 
-import { attendanceStatus } from '@/lib/globals';
+import { attendanceStatus } from '@lib/globals';
 import StatusSelect from './StatusSelect';
 
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from '@context/AuthContext';
 
 export default function StatusIcon({ status, companyMemberId, showId, allowChange }) {
 	const { user } = useContext(AuthContext);

@@ -6,7 +6,8 @@ import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@ap
 
 import App from './App';
 import theme from './theme';
-import { AuthContextProvider } from '@/context/AuthContext';
+import { AuthContextProvider } from '@context/AuthContext';
+import { ChakraProvider } from '@chakra-ui/react';
 
 import reportWebVitals from './reportWebVitals';
 
@@ -28,13 +29,15 @@ const client = new ApolloClient({
 root.render(
 	<React.StrictMode>
 		<CssBaseline />
-		<ThemeProvider theme={theme}>
-			<ApolloProvider client={client}>
-				<AuthContextProvider>
-					<App />
-				</AuthContextProvider>
-			</ApolloProvider>
-		</ThemeProvider>
+		<ChakraProvider>
+			<ThemeProvider theme={theme}>
+				<ApolloProvider client={client}>
+					<AuthContextProvider>
+						<App />
+					</AuthContextProvider>
+				</ApolloProvider>
+			</ThemeProvider>
+		</ChakraProvider>
 	</React.StrictMode>
 );
 

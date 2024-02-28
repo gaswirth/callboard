@@ -4,12 +4,12 @@ import { Fab, Typography } from '@mui/material';
 import { isEmpty } from 'lodash';
 import { Add } from '@mui/icons-material';
 
-import RosterTable from '@/components/RosterTable';
-import CompanyMemberDialog from '@/components/CompanyMemberDialog';
+import RosterTable from '@components/RosterTable';
+import CompanyMemberDialog from '@components/CompanyMemberDialog';
 
-import { useRoster } from '@/hooks/queries/use-roster';
+import { useRoster } from '@hooks/queries/use-roster';
 
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from '@context/AuthContext';
 
 export default function Roster() {
 	const {

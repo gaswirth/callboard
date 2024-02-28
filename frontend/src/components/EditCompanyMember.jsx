@@ -1,7 +1,7 @@
 import React from 'react';
 import { Container, CircularProgress } from '@mui/material';
 
-import { useRoster } from '@/hooks/queries/use-roster';
+import { useRoster } from '@hooks/queries/use-roster';
 import UpdateCompanyMemberForm from './UpdateCompanyMemberForm';
 
 /**

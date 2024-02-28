@@ -3,7 +3,7 @@
  * a performance's Company Members.
  */
 import { gql, useMutation } from '@apollo/client';
-import { QUERY_RECENT_SHOWS } from '@/hooks/queries/use-recent-shows';
+import { QUERY_RECENT_SHOWS } from '@hooks/queries/use-recent-shows';
 
 export const MUTATE_UPDATE_SHOW_ATTENDANCE = gql`
 	mutation UpdateShowAttendance($input: UpdateShowAttendanceInput!) {

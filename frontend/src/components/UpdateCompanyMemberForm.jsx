@@ -1,11 +1,11 @@
 import React, { useEffect, useReducer } from 'react';
 import { FormControl, FormControlLabel, FormGroup, Button, Stack, TextField, Checkbox } from '@mui/material';
 
-import { createCompanyMember } from '@/lib/functions';
+import { createCompanyMember } from '@lib/functions';
 
-import { useNewCompanyMember } from '@/hooks/mutations/use-new-company-member';
-import { useUpdateCompanyMember } from '@/hooks/mutations/use-update-company-member';
-import { useSendPasswordResetEmail } from '@/hooks/mutations/use-reset-password-email';
+import { useNewCompanyMember } from '@hooks/mutations/use-new-company-member';
+import { useUpdateCompanyMember } from '@hooks/mutations/use-update-company-member';
+import { useSendPasswordResetEmail } from '@hooks/mutations/use-reset-password-email';
 
 const emptyCM = createCompanyMember();
 const initialCompanyMemberState = { ...emptyCM };

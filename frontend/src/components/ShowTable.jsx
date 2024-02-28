@@ -12,13 +12,13 @@ import {
 	Container,
 } from '@mui/material';
 
-import { showLabel } from '@/lib/functions';
+import { showLabel } from '@lib/functions';
 import StatusIcon from './StatusIcon';
 import ShowNotes from './ShowNotes';
 import AddCompanyMemberSelect from './AddCompanyMemberSelect';
 
-import { useRoster } from '@/hooks/queries/use-roster';
-import { useRosterExcluding } from '@/hooks/queries/use-roster-excluding';
+import { useRoster } from '@hooks/queries/use-roster';
+import { useRosterExcluding } from '@hooks/queries/use-roster-excluding';
 import CompanyMemberDialog from './CompanyMemberDialog';
 
 export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMember }) {

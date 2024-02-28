@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Button, FormGroup, TextField, Typography } from '@mui/material';
 
-import { User } from '@/lib/classes';
+import { User } from '@lib/classes';
 
-import { useLoginError } from '@/hooks/hooks';
-import { useLoginMutation } from '@/hooks/mutations/use-login-mutation';
+import { useLoginError } from '@hooks/hooks';
+import { useLoginMutation } from '@hooks/mutations/use-login-mutation';
 
-import { AuthContext } from '@/context/AuthContext';
+import { AuthContext } from '@context/AuthContext';
 
 export default function Login() {
 	const { setUser } = useContext(AuthContext);

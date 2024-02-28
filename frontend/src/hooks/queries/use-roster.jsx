@@ -5,7 +5,7 @@
 import { gql, useQuery } from '@apollo/client';
 import { useMemo } from 'react';
 
-import { prepareRoster } from '@/lib/functions';
+import { prepareRoster } from '@lib/functions';
 
 export const QUERY_ROSTER = gql`
 	query Roster($ids: [ID] = []) {

@@ -1,11 +1,26 @@
 {
   "compilerOptions": {
-    "baseUrl": "src",
     "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
     "paths": {
       "@/*": [
-        "./src"
-      ]
+        "./src/*"
+      ],
+      "@lib/*": [
+        "./src/lib/*"
+      ],
+      "@context/*": [
+        "./src/context/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@components/*": [
+        "./src/components/*"
+      ],
     }
   },
   "include": [

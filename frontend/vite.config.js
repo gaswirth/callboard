@@ -8,6 +8,12 @@ export default defineConfig({
 		port: 3000,
 	},
 	resolve: {
-		alias: [{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) }],
+		alias: [
+			{ find: '@', replacement: fileURLToPath(new URL('./src', import.meta.url)) },
+			{ find: '@lib', replacement: fileURLToPath(new URL('./src/lib', import.meta.url)) },
+			{ find: '@context', replacement: fileURLToPath(new URL('./src/context', import.meta.url)) },
+			{ find: '@hooks', replacement: fileURLToPath(new URL('./src/hooks', import.meta.url)) },
+			{ find: '@components', replacement: fileURLToPath(new URL('./src/components', import.meta.url)) },
+		],
 	},
 });

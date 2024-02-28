@@ -4,7 +4,7 @@ import { Container } from '@mui/material';
 
 import Now from './views/Now';
 
-import { useCurrentShowSlug } from '@/hooks/queries/use-current-show-slug';
+import { useCurrentShowSlug } from '@hooks/queries/use-current-show-slug';
 
 export default function CastSignIn() {
 	const { slug } = useParams();

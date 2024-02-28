@@ -1,5 +1,5 @@
 import { createContext } from 'react';
-import { useLocalStorage } from '@/hooks/hooks';
+import { useLocalStorage } from '@hooks/hooks';
 
 export const adminRoles = ['administrator'];
 

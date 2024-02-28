@@ -13,13 +13,13 @@ import {
 } from '@mui/material';
 import { Print } from '@mui/icons-material';
 
-import ViewHeading from '@/components/ViewHeading';
-import ShowTable from '@/components/ShowTable';
-import NewShow from '@/components/NewShow';
-import QRCode from '@/components/QRCode';
+import ViewHeading from '@components/ViewHeading';
+import ShowTable from '@components/ShowTable';
+import NewShow from '@components/NewShow';
+import QRCode from '@components/QRCode';
 
-import { useLatestShow } from '@/hooks/queries/use-latest-show';
-import { useSigninURL } from '@/hooks/hooks';
+import { useLatestShow } from '@hooks/queries/use-latest-show';
+import { useSigninURL } from '@hooks/hooks';
 
 export default function ShowControl() {
 	const [{ loading: showLoading }, show] = useLatestShow();

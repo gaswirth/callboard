@@ -5,6 +5,7 @@
   "type": "module",
   "dependencies": {
     "@apollo/client": "^3.9.5",
+    "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.15.11",
@@ -16,6 +17,7 @@
     "@testing-library/react": "^14.2.1",
     "@testing-library/user-event": "^14.5.2",
     "date-fns": "^3.3.1",
+    "framer-motion": "^11.0.6",
     "graphql": "^16.8.1",
     "lodash": "^4.17.21",
     "qrcode.react": "^3.1.0",

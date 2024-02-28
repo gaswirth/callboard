@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
 
-import { attendanceStatus } from '@/lib/globals';
+import { attendanceStatus } from '@lib/globals';
 
-import { useUpdateShowAttendance } from '@/hooks/mutations/use-update-show-attendance';
+import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
 
 function StatusSelect({ status, children, companyMemberId, showId }) {
 	const { updateAttendanceMutation, updateAttendanceLoading, updateAttendanceError } = useUpdateShowAttendance();

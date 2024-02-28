@@ -1,10 +1,10 @@
 import React from 'react';
 import { Container, Grid, CircularProgress } from '@mui/material';
 
-import ShowTable from '@/components/ShowTable';
+import ShowTable from '@components/ShowTable';
 
-import { useRecentShows } from '@/hooks/queries/use-recent-shows';
-import { useCurrentShowId } from '@/hooks/queries/use-current-show-id';
+import { useRecentShows } from '@hooks/queries/use-recent-shows';
+import { useCurrentShowId } from '@hooks/queries/use-current-show-id';
 
 export default function History() {
 	const currentShowId = useCurrentShowId();

@@ -1,25 +1,25 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {
 	Container,
 	Stack,
 	Skeleton,
 	Button,
-	Dialog,
-	DialogTitle,
-	DialogContent,
-	DialogContentText,
-	DialogActions,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalCloseButton,
+	ModalFooter,
 	Box,
-} from '@mui/material';
-import { Print } from '@mui/icons-material';
-
-import ViewHeading from '@components/ViewHeading';
+	Heading,
+} from '@chakra-ui/react';
+import { SlPrinter } from 'react-icons/sl';
+import { useLatestShow } from '@hooks/queries/use-latest-show';
+import { useSigninURL } from '@hooks/hooks';
 import ShowTable from '@components/ShowTable';
 import NewShow from '@components/NewShow';
 import QRCode from '@components/QRCode';
-
-import { useLatestShow } from '@hooks/queries/use-latest-show';
-import { useSigninURL } from '@hooks/hooks';
 
 export default function ShowControl() {
 	const [{ loading: showLoading }, show] = useLatestShow();
@@ -38,56 +38,61 @@ export default function ShowControl() {
 	};
 
 	return (
-		<Container maxWidth="sm">
-			<Stack spacing={2}>
+		<Container maxW="container.sm">
+			<Stack spacing={4}>
 				{show ? (
 					<>
-						<ViewHeading variant="h6">Current Show</ViewHeading>
+						<Heading as="h6">Current Show</Heading>
 						<Stack direction="row" justifyContent="space-between">
-							<Button onClick={handleQROpen} variant="contained">
+							<Button onClick={handleQROpen} colorScheme="teal">
 								QR Code
 							</Button>
-							<Button onClick={handleExportOpen} variant="contained">
+							<Button onClick={handleExportOpen} colorScheme="teal">
 								Export
 							</Button>
 						</Stack>
 
 						{/* TODO Print! */}
-						<Dialog onClose={handleQRClose} open={QROpen}>
-							<DialogTitle textAlign="center">Sign-In</DialogTitle>
-							<DialogContent>
-								<DialogContentText textAlign="center">{show.datetime}</DialogContentText>
-								<QRCode string={signinURL} size={300} />
-							</DialogContent>
-							<DialogActions>
-								<Button autoFocus variant="contained" onClick={handlePrint} endIcon={<Print />}>
-									Print
-								</Button>
-								<Button autoFocus variant="contained" onClick={handleQRClose}>
-									Close
-								</Button>
-							</DialogActions>
-						</Dialog>
+						<Modal onClose={handleQRClose} isOpen={QROpen} isCentered>
+							<ModalOverlay />
+							<ModalContent>
+								<ModalHeader textAlign="center">Sign-In</ModalHeader>
+								<ModalCloseButton />
+								<ModalBody>
+									<Text textAlign="center">{show.datetime}</Text>
+									<QRCode string={signinURL} size={300} />
+								</ModalBody>
+								<ModalFooter>
+									<Button colorScheme="teal" onClick={handlePrint} rightIcon={<SlPrinter />}>
+										Print
+									</Button>
+									<Button colorScheme="teal" onClick={handleQRClose}>
+										Close
+									</Button>
+								</ModalFooter>
+							</ModalContent>
+						</Modal>
 
 						{/* TODO Export! */}
-						<Dialog onClose={handleExportClose} open={actionsOpen}>
-							<DialogTitle textAlign="center">Export</DialogTitle>
-							<DialogContent>
-								<DialogContentText>
-									<Stack spacing={2}>
-										<Button variant="contained" onClick={() => alert('Google')}>
+						<Modal onClose={handleExportClose} isOpen={actionsOpen} isCentered>
+							<ModalOverlay />
+							<ModalContent>
+								<ModalHeader textAlign="center">Export</ModalHeader>
+								<ModalBody>
+									<Stack spacing={4}>
+										<Button colorScheme="teal" onClick={() => alert('Google')}>
 											Export Google Sheet
 										</Button>
-										<Button variant="contained" onClick={() => alert('Excel')}>
+										<Button colorScheme="teal" onClick={() => alert('Excel')}>
 											Export Excel
 										</Button>
-										<Button variant="contained" onClick={() => alert('CSV')}>
+										<Button colorScheme="teal" onClick={() => alert('CSV')}>
 											Export CSV
 										</Button>
 									</Stack>
-								</DialogContentText>
-							</DialogContent>
-						</Dialog>
+								</ModalBody>
+							</ModalContent>
+						</Modal>
 						{showLoading ? (
 							<Skeleton>
 								<Box />

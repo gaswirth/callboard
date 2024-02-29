@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Autocomplete, Button, FormControl, TextField } from '@mui/material';
+import { Button, FormControl, Select } from '@chakra-ui/react';
 
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
 
@@ -9,8 +9,9 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 
 	const { id: showId, datetime } = show;
 
-	const handleSelectCompanyMember = (event, newValue) => {
-		setSelectedCompanyMember(newValue);
+	const handleSelectCompanyMember = (event) => {
+		const selectedOption = companyMembers.find((member) => member.id === event.target.value);
+		setSelectedCompanyMember(selectedOption);
 	};
 
 	const handleAddCompanyMember = () => {
@@ -26,25 +27,17 @@ export default function AddCompanyMemberSelect({ companyMembers, show }) {
 		return null;
 	}
 
-	const options = companyMembers.map((item) => ({
-		label: `${item.firstName} ${item.lastName}`,
-		id: item.id,
-	}));
-
 	return (
-		<FormControl variant="standard" sx={{ width: '80%', pt: 2 }}>
-			<Autocomplete
-				id="company-member-select"
-				options={options}
-				renderInput={(params) => <TextField {...params} label="Add Company Member" />}
-				onChange={handleSelectCompanyMember}
-				isOptionEqualToValue={(option, value) => option.id === value.id}
-				selectOnFocus
-				clearOnBlur
-				handleHomeEndKeys
-			/>
+		<FormControl w="80%" pt={2}>
+			<Select placeholder="Add Company Member" onChange={handleSelectCompanyMember}>
+				{companyMembers.map((item) => (
+					<option key={item.id} value={item.id}>
+						{`${item.firstName} ${item.lastName}`}
+					</option>
+				))}
+			</Select>
 			{selectedCompanyMember ? (
-				<Button size="small" onClick={handleAddCompanyMember} variant="contained" disabled={!datetime} sx={{ mt: 1 }}>
+				<Button size="sm" onClick={handleAddCompanyMember} colorScheme="teal" disabled={!datetime} mt={1}>
 					Confirm
 				</Button>
 			) : null}

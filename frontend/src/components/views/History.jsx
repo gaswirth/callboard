@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Grid, CircularProgress } from '@mui/material';
+import { Grid, CircularProgress, Box } from '@chakra-ui/react';
 
 import ShowTable from '@components/ShowTable';
 
@@ -13,11 +13,11 @@ export default function History() {
 	// TODO Date control
 
 	return (
-		<Grid container spacing={5}>
+		<Grid templateColumns={{ sm: 'repeat(2, 1fr)' }} gap={5}>
 			{showLoading ? (
-				<Container>
-					<CircularProgress size="200" />
-				</Container>
+				<Box display="flex" justifyContent="center" alignItems="center" height="200px">
+					<CircularProgress isIndeterminate size="200px" />
+				</Box>
 			) : (
 				shows.map((show) => {
 					return (

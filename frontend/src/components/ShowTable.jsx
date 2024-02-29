@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { Table, Tbody, Td, Th, Thead, Tr, Card, Text, Box } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableContainer,
-	TableHead,
-	TableRow,
-	Card,
-	Typography,
-	Container,
-} from '@mui/material';
-
 import { showLabel } from '@lib/functions';
-import StatusIcon from './StatusIcon';
-import ShowNotes from './ShowNotes';
-import AddCompanyMemberSelect from './AddCompanyMemberSelect';
-
 import { useRoster } from '@hooks/queries/use-roster';
 import { useRosterExcluding } from '@hooks/queries/use-roster-excluding';
-import CompanyMemberDialog from './CompanyMemberDialog';
+import AddCompanyMemberSelect from '@components/AddCompanyMemberSelect';
+import StatusIcon from '@components/StatusIcon';
+import ShowNotes from '@components/ShowNotes';
+import CompanyMemberDialog from '@components/CompanyMemberDialog';
 
 export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMember }) {
 	const { id: showId, attendance, datetime } = show;
@@ -69,73 +57,61 @@ export default function ShowTable({ show, allowStatusChanges, allowAddCompanyMem
 
 	return (
 		<>
-			<Card sx={{ width: '100%' }}>
-				<TableContainer>
-					<Table aria-label="show attendance table">
-						<TableHead>
-							<TableRow>
-								<TableCell sx={{ ...cellStyle, borderBottomWidth: 3 }}>
-									<Typography variant="body2" sx={{ lineHeight: 0.5, pt: 0.5 }}>
-										Name
-									</Typography>
-									<Typography variant="caption">Role</Typography>
-								</TableCell>
-								<TableCell id={showId} sx={{ borderBottomWidth: 3 }}>
-									<Typography
-										variant="button"
-										lineHeight={1.2}
-										sx={{
-											cursor: 'default',
-											display: 'block',
-											borderRadius: 1,
-											fontSize: '1.1em',
-										}}
-									>
-										{showLabel(datetime).date}
-										<br />
-										{showLabel(datetime).time}
-									</Typography>
-								</TableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{rows.map((row, index) => {
-								const { companyMemberId, fullName, role, attendance } = row;
-								return (
-									<TableRow key={index}>
-										<TableCell sx={{ ...cellStyle }} scope="row">
-											<Typography variant="body2" sx={{ lineHeight: 1 }}>
-												{fullName}
-											</Typography>
-											<Typography variant="caption">{role}</Typography>
-										</TableCell>
-										<TableCell key={index} scope="row">
-											<StatusIcon
-												status={attendance ? attendance : ''}
-												companyMemberId={companyMemberId}
-												showId={showId}
-												allowChange={allowStatusChanges}
-											/>
-										</TableCell>
-									</TableRow>
-								);
-							})}
-						</TableBody>
-					</Table>
-					{rosterExcluding && rosterExcluding.length && allowAddCompanyMember ? (
-						<Container
-							sx={{
-								backgroundColor: 'neutral.lightergray',
-								pt: 1,
-								pb: 3,
-								px: 3,
-								textAlign: 'center',
-							}}
-						>
-							<AddCompanyMemberSelect companyMembers={rosterExcluding} show={show} />
-						</Container>
-					) : null}
-				</TableContainer>
+			<Card w="100%" boxShadow="sm" rounded="md">
+				<Table aria-label="show attendance table">
+					<Thead>
+						<Tr>
+							<Th {...cellStyle} borderBottomWidth={3}>
+								<Text variant="body2" lineHeight={0.5} pt={0.5}>
+									Name
+								</Text>
+								<Text fontSize="sm">Role</Text>
+							</Th>
+							<Th id={showId} borderBottomWidth={3}>
+								<Text
+									variant="button"
+									lineHeight={1.2}
+									cursor="default"
+									display="block"
+									borderRadius={1}
+									fontSize="1.1em"
+								>
+									{showLabel(datetime).date}
+									<br />
+									{showLabel(datetime).time}
+								</Text>
+							</Th>
+						</Tr>
+					</Thead>
+					<Tbody>
+						{rows.map((row, index) => {
+							const { companyMemberId, fullName, role, attendance } = row;
+							return (
+								<Tr key={index}>
+									<Td {...cellStyle} scope="row">
+										<Text variant="body2" lineHeight={1}>
+											{fullName}
+										</Text>
+										<Text fontSize="sm">{role}</Text>
+									</Td>
+									<Td key={index} scope="row">
+										<StatusIcon
+											status={attendance ? attendance : ''}
+											companyMemberId={companyMemberId}
+											showId={showId}
+											allowChange={allowStatusChanges}
+										/>
+									</Td>
+								</Tr>
+							);
+						})}
+					</Tbody>
+				</Table>
+				{rosterExcluding && rosterExcluding.length && allowAddCompanyMember ? (
+					<Box bgColor="neutral.lightergray" pt={1} pb={3} px={3} textAlign="center">
+						<AddCompanyMemberSelect companyMembers={rosterExcluding} show={show} />
+					</Box>
+				) : null}
 				<ShowNotes show={show} editable={allowStatusChanges} />
 			</Card>
 			<CompanyMemberDialog companyMemberId={editCompanyMember} onCloseDialog={handleCloseCompanyMemberDialog} />

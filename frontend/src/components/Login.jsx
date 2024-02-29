@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, FormGroup, TextField, Typography } from '@mui/material';
+import { Button, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 
 import { User } from '@lib/classes';
 
@@ -43,38 +43,26 @@ export default function Login() {
 
 	return (
 		<>
-			<Typography variant="h5" textAlign="left">
+			<Text fontSize="2xl" textAlign="left">
 				Login
-			</Typography>
+			</Text>
 			<form onSubmit={handleLoginSubmit}>
-				<FormGroup>
-					<TextField
-						name="username"
-						label="Username"
-						type="text"
-						variant="standard"
-						required={true}
-						sx={{ py: 1 }}
-						onChange={handleTextFieldChange}
-					/>
-					<TextField
-						name="password"
-						label="Password"
-						type="password"
-						variant="standard"
-						required={true}
-						sx={{ py: 1 }}
-						onChange={handleTextFieldChange}
-					/>
-					<Button type="submit" variant="contained" sx={{ py: 1 }}>
-						Submit
-					</Button>
-					{errorMessage ? (
-						<Typography variant="body2" sx={{ color: 'warning.main', my: 1 }}>
-							{errorMessage}
-						</Typography>
-					) : null}
-				</FormGroup>
+				<FormControl id="username" isRequired>
+					<FormLabel>Username</FormLabel>
+					<Input name="username" type="text" onChange={handleTextFieldChange} />
+				</FormControl>
+				<FormControl id="password" isRequired>
+					<FormLabel>Password</FormLabel>
+					<Input name="password" type="password" onChange={handleTextFieldChange} />
+				</FormControl>
+				<Button type="submit" mt={4}>
+					Submit
+				</Button>
+				{errorMessage ? (
+					<Text color="red.500" mt={2}>
+						{errorMessage}
+					</Text>
+				) : null}
 			</form>
 		</>
 	);

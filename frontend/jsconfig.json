@@ -18,6 +18,9 @@
       "@hooks/*": [
         "./src/hooks/*"
       ],
+      "@views/*": [
+        "./src/components/views/*"
+      ],
       "@components/*": [
         "./src/components/*"
       ],

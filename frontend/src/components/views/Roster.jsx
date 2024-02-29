@@ -1,14 +1,10 @@
-import React, { useContext, useState, useMemo } from 'react';
-import { Box, Container } from '@mui/system';
-import { Fab, Typography } from '@mui/material';
+import { useContext, useState, useMemo } from 'react';
+import { Heading, Box, Button, Container, Text } from '@chakra-ui/react';
+import { SlPlus } from 'react-icons/sl';
 import { isEmpty } from 'lodash';
-import { Add } from '@mui/icons-material';
-
+import { useRoster } from '@hooks/queries/use-roster';
 import RosterTable from '@components/RosterTable';
 import CompanyMemberDialog from '@components/CompanyMemberDialog';
-
-import { useRoster } from '@hooks/queries/use-roster';
-
 import { AuthContext } from '@context/AuthContext';
 
 export default function Roster() {
@@ -42,31 +38,30 @@ export default function Roster() {
 
 	return isAdmin ? (
 		<>
-			<Container align="center" sx={{ mb: 4 }}>
-				<Fab color="primary" variant="extended" onClick={handleAddNewCompanyMember}>
-					<Add sx={{ mr: 1 }} />
+			<Container mb={4}>
+				<Button onClick={handleAddNewCompanyMember} leftIcon={<SlPlus />}>
 					New Company Member
-				</Fab>
+				</Button>
 			</Container>
 			{!isEmpty(activeCompanyMembers) ? (
 				<Box sx={{ ...boxStyles }}>
-					<Typography variant="h5" align="center" textTransform="uppercase">
+					<Heading as="h5" align="center" textTransform="uppercase">
 						Active
-					</Typography>
-					<Typography variant="body2" align="center" sx={{ pb: 2 }}>
+					</Heading>
+					<Text fontSize="sm" align="center" pb={2}>
 						New shows will include all active company members on the sign-in sheet.
-					</Typography>
+					</Text>
 					<RosterTable roster={activeCompanyMembers} />
 				</Box>
 			) : null}
 			{!isEmpty(inactiveCompanyMembers) ? (
 				<Box sx={{ ...boxStyles }}>
-					<Typography variant="h5" align="center" textTransform="uppercase">
+					<Heading as="h5" align="center" textTransform="uppercase">
 						Inactive
-					</Typography>
-					<Typography variant="body2" align="center" sx={{ pb: 2 }}>
+					</Heading>
+					<Text fontSize="sm" align="center" pb={2}>
 						Inactive company members can be added to the current show individually.
-					</Typography>
+					</Text>
 					<RosterTable roster={inactiveCompanyMembers} />
 				</Box>
 			) : null}

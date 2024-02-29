@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Box } from '@mui/material';
+import { Flex } from '@chakra-ui/react';
 
 import { attendanceStatus } from '@lib/globals';
 import StatusSelect from './StatusSelect';
@@ -15,8 +15,8 @@ export default function StatusIcon({ status, companyMemberId, showId, allowChang
 			<Icon color={attendanceStatus[status]?.color} />
 		</StatusSelect>
 	) : (
-		<Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+		<Flex alignItems="center" justifyContent="center">
 			<Icon color={attendanceStatus[status]?.color} />
-		</Box>
+		</Flex>
 	);
 }

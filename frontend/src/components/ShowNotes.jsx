@@ -1,5 +1,5 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import { Button, Card, Container, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, Text, Textarea, useColorModeValue } from '@chakra-ui/react';
 
 import { useUpdateShowNotes } from '@hooks/mutations/use-update-show-notes';
 import { useDeleteShow } from '@hooks/mutations/use-delete-show';
@@ -25,6 +25,8 @@ export default function ShowNotes({ show, editable }) {
 	const [armDeleteShow, setArmDeleteShow] = useState(false);
 	const { updateShowNotesMutation } = useUpdateShowNotes();
 	const { deleteShowMutation } = useDeleteShow();
+	const grayColor = useColorModeValue('gray.400', 'gray.600');
+	const warningColor = useColorModeValue('red.500', 'red.300');
 
 	/**
 	 * Set the notes value from props when `show.notes` changes.
@@ -62,62 +64,51 @@ export default function ShowNotes({ show, editable }) {
 	};
 
 	return (
-		<Card sx={{ p: 2 }}>
-			<Typography variant="subtitle1" fontWeight="bold" textAlign="center" sx={{ mb: 1 }}>
+		<Card p={2}>
+			<Text fontWeight="bold" textAlign="center" mb={1}>
 				Notes
-			</Typography>
+			</Text>
 			{editable ? (
 				<>
-					{/* Remove the Arming Edit button. Just click to edit. */}
-					<TextField
-						multiline={true}
-						minRows={3}
-						variant="outlined"
+					<Textarea
+						minH="60px"
 						value={notes.value}
 						placeholder={`Click "Edit" to add notes.`}
 						onChange={handleShowNotesChange}
-						disabled={!armNotesEdit}
-						sx={{ width: '100%', mb: 1 }}
+						isDisabled={!armNotesEdit}
+						mb={1}
+						w="100%"
 					/>
-					<Container
-						disableGutters={true}
-						sx={{ display: 'inline-flex', justifyContent: 'space-between', my: 1, px: 0 }}
-					>
+					<Box d="flex" justifyContent="space-between" my={1} px={0}>
 						{armNotesEdit ? (
 							<>
-								<Button onClick={handleSubmitNotes} variant="contained" sx={{ mr: 1 }}>
+								<Button onClick={handleSubmitNotes} colorScheme="blue" mr={1}>
 									Save
 								</Button>
-								<Button onClick={handleCancelNotes} variant="contained" sx={{ backgroundColor: 'neutral.gray' }}>
+								<Button onClick={handleCancelNotes} colorScheme={grayColor}>
 									Cancel
 								</Button>
 							</>
 						) : (
 							<>
-								<Button onClick={handleEditNotes} variant="contained">
+								<Button onClick={handleEditNotes} colorScheme="blue">
 									Edit Notes
 								</Button>
 								{armDeleteShow ? (
-									<Button
-										onClick={reallyHandleDeleteShow}
-										variant="contained"
-										sx={{ backgroundColor: 'warning.strong' }}
-									>
+									<Button onClick={reallyHandleDeleteShow} colorScheme={warningColor}>
 										CLICK AGAIN TO DELETE
 									</Button>
 								) : (
-									<Button onClick={handleDeleteShow} variant="contained" sx={{ backgroundColor: 'neutral.gray' }}>
+									<Button onClick={handleDeleteShow} colorScheme={grayColor}>
 										Delete Show
 									</Button>
 								)}
 							</>
 						)}
-					</Container>
+					</Box>
 				</>
 			) : (
-				<Typography variant="body2" sx={{ p: 1 }}>
-					{show.notes ? show.notes : 'No notes.'}
-				</Typography>
+				<Text p={1}>{show.notes ? show.notes : 'No notes.'}</Text>
 			)}
 		</Card>
 	);

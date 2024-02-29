@@ -1,7 +1,17 @@
 import React, { useReducer } from 'react';
-import { Stack, Typography, Button, TextField, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+	Stack,
+	Text,
+	Button,
+	Input,
+	Modal,
+	ModalOverlay,
+	ModalContent,
+	ModalHeader,
+	ModalBody,
+	ModalFooter,
+} from '@chakra-ui/react';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-
 import { useNewShow } from '@hooks/mutations/use-new-show';
 
 const initialNewShow = {
@@ -78,51 +88,48 @@ export default function NewShow() {
 	return (
 		<>
 			{dialogOpen === false ? (
-				<Button variant="contained" onClick={handleNextShowClick}>
+				<Button colorScheme="blue" onClick={handleNextShowClick}>
 					Start Next Show
 				</Button>
 			) : (
-				<Dialog onClose={handleCloseNewShowDialog} open={dialogOpen}>
-					<DialogTitle>New Show</DialogTitle>
-					<DialogContent sx={{ px: 2, py: 1 }}>
-						<Stack spacing={2}>
-							<DateTimePicker
-								label="Show Date and Time"
-								value={datetime}
-								disablePast={true}
-								onChange={handleDateTimePickerChange}
-								renderInput={(params) => <TextField {...params} required={true} />}
-							/>
-							{error ? (
-								<Typography variant="caption" color="warning.main" sx={{ mt: 0, lineHeight: 1 }}>
-									{error}
-								</Typography>
-							) : null}
-							<TextField
-								label="Next Show Title/ID"
-								variant="outlined"
-								value={title}
-								onChange={handleNextShowTitleChange}
-							/>
-							<TextField
-								label="Show Notes"
-								multiline={true}
-								minRows={3}
-								variant="outlined"
-								value={notes}
-								onChange={handleNextShowNotesChange}
-							/>
-						</Stack>
-					</DialogContent>
-					<DialogActions sx={{ mb: 2, px: 2 }}>
-						<Button size="large" onClick={handleSubmitNewShow} variant="contained" disabled={datetime ? false : true}>
-							Confirm
-						</Button>
-						<Button size="large" onClick={handleCancelNewShow} variant="contained">
-							Cancel
-						</Button>
-					</DialogActions>
-				</Dialog>
+				<Modal isOpen={dialogOpen} onClose={handleCloseNewShowDialog}>
+					<ModalOverlay />
+					<ModalContent>
+						<ModalHeader>New Show</ModalHeader>
+						<ModalBody>
+							<Stack spacing={2}>
+								<DateTimePicker
+									label="Show Date and Time"
+									value={datetime}
+									disablePast={true}
+									onChange={handleDateTimePickerChange}
+									renderInput={(params) => <Input {...params} isRequired={true} />}
+								/>
+								{error ? (
+									<Text color="red.500" mt={0} lineHeight={1}>
+										{error}
+									</Text>
+								) : null}
+								<Input label="Next Show Title/ID" value={title} onChange={handleNextShowTitleChange} />
+								<Input
+									label="Show Notes"
+									multiline={true}
+									minRows={3}
+									value={notes}
+									onChange={handleNextShowNotesChange}
+								/>
+							</Stack>
+						</ModalBody>
+						<ModalFooter>
+							<Button colorScheme="blue" onClick={handleSubmitNewShow} isDisabled={datetime ? false : true}>
+								Confirm
+							</Button>
+							<Button colorScheme="gray" onClick={handleCancelNewShow}>
+								Cancel
+							</Button>
+						</ModalFooter>
+					</ModalContent>
+				</Modal>
 			)}
 		</>
 	);

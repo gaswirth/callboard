@@ -1,8 +1,7 @@
 import React from 'react';
-import { Container, CircularProgress } from '@mui/material';
-
+import { Container, CircularProgress } from '@chakra-ui/react';
 import { useRoster } from '@hooks/queries/use-roster';
-import UpdateCompanyMemberForm from './UpdateCompanyMemberForm';
+import UpdateCompanyMemberForm from '@components/UpdateCompanyMemberForm';
 
 /**
  *
@@ -14,9 +13,9 @@ export default function EditCompanyMember({ companyMemberId, onCloseDialog }) {
 	const companyMember = roster?.find((i) => i.id === companyMemberId);
 
 	return (
-		<Container maxWidth="md" sx={{ py: 2 }}>
+		<Container maxW="container.md" py={2}>
 			{loading ? (
-				<CircularProgress />
+				<CircularProgress isIndeterminate />
 			) : (
 				<UpdateCompanyMemberForm companyMember={companyMember} onCloseDialog={onCloseDialog} />
 			)}

@@ -2,32 +2,32 @@
  * Global variables and constants.
  */
 
-import { BeachAccess, Close, Check, Flight, HorizontalRule } from '@mui/icons-material';
+import { SlHeart, SlClose, SlCheck, SlPlane, SlQuestion } from 'react-icons/sl';
 
 export const attendanceStatus = {
 	in: {
 		text: 'In',
 		color: 'success',
-		icon: Check,
+		icon: SlCheck,
 	},
 	out: {
 		text: 'Out',
 		color: 'error',
-		icon: Close,
+		icon: SlClose,
 	},
 	pd: {
 		text: 'PD',
 		color: 'info',
-		icon: BeachAccess,
+		icon: SlHeart,
 	},
 	vac: {
 		text: 'Vac',
 		color: 'info',
-		icon: Flight,
+		icon: SlPlane,
 	},
 	'': {
 		text: '',
 		color: 'text.light',
-		icon: HorizontalRule,
+		icon: SlQuestion,
 	},
 };

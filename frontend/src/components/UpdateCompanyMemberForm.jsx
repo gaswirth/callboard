@@ -1,5 +1,7 @@
+// TODO make form work w/ chakra
+
 import React, { useEffect, useReducer } from 'react';
-import { FormControl, FormControlLabel, FormGroup, Button, Stack, TextField, Checkbox } from '@mui/material';
+import { FormControl, Button, Stack, Input, Checkbox, Box, useColorModeValue } from '@chakra-ui/react';
 
 import { createCompanyMember } from '@lib/functions';
 
@@ -116,73 +118,67 @@ export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }
 		my: 1,
 	};
 
+	const warningColor = useColorModeValue('red.500', 'red.300');
+
 	return (
-		<FormControl sx={{ p: 2 }}>
+		<FormControl p={2}>
 			<form onSubmit={handleSave}>
-				<Stack direction="row">
-					<TextField
+				<Stack direction={{ base: 'column', md: 'row' }}>
+					<Input
 						label="First name"
 						value={updateCompanyMember.firstName}
 						id="firstName"
 						name="firstName"
 						onChange={handleTextChange}
-						variant="standard"
-						sx={textFieldSx}
+						mb={1}
 					/>
-					<TextField
+					<Input
 						label="Last name"
 						value={updateCompanyMember.lastName}
 						id="lastName"
 						name="lastName"
-						variant="standard"
 						onChange={handleTextChange}
-						sx={textFieldSx}
+						mb={1}
 					/>
 				</Stack>
 				<Stack direction="column">
-					<TextField
+					<Input
 						label="Role"
 						value={updateCompanyMember.role}
 						id="role"
 						name="role"
-						variant="standard"
 						onChange={handleTextChange}
-						sx={textFieldSx}
+						mb={1}
 					/>
-					<TextField
+					<Input
 						label="Email"
 						value={updateCompanyMember.email}
 						id="email"
 						name="email"
-						variant="standard"
 						onChange={handleTextChange}
-						sx={textFieldSx}
+						mb={1}
 					/>
 				</Stack>
-				<FormGroup sx={{ mt: 2 }}>
-					{/* New company members are inactive by default. */}
-					<FormControlLabel
-						label="Active roster"
-						control={
-							<Checkbox
-								checked={updateCompanyMember.active || false}
-								size="medium"
-								onChange={handleActiveToggle}
-								inputProps={{ 'aria-label': 'active' }}
-							/>
-						}
-					/>
-				</FormGroup>
-				<Stack direction="row" justifyContent="space-between" sx={{ mt: 4 }}>
+				<Box mt={2}>
+					<Checkbox
+						checked={updateCompanyMember.active || false}
+						size="md"
+						onChange={handleActiveToggle}
+						aria-label="active"
+					>
+						Active roster
+					</Checkbox>
+				</Box>
+				<Stack direction="row" justifyContent="space-between" mt={4}>
 					<Stack direction="row" justifyContent="center">
-						<Button aria-label="save" type="submit" variant="contained" sx={{ mr: 1 }}>
+						<Button aria-label="save" type="submit" colorScheme="teal" mr={1}>
 							Save
 						</Button>
-						<Button aria-label="cancel" onClick={handleCancelRow} variant="contained">
+						<Button aria-label="cancel" onClick={handleCancelRow} colorScheme="teal">
 							Cancel
 						</Button>
 					</Stack>
-					<Button onClick={handleResetPasswordClick} variant="contained" sx={{ backgroundColor: 'warning.main' }}>
+					<Button onClick={handleResetPasswordClick} colorScheme="red" backgroundColor={warningColor}>
 						Send Password Reset
 					</Button>
 				</Stack>

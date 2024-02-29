@@ -1,11 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import CssBaseline from '@mui/material/CssBaseline';
-import { ThemeProvider } from '@mui/material/styles';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 
 import App from './App';
-import theme from './theme';
 import { AuthContextProvider } from '@context/AuthContext';
 import { ChakraProvider } from '@chakra-ui/react';
 
@@ -28,15 +25,12 @@ const client = new ApolloClient({
 
 root.render(
 	<React.StrictMode>
-		<CssBaseline />
 		<ChakraProvider>
-			<ThemeProvider theme={theme}>
-				<ApolloProvider client={client}>
-					<AuthContextProvider>
-						<App />
-					</AuthContextProvider>
-				</ApolloProvider>
-			</ThemeProvider>
+			<ApolloProvider client={client}>
+				<AuthContextProvider>
+					<App />
+				</AuthContextProvider>
+			</ApolloProvider>
 		</ChakraProvider>
 	</React.StrictMode>
 );

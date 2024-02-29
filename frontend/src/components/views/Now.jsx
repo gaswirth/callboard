@@ -1,11 +1,9 @@
-import React, { useContext, useEffect } from 'react';
-import { Alert, CircularProgress, Container } from '@mui/material';
-
-import ShowTable from '@components/ShowTable';
-
+import { useContext, useEffect } from 'react';
+import { Alert, CircularProgress, Box } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { useLatestShow } from '@hooks/queries/use-latest-show';
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
+import ShowTable from '@components/ShowTable';
 
 /**
  * Display an alert on signin.
@@ -18,14 +16,14 @@ const signInAlert = (userStatus) => {
 	switch (userStatus) {
 		case 'in':
 			alert = {
-				severity: 'success',
+				status: 'success',
 				message: 'You are signed in.',
 			};
 			break;
 
 		case 'out':
 			alert = {
-				severity: 'warning',
+				status: 'warning',
 				message: 'You have already been marked "out." Please see stage management.',
 			};
 			break;
@@ -33,14 +31,14 @@ const signInAlert = (userStatus) => {
 		case 'pd':
 		case 'vac':
 			alert = {
-				severity: 'warning',
+				status: 'warning',
 				message: 'You are noted as having a personal or vacation day. Please see stage management.',
 			};
 			break;
 
 		case 'na':
 			alert = {
-				severity: 'warning',
+				status: 'warning',
 				message: 'You are not on the roster for this performance. Please see stage management.',
 			};
 			break;
@@ -50,7 +48,7 @@ const signInAlert = (userStatus) => {
 	}
 
 	return alert ? (
-		<Alert severity={alert.severity} sx={{ mb: 2 }}>
+		<Alert status={alert.status} mb={2}>
 			{alert.message}
 		</Alert>
 	) : null;
@@ -78,18 +76,18 @@ export default function Now({ signUsersIn }) {
 	}, [show, companyMemberId, signUsersIn, companyMemberOnRoster, updateAttendanceMutation]);
 
 	return (
-		<Container maxWidth="xl" sx={{ mt: 4 }}>
+		<Box maxWidth="xl" mt={4}>
 			{signInAlert(userStatus)}
 
 			{loading ? (
-				<Container align="center" sx={{ mx: 4 }}>
-					<CircularProgress size="200" />
-				</Container>
+				<Box display="flex" justifyContent="center" alignItems="center" mx={4} height="200px">
+					<CircularProgress isIndeterminate size="200px" />
+				</Box>
 			) : !companyMemberOnRoster ? (
 				signInAlert('na')
 			) : (
 				<ShowTable show={show} allowStatusChanges={false} />
 			)}
-		</Container>
+		</Box>
 	);
 }

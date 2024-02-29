@@ -6,11 +6,9 @@ import CastSignIn from './CastSignIn';
 
 export default function Main() {
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Admin />} />
-				<Route path="/signin/:slug" element={<CastSignIn />} />
-			</Routes>
-		</BrowserRouter>
+		<Routes>
+			<Route path="/" element={<Admin />} />
+			<Route path="/signin/:slug" element={<CastSignIn />} />
+		</Routes>
 	);
 }

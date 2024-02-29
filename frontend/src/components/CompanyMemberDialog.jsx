@@ -1,26 +1,29 @@
 import React from 'react';
-import { Dialog, Card } from '@mui/material';
+import { Modal, ModalOverlay, ModalContent, Box } from '@chakra-ui/react';
 
 import NewCompanyMember from './NewCompanyMember';
 import EditCompanyMember from './EditCompanyMember';
 
 export default function CompanyMemberDialog({ companyMemberId, newCompanyMember, onCloseDialog }) {
-	const open = companyMemberId || newCompanyMember ? true : false;
+	const isOpen = companyMemberId || newCompanyMember ? true : false;
 
 	return (
-		<Dialog
-			open={!!open}
+		<Modal
+			isOpen={isOpen}
 			onClose={onCloseDialog}
 			aria-labelledby="companyMemberModal-title"
 			aria-describedby="companyMemberModal-description"
 		>
-			<Card>
-				{newCompanyMember ? (
-					<NewCompanyMember onCloseDialog={onCloseDialog} />
-				) : (
-					<EditCompanyMember companyMemberId={companyMemberId} onCloseDialog={onCloseDialog} />
-				)}
-			</Card>
-		</Dialog>
+			<ModalOverlay />
+			<ModalContent>
+				<Box p={4}>
+					{newCompanyMember ? (
+						<NewCompanyMember onCloseDialog={onCloseDialog} />
+					) : (
+						<EditCompanyMember companyMemberId={companyMemberId} onCloseDialog={onCloseDialog} />
+					)}
+				</Box>
+			</ModalContent>
+		</Modal>
 	);
 }

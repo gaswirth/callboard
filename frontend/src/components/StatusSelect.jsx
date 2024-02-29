@@ -1,22 +1,11 @@
 import React, { useState } from 'react';
-import { IconButton, Popover, Stack, ToggleButton, ToggleButtonGroup, Typography, Box } from '@mui/material';
-
+import { IconButton, Popover, VStack, ButtonGroup, Button, Text, Box, useDisclosure } from '@chakra-ui/react';
 import { attendanceStatus } from '@lib/globals';
-
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
 
 function StatusSelect({ status, children, companyMemberId, showId }) {
 	const { updateAttendanceMutation, updateAttendanceLoading, updateAttendanceError } = useUpdateShowAttendance();
-	const [anchorEl, setAnchorEl] = useState(null);
-
-	/**
-	 * Sets the anchor element for the popover.
-	 *
-	 * @param {Object} event onClick event.
-	 */
-	const handleOpenIcons = (event) => {
-		setAnchorEl(event.currentTarget);
-	};
+	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	/**
 	 * Fire the mutation to update a company member's status within a show.
@@ -27,63 +16,53 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 	const handleIconClick = (event, newValue) => {
 		updateAttendanceMutation({ showId, companyMemberId, status: newValue });
 
-		if (!updateAttendanceError && !updateAttendanceLoading) closePopover();
-	};
-
-	const closePopover = () => {
-		setAnchorEl(null);
+		if (!updateAttendanceError && !updateAttendanceLoading) onClose();
 	};
 
 	return (
 		<>
 			<IconButton
-				sx={{
-					width: '40px',
-					borderRadius: 1,
-					cursor: 'pointer',
-					backgroundColor: children ? 'none' : 'neutral.lightgray',
-					p: 1,
-				}}
-				onClick={handleOpenIcons}
+				w="40px"
+				borderRadius="md"
+				cursor="pointer"
+				bgColor={children ? 'none' : 'gray.200'}
+				p={1}
+				onClick={onOpen}
 				aria-haspopup="true"
 			>
-				{children ? children : <Box sx={{ px: 0, py: 1.5 }}></Box>}
+				{children ? children : <Box px={0} py={1.5}></Box>}
 			</IconButton>
-			<Popover
-				open={!!anchorEl}
-				anchorEl={anchorEl}
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-				onClose={closePopover}
-			>
-				<ToggleButtonGroup
+			<Popover isOpen={isOpen} onClose={onClose} placement="bottom">
+				<ButtonGroup
 					value={status}
-					size="small"
+					size="sm"
 					onChange={handleIconClick}
 					aria-label="Attendance status choices"
-					exclusive
+					isAttached
 				>
 					{Object.keys(attendanceStatus).map((status, i) => {
 						const button = attendanceStatus[status];
 						const Icon = attendanceStatus[status].icon;
 
 						return (
-							<ToggleButton
+							<Button
 								key={i}
 								value={status}
 								variant="contained"
-								sx={{ textAlign: 'center', borderRadius: 0 }}
+								textAlign="center"
+								borderRadius="none"
 								aria-label={button.text}
 							>
-								<Stack>
+								<VStack>
 									<Icon />
-									<Typography variant="caption" component="p" display="block" sx={{ display: 'block' }}>
+									<Text fontSize="xs" display="block">
 										{button.text}
-									</Typography>
-								</Stack>
-							</ToggleButton>
+									</Text>
+								</VStack>
+							</Button>
 						);
 					})}
-				</ToggleButtonGroup>
+				</ButtonGroup>
 			</Popover>
 		</>
 	);

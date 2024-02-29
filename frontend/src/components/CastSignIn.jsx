@@ -1,9 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container } from '@mui/material';
-
-import Now from './views/Now';
-
+import { Container } from '@chakra-ui/react';
+import Now from '@views/Now';
 import { useCurrentShowSlug } from '@hooks/queries/use-current-show-slug';
 
 export default function CastSignIn() {
@@ -13,7 +11,7 @@ export default function CastSignIn() {
 	if (!currentShowSlug) return null;
 
 	return currentShowSlug === slug ? (
-		<Container sx={{ p: 3 }} maxWidth="xl">
+		<Container p={3} maxWidth="xl">
 			<Now signUsersIn={true} />
 		</Container>
 	) : (

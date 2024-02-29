@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from '@mui/material';
+import { Container } from '@chakra-ui/react';
 
 import UpdateCompanyMemberForm from './UpdateCompanyMemberForm';
 
@@ -10,7 +10,7 @@ import UpdateCompanyMemberForm from './UpdateCompanyMemberForm';
  */
 export default function NewCompanyMember({ onCloseDialog }) {
 	return (
-		<Container maxWidth="md" sx={{ py: 2 }}>
+		<Container maxWidth="md" py={2}>
 			<UpdateCompanyMemberForm onCloseDialog={onCloseDialog} />
 		</Container>
 	);

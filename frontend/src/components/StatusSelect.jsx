@@ -17,7 +17,7 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 		mutationResults: {
 			error: updateAttendanceError,
 			loading: updateAttendanceLoading,
-		},
+		} = {},
 	} = useUpdateShowAttendance();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -33,12 +33,7 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 			status: event.target.id,
 		});
 
-		if (
-			mutationResults !== undefined &&
-			!updateAttendanceError &&
-			!updateAttendanceLoading
-		)
-			onClose();
+		if (!updateAttendanceError && !updateAttendanceLoading) onClose();
 	};
 
 	return (

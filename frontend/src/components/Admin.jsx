@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { Box, Tabs, TabList, TabPanels, TabPanel, TabIndicator, Tab, Text, Flex, Spacer } from '@chakra-ui/react';
+import { Box, Tabs, TabList, TabPanels, TabPanel, Tab, Text, Flex, Spacer } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { useCompanyName } from '@hooks/queries/use-company-name';
 import Roster from '@views/Roster';

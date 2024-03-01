@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { IconButton } from '@chakra-ui/react';
 import { AuthContext } from '@context/AuthContext';
 import { useLogoutMutation } from '@hooks/mutations/use-logout-mutation';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Modal, ModalOverlay, ModalContent, Box } from '@chakra-ui/react';
 
 import NewCompanyMember from './NewCompanyMember';

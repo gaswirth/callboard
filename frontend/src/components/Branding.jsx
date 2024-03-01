@@ -1,11 +1,8 @@
-import React, { useContext } from 'react';
 import { Heading } from '@chakra-ui/react';
 import { generateCompanyShortName, getWordCount } from '@lib/functions';
-import { AuthContext } from '@context/AuthContext';
 import { useCompanyName } from '@hooks/queries/use-company-name';
 
 export default function Branding() {
-	const { user } = useContext(AuthContext);
 	const { data: companyData } = useCompanyName();
 
 	const companyShortName = () => {

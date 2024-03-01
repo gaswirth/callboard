@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useEffect } from 'react';
+import { useState, useReducer, useEffect } from 'react';
 import { Box, Button, Card, Text, Textarea, useColorModeValue } from '@chakra-ui/react';
 
 import { useUpdateShowNotes } from '@hooks/mutations/use-update-show-notes';

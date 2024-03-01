@@ -1,6 +1,6 @@
 // TODO make form work w/ chakra
 
-import React, { useEffect, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 import { FormControl, Button, Stack, Input, Checkbox, Box, useColorModeValue } from '@chakra-ui/react';
 
 import { createCompanyMember } from '@lib/functions';
@@ -112,10 +112,6 @@ export default function UpdateCompanyMemberForm({ companyMember, onCloseDialog }
 
 	const handleResetPasswordClick = () => {
 		sendResetPasswordEmailMutation({ username: updateCompanyMember.username });
-	};
-
-	const textFieldSx = {
-		my: 1,
 	};
 
 	const warningColor = useColorModeValue('red.500', 'red.300');

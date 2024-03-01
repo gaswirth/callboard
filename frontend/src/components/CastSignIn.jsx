@@ -1,8 +1,7 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container } from '@chakra-ui/react';
-import Now from '@views/Now';
 import { useCurrentShowSlug } from '@hooks/queries/use-current-show-slug';
+import Now from '@views/Now';
 
 export default function CastSignIn() {
 	const { slug } = useParams();

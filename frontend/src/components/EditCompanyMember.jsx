@@ -1,4 +1,3 @@
-import React from 'react';
 import { Container, CircularProgress } from '@chakra-ui/react';
 import { useRoster } from '@hooks/queries/use-roster';
 import UpdateCompanyMemberForm from '@components/UpdateCompanyMemberForm';

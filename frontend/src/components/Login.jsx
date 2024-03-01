@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import { Button, FormControl, FormLabel, Input, Text } from '@chakra-ui/react';
 
 import { User } from '@lib/classes';

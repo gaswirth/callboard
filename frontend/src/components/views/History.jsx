@@ -1,4 +1,3 @@
-import React from 'react';
 import { Grid, CircularProgress, Box } from '@chakra-ui/react';
 
 import ShowTable from '@components/ShowTable';

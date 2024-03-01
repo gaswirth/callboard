@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Stack, IconButton, Table, Tbody, Td, Th, Thead, Tr, Text, Container, Link, Box } from '@chakra-ui/react';
 import { isEmpty } from 'lodash';
 import { SlPencil } from 'react-icons/sl';

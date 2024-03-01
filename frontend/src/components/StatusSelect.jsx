@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
-import { IconButton, Popover, VStack, ButtonGroup, Button, Text, Box, useDisclosure } from '@chakra-ui/react';
+import { IconButton, Popover, Stack, ButtonGroup, Button, Text, Box, useDisclosure } from '@chakra-ui/react';
 import { attendanceStatus } from '@lib/globals';
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
 
 function StatusSelect({ status, children, companyMemberId, showId }) {
-	const { updateAttendanceMutation, updateAttendanceLoading, updateAttendanceError } = useUpdateShowAttendance();
+	const {
+		updateAttendanceMutation,
+		mutationResults: { updateAttendanceLoading, updateAttendanceError },
+	} = useUpdateShowAttendance();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	/**
 	 * Fire the mutation to update a company member's status within a show.
 	 *
 	 * @param {Object} event onClick event.
-	 * @param {string} newValue The updated value.
 	 */
-	const handleIconClick = (event, newValue) => {
-		updateAttendanceMutation({ showId, companyMemberId, status: newValue });
+	const handleIconClick = (event) => {
+		updateAttendanceMutation({ showId, companyMemberId, status: event.target.id });
 
 		if (!updateAttendanceError && !updateAttendanceLoading) onClose();
 	};
@@ -33,13 +34,7 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 				{children ? children : <Box px={0} py={1.5}></Box>}
 			</IconButton>
 			<Popover isOpen={isOpen} onClose={onClose} placement="bottom">
-				<ButtonGroup
-					value={status}
-					size="sm"
-					onChange={handleIconClick}
-					aria-label="Attendance status choices"
-					isAttached
-				>
+				<ButtonGroup value={status} size="sm" aria-label="Attendance status choices" isAttached>
 					{Object.keys(attendanceStatus).map((status, i) => {
 						const button = attendanceStatus[status];
 						const Icon = attendanceStatus[status].icon;
@@ -51,14 +46,16 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 								variant="contained"
 								textAlign="center"
 								borderRadius="none"
+								id={status}
+								onClick={handleIconClick}
 								aria-label={button.text}
 							>
-								<VStack>
+								<Stack>
 									<Icon />
 									<Text fontSize="xs" display="block">
 										{button.text}
 									</Text>
-								</VStack>
+								</Stack>
 							</Button>
 						);
 					})}

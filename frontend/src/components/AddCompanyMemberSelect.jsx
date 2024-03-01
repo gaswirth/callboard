@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, FormControl, Select } from '@chakra-ui/react';
 
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';

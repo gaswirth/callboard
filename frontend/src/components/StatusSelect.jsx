@@ -3,10 +3,7 @@ import { attendanceStatus } from '@lib/globals';
 import { useUpdateShowAttendance } from '@hooks/mutations/use-update-show-attendance';
 
 function StatusSelect({ status, children, companyMemberId, showId }) {
-	const {
-		updateAttendanceMutation,
-		mutationResults: { updateAttendanceLoading, updateAttendanceError },
-	} = useUpdateShowAttendance();
+	const { updateAttendanceMutation, mutationResults } = useUpdateShowAttendance();
 	const { isOpen, onOpen, onClose } = useDisclosure();
 
 	/**
@@ -17,7 +14,7 @@ function StatusSelect({ status, children, companyMemberId, showId }) {
 	const handleIconClick = (event) => {
 		updateAttendanceMutation({ showId, companyMemberId, status: event.target.id });
 
-		if (!updateAttendanceError && !updateAttendanceLoading) onClose();
+		if (!mutationResults.updateAttendanceError && !mutationResults.updateAttendanceLoading) onClose();
 	};
 
 	return (
